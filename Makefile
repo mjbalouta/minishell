@@ -1,9 +1,9 @@
 CC          	= cc
 CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) -g
 NAME        	= minishell
-SRCS			= 		
+SRCS			= main.c
 OBJS       		= $(SRCS:.c=.o)
-LIBFT_DIR   	= ./libft-projects
+LIBFT_DIR   	= ./libft
 LIBFT       	= $(LIBFT_DIR)/complete_libft.a
 READLINE_PATH	= vendor/readline/
 RLFLAG 			= -L$(READLINE_PATH)/lib -lreadline
