@@ -1,7 +1,7 @@
 CC          	= cc
 CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) -g
 NAME        	= minishell
-SRCS			= main.c
+SRCS			= main.c init.c
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft
 LIBFT       	= $(LIBFT_DIR)/complete_libft.a

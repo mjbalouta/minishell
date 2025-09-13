@@ -1,13 +1,26 @@
 #include "minishell.h"
 
+int	g_signal_number;
+
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argc;
+	t_shell	ms;
+
 	(void)argv;
 	(void)envp;
-	while (1)
+	check_args(argc);
+	init(&ms, envp);
+	while (true)
 	{
-		pause();
+		ms.input = readline(ms.prompt);
+        if (!ms.input)
+        {
+            printf("exit\n");
+            break;
+        }
+		if (*ms.input)
+			add_history(ms.input);
+		free(ms.input);
 	}
-	return (0);
+	return (ms.exit_status);
 }
