@@ -17,7 +17,8 @@ int	count_args(t_shell *ms)
 	{
 		if (!(temp->type == T_REDIRECT_INPUT
 			|| temp->type == T_REDIRECT_OUTPUT
-			|| temp->type == T_REDIRECT_OUTPUT_APPEND))
+			|| temp->type == T_REDIRECT_OUTPUT_APPEND
+			|| temp->type == T_HEREDOC)) //estou a contar filenames como args e nao posso
 			nr_args++;
 		temp = temp->next;
 	}
@@ -51,7 +52,8 @@ void	create_cmd_list(t_shell *ms)
 				ms->command->args[i++] = ms->token->word;
 			else if (ms->token->type == T_REDIRECT_INPUT
 					|| ms->token->type == T_REDIRECT_OUTPUT
-					|| ms->token->type == T_REDIRECT_OUTPUT_APPEND)
+					|| ms->token->type == T_REDIRECT_OUTPUT_APPEND
+					|| ms->token->type == T_HEREDOC)
 			{
 				ms->command->redirection->type = ms->token->type;
 				ms->token = ms->token->next;
