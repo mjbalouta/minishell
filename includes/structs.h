@@ -15,7 +15,6 @@ typedef struct s_token
 {
 	char			*word;
 	t_token_type	type;
-	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
 
