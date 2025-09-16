@@ -4,7 +4,6 @@
 typedef enum e_token_type
 {
 	T_WORD,
-	// T_COMMAND? @josemigu
 	T_REDIRECT_INPUT,
 	T_REDIRECT_OUTPUT,
 	T_HEREDOC,
@@ -22,28 +21,28 @@ typedef struct s_token
 
 typedef struct s_shell
 {
-	char	**envp;
-	char	*prompt;
-	char	*input;
-	t_token	*token;
-	int		exit_status;
+	char		**envp;
+	char		*prompt;
+	char		*input;
+	t_token		*token;
+	t_command 	*command;
+	int			exit_status;
 }	t_shell;
 
 //estrutura para guardar o tipo de redirect e o respetivo nome do ficheiro
 typedef struct s_redir
 {
-    t_token_type type;   // <, >, >>, << 
-    char *filename;
-    struct s_redir *next;
-} 			t_redir;
+    t_token_type	type;   // <, >, >>, << 
+    char 			*filename;
+    struct s_redir	*next;
+} 				t_redir;
 
 //estrutura para guardar cada comando entre pipes
 typedef struct s_command
 {
-	char *command;
-	char **args;
-	t_redir redirection;
-	struct s_command *next;
+	char 				**args; //deveria ser uma linked list?
+	t_redir 			*redirection; //um comando pode ter mais do que um redirect
+	struct s_command 	*next;
 }				t_command;
 
 #endif
