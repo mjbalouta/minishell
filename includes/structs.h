@@ -19,6 +19,10 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_command
+{
+}	t_command;
+
 typedef struct s_shell
 {
 	char	**envp;
