@@ -25,6 +25,8 @@ int	main(int argc, char **argv, char **envp)
 			return (1); //ver erro a retornar
 		create_cmd_list(&ms);
  */		free(ms.input);
+		clear_token_lst(&ms.token);
+		free(ms.input);
 	}
 	return (ms.exit_status);
 }

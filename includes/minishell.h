@@ -23,10 +23,10 @@ void	init(t_shell *ms, char **envp);
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
 void	create_cmd_list(t_shell *ms);
-
 t_token *tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
 bool	ft_isseparator(int c);
 bool	find_matching_quote(char quote,char *input, size_t *i);
+void	clear_token_lst(t_token **token);
 
 #endif
