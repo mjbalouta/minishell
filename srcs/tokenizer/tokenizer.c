@@ -1,9 +1,18 @@
 #include "minishell.h"
 
-static void	add_token(char *word, t_token_type type, t_token **head)
+static bool	add_token(char *word, t_token_type type, t_token **head)
 {
-	(void)head;
-	printf("Add token word: %s type %d\n", word, type);
+	t_token	*token;
+
+	token = ft_token_lstnew(word, type);
+	if (!token)
+	{
+		ft_token_lstclear(head);
+		return (false);
+	}
+	ft_token_lstadd_back(head, token);
+	return (true);
+
 }
 
 static bool	process_token_redir_pipe(t_token **head, char **input)
