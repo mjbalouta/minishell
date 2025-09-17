@@ -18,20 +18,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_command
-{
-}	t_command;
-
-typedef struct s_shell
-{
-	char		**envp;
-	char		*prompt;
-	char		*input;
-	t_token		*token;
-	t_command 	*command;
-	int			exit_status;
-}	t_shell;
-
 //estrutura para guardar o tipo de redirect e o respetivo nome do ficheiro
 typedef struct s_redir
 {
@@ -47,5 +33,15 @@ typedef struct s_command
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
 	struct s_command 	*next;
 }				t_command;
+
+typedef struct s_shell
+{
+	char		**envp;
+	char		*prompt;
+	char		*input;
+	t_token		*token;
+	t_command 	*command;
+	int			exit_status;
+}	t_shell;
 
 #endif

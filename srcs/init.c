@@ -17,5 +17,5 @@ void	init(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->exit_status = 0;
 	g_signal_number = 0;
-	ms->command->args = NULL;
+	ms->command = NULL;
 }

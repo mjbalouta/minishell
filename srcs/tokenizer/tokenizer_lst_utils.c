@@ -32,26 +32,7 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new)
 	ptr->next = new;
 }
 
-void	ft_lstadd_back_token(t_token **lst, t_token *new)
-{
-	t_token	*ptr;
-
-	if (!lst || !new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	ptr = *lst;
-	while (ptr->next)
-	{
-		ptr = ptr->next;
-	}
-	ptr->next = new;
-}
-
-void	ft_lstclear_token(t_list **lst, void (*del)(void*))
+void	ft_lstclear_token(t_list **lst)
 {
 	t_list	*temp;
 

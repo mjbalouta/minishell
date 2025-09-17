@@ -1,7 +1,13 @@
 CC          	= cc
-CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) -g
 NAME        	= minishell
-SRCS			= srcs/main.c srcs/init.c
+INCLUDES_PATH	= includes
+INCLUDES		= -I$(INCLUDES_PATH)
+CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) $(INCLUDES) -g
+SRCS			= $(addprefix srcs/, \
+				main.c init.c \
+				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
+				tokenizer/tokenizer_utils.c \
+				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft
 LIBFT       	= $(LIBFT_DIR)/complete_libft.a
