@@ -20,9 +20,11 @@ int	main(int argc, char **argv, char **envp)
         }
 		if (*ms.input)
 			add_history(ms.input);
-		if (verify_tokens(&ms) == -1)
+		ms.token = tokenizer(&ms);
+/* 		if (verify_tokens(&ms) == -1)
 			return (1); //ver erro a retornar
 		create_cmd_list(&ms);
+ */		free(ms.input);
 		clear_token_lst(&ms.token);
 		free(ms.input);
 	}

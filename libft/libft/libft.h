@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 15:31:38 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/06/25 20:32:36 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/09/16 19:32:54 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int		ft_isalnum(int c);
 int		ft_isascii(int c);
 
 int		ft_isprint(int c);
+
+int		ft_isspace(int c);
 
 size_t	ft_strlen(const char *s);
 
