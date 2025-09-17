@@ -5,8 +5,6 @@ int	g_signal_number;
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	ms;
-	t_token *tokens;
-	t_command *commands;
 
 	(void)argv;
 	(void)envp;
@@ -22,7 +20,9 @@ int	main(int argc, char **argv, char **envp)
         }
 		if (*ms.input)
 			add_history(ms.input);
-		commands = create_cmd_list(tokens);
+		if (verify_tokens(&ms) == -1)
+			return (1); //ver erro a retornar
+		create_cmd_list(&ms);
 		free(ms.input);
 	}
 	return (ms.exit_status);
