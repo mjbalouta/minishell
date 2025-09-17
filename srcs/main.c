@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		if (verify_tokens(&ms) == -1)
 			return (1); //ver erro a retornar
 		create_cmd_list(&ms);
+		clear_token_lst(&ms.token);
 		free(ms.input);
 	}
 	return (ms.exit_status);
