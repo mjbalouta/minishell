@@ -7,6 +7,7 @@ SRCS			= $(addprefix srcs/, \
 				main.c init.c \
 				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
 				tokenizer/tokenizer_utils.c \
+				clean_functions.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft
