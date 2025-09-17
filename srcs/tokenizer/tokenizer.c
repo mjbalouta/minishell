@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+static void	add_token(char *word, t_token_type type, t_shell ms)
+{
+	(void)ms;
+	printf("Add token word: %s type %d\n");
+}
+
 static void	add_token_redir_pipe(t_token *head, char *input)
 {
 	if (*input == '<')
@@ -27,6 +33,7 @@ static void	add_token_redir_pipe(t_token *head, char *input)
 
 static void	add_token_word(t_token *head, char *input)
 {
+	printf("Treat word\n");
 }
 
 t_token *tokenizer(t_shell *ms)
