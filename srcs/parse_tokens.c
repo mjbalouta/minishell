@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * @brief checks if token->type is redirection or heredoc
@@ -53,43 +53,47 @@ void	create_cmd_list(t_shell *ms)
 	int			i;
 	t_command	*new_cmd_node;
 	t_redir		*new_redir_node;
+	t_command	*tmp;
 
 	ms->command = ft_calloc(1, sizeof(t_command));
 	if (!ms->command)
 		return ;
-	ms->command->redirection = ft_calloc(1, sizeof(t_redir));
-	if (!ms->command->redirection)
+	tmp = ms->command;
+	tmp->redirection = ft_calloc(1, sizeof(t_redir));
+	if (!tmp->redirection)
 		return ;
 	while (ms->token)
 	{
 		i = 0;
 		nr_args = count_args(ms);
-		ms->command->args = ft_calloc(nr_args + 1, sizeof(char *));
-		if (!ms->command->args)
+		tmp->args = ft_calloc(nr_args + 1, sizeof(char *));
+		if (!tmp->args)
 			return ;
 		while (ms->token && ms->token->type != T_PIPE)
 		{
 			if (ms->token->type == T_WORD)
-				ms->command->args[i++] = ms->token->word;
+				tmp->args[i++] = ms->token->word;
 			else if (is_redir(ms->token) == 1)
 			{
-				ms->command->redirection->type = ms->token->type;
+				tmp->redirection->type = ms->token->type;
 				ms->token = ms->token->next;
-				ms->command->redirection->filename = ms->token->word;
+				tmp->redirection->filename = ms->token->word;
 				new_redir_node = ft_calloc(1, sizeof(t_redir));
 				if (!new_redir_node)
 					return ;
-				ms->command->redirection->next = new_redir_node;
-				ms->command->redirection = new_redir_node;
+				tmp->redirection->next = new_redir_node;
+				tmp->redirection = new_redir_node;
 			}
 			ms->token = ms->token->next;
 		}
+		if (!ms->token)
+			break ;
 		ms->token = ms->token->next;
 		new_cmd_node = ft_calloc(1, sizeof(t_command));
 		if (!new_cmd_node)
 			return ;
-		ms->command->next = new_cmd_node;
-		ms->command = new_cmd_node;
+		tmp->next = new_cmd_node;
+		tmp = new_cmd_node;
 	}
 }
 

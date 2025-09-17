@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /**
  * @brief verifies if there are empty commands, no commands or if filenames are missing
