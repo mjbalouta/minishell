@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_token	*ft_lstnew_token(char *word, t_token_type type)
+t_token	*ft_token_lstnew(char *word, t_token_type type)
 {
 	t_token	*ptr;
 
@@ -13,7 +13,7 @@ t_token	*ft_lstnew_token(char *word, t_token_type type)
 	return (ptr);
 }
 
-void	ft_lstadd_back_token(t_token **lst, t_token *new)
+void	ft_token_lstadd_back(t_token **lst, t_token *new)
 {
 	t_token	*ptr;
 
@@ -32,25 +32,12 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new)
 	ptr->next = new;
 }
 
-void	ft_lstclear_token(t_list **lst)
-{
-	t_list	*temp;
-
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		free((*lst)->content);
-		free(*lst);
-		*lst = temp;
-	}
-}
-
 /**
  * @brief function that frees the token linked list
  * 
  * @param token 
  */
-void	clear_token_lst(t_token **token)
+void	ft_token_lstclear(t_token **token)
 {
 	t_token	*temp;
 
@@ -62,4 +49,17 @@ void	clear_token_lst(t_token **token)
 		*token = temp;
 	}
 	*token = NULL;
+}
+
+/**
+ * @brief Iterates through the list of tokens and print it.
+ */
+
+void	ft_token_lstprint(t_token *lst)
+{
+	while (lst)
+	{
+		printf("Token, word: %s type %d\n", lst->word, lst->type);
+		lst = lst -> next;
+	}
 }

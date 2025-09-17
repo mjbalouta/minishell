@@ -3,3 +3,4 @@ complete_libft.a
 libft.a
 libftprintf.a
 minishell
+readline.supp
