@@ -29,7 +29,7 @@ typedef struct s_redir
 //estrutura para guardar cada comando entre pipes
 typedef struct s_command
 {
-	char 				**args; //deveria ser uma linked list?
+	char 				**args;
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
 	struct s_command 	*next;
 }				t_command;
