@@ -53,7 +53,10 @@ static bool	process_token_word(t_token **head, char **input)
 		{
 			// Quotes handling
 			if (!find_matching_quote((*input)[i], *input, &i))
-				return(printf("Matching quote not found!!!"), false);
+			{
+				*input += i;
+				return(printf("Matching quote not found!!!\n"), false);
+			}
 		}
 		else
 			i++;

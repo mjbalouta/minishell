@@ -24,19 +24,26 @@ typedef struct s_redir
     t_token_type	type;   // <, >, >>, << 
     char 			*filename;
     struct s_redir	*next;
-} 				t_redir;
+}	t_redir;
 
 //estrutura para guardar cada comando entre pipes
 typedef struct s_command
 {
-	char 				**args; //deveria ser uma linked list?
+	char 				**args;
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
 	struct s_command 	*next;
-}				t_command;
+}	t_command;
+
+typedef struct s_envp
+{
+	char			*key;
+	char			*value;
+	struct s_envp	*next;
+}	t_envp;
 
 typedef struct s_shell
 {
-	char		**envp;
+	t_envp		*envp;
 	char		*prompt;
 	char		*input;
 	t_token		*token;

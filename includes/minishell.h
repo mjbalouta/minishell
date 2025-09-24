@@ -34,4 +34,11 @@ void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
 
+void	init_envp(t_shell *ms, char **envp);
+t_envp	*ft_envp_lstnew(char *key, char *value);
+void	ft_envp_lstadd_back(t_envp **lst, t_envp *new);
+void	ft_envp_lstclear(t_envp **envp);
+void	ft_envp_lstprint(t_envp *lst);
+int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
+
 #endif

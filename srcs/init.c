@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	check_args(int argc)
 {
@@ -11,7 +11,7 @@ void	check_args(int argc)
 
 void	init(t_shell *ms, char **envp)
 {
-	ms->envp = envp;
+	init_envp(ms, envp);
 	ms->prompt = SHELL_NAME": ";
 	ms->input = NULL;
 	ms->token = NULL;
