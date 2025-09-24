@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/09/24 14:12:37 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:56:03 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,37 @@ int	count_args(t_shell *ms)
 	}
 	return (nr_args);
 }
+/*DELETE LATER*/
+void	test_printing(t_shell *ms) //testing
+{
+	int i = 0;
+	int z = 0;
+	t_command *tmp = ms->command;
+	while (tmp)
+	{
+		ft_printf("command %d:", i + 1);
+		z = 0;
+		while (tmp->args[z])
+		{
+			ft_printf("%s ", tmp->args[z]);
+			z++;
+		}
+		if (tmp->redirection)
+		{
+			ft_printf("redir: ");
+			while (tmp->redirection)
+			{
+				ft_printf("%d ", tmp->redirection->type);
+				ft_printf("%s ", tmp->redirection->filename);
+				tmp->redirection = tmp->redirection->next;
+			}
+		}
+		i++;
+		tmp = tmp->next;
+		ft_printf("\n");
+	}
+}
+
 
 /**
  * @brief creates cmd list
@@ -66,16 +97,16 @@ void	create_cmd_list(t_shell *ms)
 	t_command	*new_cmd_node;
 	t_redir		*new_redir_node;
 	t_command	*tmp;
+	t_redir		*last_redir;
 
 	ms->command = ft_calloc(1, sizeof(t_command));
 	if (!ms->command)
 		return ;
 	tmp = ms->command;
-	new_cmd_node = NULL;
-	new_redir_node = NULL;
 	tmp->redirection = ft_calloc(1, sizeof(t_redir));
 	if (!tmp->redirection)
 		return ;
+	tmp->redirection = NULL;
 	while (ms->token)
 	{
 		i = 0;
@@ -90,12 +121,22 @@ void	create_cmd_list(t_shell *ms)
 			else if (is_redir(ms->token) == 1)
 			{
 				new_redir_node = ft_calloc(1, sizeof(t_redir));
-				if (!new_redir_node)
-				    return ;
-				new_redir_node->type = ms->token->type;
-				ms->token = ms->token->next;
-				new_redir_node->filename = ms->token->word;
-				tmp->redirection = new_redir_node;
+    			if (!new_redir_node)
+        			return;
+    			new_redir_node->type = ms->token->type;
+    			ms->token = ms->token->next;
+    			new_redir_node->filename = ms->token->word;
+    			new_redir_node->next = NULL;
+    			if (!tmp->redirection) //primeira iteracao
+    			{
+        			tmp->redirection = new_redir_node;
+        			last_redir = tmp->redirection;
+    			}
+    			else //iteracoes seguintes
+    			{
+        			last_redir->next = new_redir_node;
+        			last_redir = last_redir->next;
+    			}
 			}
 			ms->token = ms->token->next;
 		}
@@ -108,26 +149,6 @@ void	create_cmd_list(t_shell *ms)
 		tmp->next = new_cmd_node;
 		tmp = tmp->next;
 	}
-	i = 0;
-	int z = 0;
-	tmp = ms->command;
-	while (tmp)
-	{
-		ft_printf("command %d:", i + 1);
-		z = 0;
-		while (tmp->args[z])
-		{
-			ft_printf("%s ", tmp->args[z]);
-			z++;
-		}
-		if (tmp->redirection)
-		{
-			ft_printf("%d ", tmp->redirection->type);
-			ft_printf("%s", tmp->redirection->filename);
-		}
-		i++;
-		tmp = tmp->next;
-		ft_printf("\n");
-	}
+	test_printing(ms); //function for testing
 }
 
