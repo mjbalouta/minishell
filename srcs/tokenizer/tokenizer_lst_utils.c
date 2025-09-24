@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+/**
+ * @brief function to create a new token
+ * 
+ * @param word
+ * @param type
+ */
 t_token	*ft_token_lstnew(char *word, t_token_type type)
 {
 	t_token	*ptr;
@@ -7,7 +13,7 @@ t_token	*ft_token_lstnew(char *word, t_token_type type)
 	ptr = malloc(sizeof(t_token));
 	if (!ptr)
 		return (NULL);
-	ptr->word = word;
+	ptr->word = ft_strdup(word);
 	ptr->type = type;
 	ptr->next = NULL;
 	return (ptr);
@@ -43,12 +49,11 @@ void	ft_token_lstclear(t_token **token)
 
 	while (*token)
 	{
-		temp = (*token)->next;
 		free((*token)->word);
+		temp = (*token)->next;
 		free(*token);
 		*token = temp;
 	}
-	*token = NULL;
 }
 
 /**
@@ -60,6 +65,6 @@ void	ft_token_lstprint(t_token *lst)
 	while (lst)
 	{
 		printf("Token, word: %s type %d\n", lst->word, lst->type);
-		lst = lst -> next;
+		lst = lst->next;
 	}
 }

@@ -10,6 +10,7 @@ SRCS			= $(addprefix srcs/, \
 				clean_functions.c \
 				parsing/parse_tokens.c \
 				parsing/verify_tokens.c \
+				environment/environment.c environment/envp_lst_utils.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft
