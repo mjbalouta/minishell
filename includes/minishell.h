@@ -41,5 +41,6 @@ void	ft_envp_lstadd_back(t_envp **lst, t_envp *new);
 void	ft_envp_lstclear(t_envp **envp);
 void	ft_envp_lstprint(t_envp *lst);
 int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
+char	*ft_getenv(const char *varname, t_envp *lst);
 
 #endif
