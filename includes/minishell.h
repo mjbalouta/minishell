@@ -24,6 +24,7 @@ int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
 void	create_cmd_list(t_shell *ms);
 int		verify_tokens(t_shell *ms);
+void	verify_if_bultin(t_shell *ms);
 
 t_token *tokenizer(t_shell *ms);
 bool	ft_isquote(int c);

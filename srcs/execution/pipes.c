@@ -35,6 +35,14 @@ int count_commands(t_shell *ms)
 
 int execute(t_shell *ms)
 {
-	fill_path(ms);
+	t_command	*temp;
+
+	temp = ms->command;
+	while (temp)
+	{
+		if (temp->is_builtin == 1)
+			fill_path(ms);
+		temp = temp->next;
+	}
 	return (0);
 }

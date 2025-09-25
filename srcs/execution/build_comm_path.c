@@ -74,5 +74,4 @@ void    fill_path(t_shell *ms)
 		}
 		i++;
 	}
-	// ft_printf("path found: \n%s\n", ms->command->comm_path);
 }
