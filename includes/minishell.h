@@ -43,4 +43,9 @@ void	ft_envp_lstprint(t_envp *lst);
 int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
 char	*ft_getenv(const char *varname, t_envp *lst);
 
+int		is_path(t_shell *ms);
+void	fill_path(t_shell *ms);
+int		count_commands(t_shell *ms);
+int		create_pipes(t_shell *ms);
+int		execute(t_shell *ms);
 #endif

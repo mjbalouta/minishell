@@ -26,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 			return (ft_printf("token error")); //ver erro a retornar
 		create_cmd_list(&ms);
 		ft_token_lstclear(&ms.token);
+		execute(&ms);
 		ms.token = NULL;
 		free(ms.input);
 	}

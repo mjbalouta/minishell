@@ -30,6 +30,7 @@ typedef struct s_redir
 typedef struct s_command
 {
 	char 				**args;
+	char				*comm_path;
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
 	struct s_command 	*next;
 }	t_command;
