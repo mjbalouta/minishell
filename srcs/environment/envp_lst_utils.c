@@ -35,17 +35,17 @@ void	ft_envp_lstadd_back(t_envp **lst, t_envp *new)
 	ptr->next = new;
 }
 
-void	ft_envp_lstclear(t_envp **envp)
+void	ft_envp_lstclear(t_envp **lst)
 {
 	t_envp	*temp;
 
-	while (*envp)
+	while (*lst)
 	{
-		free((*envp)->key);
-		free((*envp)->value);
-		temp = (*envp)->next;
-		free(*envp);
-		*envp = temp;
+		free((*lst)->key);
+		free((*lst)->value);
+		temp = (*lst)->next;
+		free(*lst);
+		*lst = temp;
 	}
 }
 

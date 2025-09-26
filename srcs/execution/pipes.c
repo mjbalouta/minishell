@@ -12,6 +12,7 @@ int count_commands(t_shell *ms)
 	int			nr_commands;
 
 	temp = ms->command;
+	nr_commands = 0;
 	while (temp)
 	{
 		nr_commands++;

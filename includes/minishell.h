@@ -43,6 +43,11 @@ void	ft_envp_lstclear(t_envp **envp);
 void	ft_envp_lstprint(t_envp *lst);
 int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
 char	*ft_getenv(const char *varname, t_envp *lst);
+char	*ft_getenv2(const char *key, t_envp *lst);
+t_envp	*ft_checkenv(char *key, t_envp *lst);
+int		ft_setenv(char *key, char *value, t_envp **lst);
+int		ft_unsetenv(char *key, t_envp **lst);
+int		set_minimal_env(t_envp **lst);
 
 int		is_path(t_shell *ms);
 void	fill_path(t_shell *ms);
