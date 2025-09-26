@@ -33,6 +33,7 @@ typedef struct s_command
 	char 				**args;
 	char				*comm_path;
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
+	int					prev_fd;
 	struct s_command 	*next;
 }	t_command;
 
@@ -51,6 +52,7 @@ typedef struct s_shell
 	t_token		*token;
 	t_command 	*command;
 	int			exit_status;
+	pid_t		*pid;
 }	t_shell;
 
 #endif

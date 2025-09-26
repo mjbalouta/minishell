@@ -73,5 +73,6 @@ void    fill_path(t_shell *ms)
 			return ;
 		}
 		i++;
+		free(test_path);
 	}
 }

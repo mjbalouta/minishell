@@ -49,4 +49,5 @@ void	fill_path(t_shell *ms);
 int		count_commands(t_shell *ms);
 int		create_pipes(t_shell *ms);
 int		execute(t_shell *ms);
+void	init_pids_container(t_shell *ms);
 #endif
