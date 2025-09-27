@@ -124,3 +124,30 @@ int	ft_unsetenv(char *key, t_envp **lst)
     free(temp);
 	return (0);
 }
+
+void	free_char_array(char **array)
+{
+	size_t	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	print_array_of_char(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		ft_putendl_fd(array[i], 1);
+		i++;
+	}	
+}

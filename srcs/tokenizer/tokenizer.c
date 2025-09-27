@@ -90,5 +90,6 @@ t_token *tokenizer(t_shell *ms)
 	}
 	free(ms->input);
 	ms->input = NULL;
+	ft_token_lstprint(head);	// TODO: to remove
 	return (head);
 }

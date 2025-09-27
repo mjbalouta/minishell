@@ -19,7 +19,9 @@
 extern int	g_signal_number;
 
 void	check_args(int argc);
-void	init(t_shell *ms, char **envp);
+void	init_shell(t_shell *ms, char **envp);
+void	exit_shell(int exit_status);
+
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
 void	create_cmd_list(t_shell *ms);
@@ -30,24 +32,26 @@ t_token *tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
 bool	ft_isseparator(int c);
 bool	find_matching_quote(char quote,char *input, size_t *i);
-
 t_token	*ft_token_lstnew(char *word, t_token_type type);
 void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
 
-void	init_envp(t_shell *ms, char **envp);
+t_envp	*init_envp(char **envp);
 t_envp	*ft_envp_lstnew(char *key, char *value);
 void	ft_envp_lstadd_back(t_envp **lst, t_envp *new);
 void	ft_envp_lstclear(t_envp **envp);
 void	ft_envp_lstprint(t_envp *lst);
 int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
+char	**ft_envp_lst_to_char_array(t_envp *lst, bool ignore_nulls);
 char	*ft_getenv(const char *varname, t_envp *lst);
 char	*ft_getenv2(const char *key, t_envp *lst);
 t_envp	*ft_checkenv(char *key, t_envp *lst);
 int		ft_setenv(char *key, char *value, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
 int		set_minimal_env(t_envp **lst);
+void	free_char_array(char **array);
+void	print_array_of_char(char **array);
 
 int		is_path(t_shell *ms);
 void	fill_path(t_shell *ms);
