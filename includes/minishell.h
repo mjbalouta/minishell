@@ -20,7 +20,7 @@ extern int	g_signal_number;
 
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
-void	exit_shell(int exit_status);
+void	exit_shell(t_shell *ms, int exit_status);
 
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
@@ -37,7 +37,9 @@ void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
 
-t_envp	*init_envp(char **envp);
+t_envp	*init_envp(t_shell *ms, char **envp);
+int		set_minimal_env(t_envp **lst);
+int		add_envp(char *key, char *value, t_envp **lst);
 t_envp	*ft_envp_lstnew(char *key, char *value);
 void	ft_envp_lstadd_back(t_envp **lst, t_envp *new);
 void	ft_envp_lstclear(t_envp **envp);
@@ -49,7 +51,6 @@ char	*ft_getenv2(const char *key, t_envp *lst);
 t_envp	*ft_checkenv(char *key, t_envp *lst);
 int		ft_setenv(char *key, char *value, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
-int		set_minimal_env(t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
 

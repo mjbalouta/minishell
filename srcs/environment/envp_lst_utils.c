@@ -9,12 +9,12 @@ t_envp	*ft_envp_lstnew(char *key, char *value)
 		return (NULL);
 	ptr->key = ft_strdup(key);
 	if (!ptr->key)
-		return(free(ptr), NULL);
+		return (free(ptr), NULL);
 	if (value)
 	{
 		ptr->value = ft_strdup(value);
 		if (!ptr->value)
-			return(free(ptr->key), free(ptr), NULL);
+			return (free(ptr->key), free(ptr), NULL);
 	}
 	else
 		ptr->value = NULL;

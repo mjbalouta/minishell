@@ -74,16 +74,10 @@ t_envp	*ft_checkenv(char *key, t_envp *lst)
 int	ft_setenv(char *key, char *value, t_envp **lst)
 {
 	t_envp	*env_node;
-	
-	env_node = ft_checkenv(key, *lst);
 
+	env_node = ft_checkenv(key, *lst);
 	if (!env_node)
-	{
-		env_node = ft_envp_lstnew(key, value);
-		if (!env_node)
-			return (-1);
-		ft_envp_lstadd_back(lst, env_node);
-	}
+		return (add_envp(key, value, lst));
 	else
 	{
 		env_node->value = ft_strdup(value);
