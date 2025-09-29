@@ -1,5 +1,15 @@
 #include "minishell.h"
 
+void	init_pids_container(t_shell *ms)
+{
+	int	nr_cmds;
+
+	nr_cmds = count_commands(ms);
+	ms->pid = malloc(sizeof(pid_t) * nr_cmds);
+	if (!ms->pid)
+		return ;
+}
+
 /**
  * @brief counts commands (divided by pipes)
  * 
@@ -50,14 +60,12 @@ int	wait_for_child(t_shell *ms, int cmd_count)
  * @param comm 
  * @param pipefd 
  */
-void	define_fds(t_command *comm, int *pipefd, int i)
+void	define_fds(t_command *comm, int *pipefd)
 {
 	if (comm->redirection->type == T_REDIRECT_INPUT)
 		comm->prev_fd = open(comm->redirection->filename, O_RDONLY);
 	else if (comm->redirection->type == T_REDIRECT_OUTPUT)
 		pipefd[1] = open(comm->redirection->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (i == 0)
-		comm->prev_fd = STDIN_FILENO;
 	if (comm->prev_fd < 0 || pipefd[1] < 0)
 	{
 		perror(comm->redirection->filename);

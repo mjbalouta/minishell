@@ -9,16 +9,6 @@ void	check_args(int argc)
 	}
 }
 
-void	init_pids_container(t_shell *ms)
-{
-	int	nr_cmds;
-
-	nr_cmds = count_commands(ms);
-	ms->pid = malloc(sizeof(pid_t) * nr_cmds);
-	if (!ms->pid)
-		return ;
-}
-
 void	init(t_shell *ms, char **envp)
 {
 	init_envp(ms, envp);

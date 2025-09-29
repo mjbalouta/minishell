@@ -11,17 +11,22 @@
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes)
 {
 	if (ms->command->redirection)
-		define_fds(ms->command, pipefd, i);
-	if (i >= 0 && i != nr_pipes)
-	{
-		pipefd[0] = ms->command->prev_fd;
-		dup2(pipefd[0], STDIN_FILENO);
-		dup2(pipefd[1], STDOUT_FILENO);
-	}
-	if (i == nr_pipes)
+		define_fds(ms->command, pipefd);
+	if (i > 0 && i != nr_pipes)
 	{
 		dup2(ms->command->prev_fd, STDIN_FILENO);
-		dup2(STDOUT_FILENO, STDOUT_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
+	}
+	else if (i == nr_pipes)
+	{
+		dup2(ms->command->prev_fd, STDIN_FILENO);
+		close(pipefd[1]);
+	}
+	else if (i == 0)
+	{
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+
 	}
 	ms->command->prev_fd = pipefd[0];
 	close(pipefd[0]);
@@ -55,16 +60,18 @@ void	handle_processes(t_shell *ms)
 	// 	//funcao para identificar builtin
 	while (++i <= nr_pipes)
 	{
-		if (pipe(pipefd) != 0)
-			exit(1); //create function to exit safely, freeing mem and exiting with exit code
+		if (i < nr_pipes)
+        {
+            if (pipe(pipefd) != 0)
+                exit(1); //create function to exit safely, freeing mem and exiting with exit code
+        }
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)
 			exit(1);
-		if (ms->pid[id] == 0)
+		if (ms->pid[id++] == 0)
 			execute_pipe_cmd(pipefd, i, ms, nr_pipes);
 		ms->command = ms->command->next;
 		close(pipefd[1]);
-		id++;
 	}
 	close(pipefd[0]);
 	ms->exit_status = wait_for_child(ms, id);
