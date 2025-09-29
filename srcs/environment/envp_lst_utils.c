@@ -84,27 +84,45 @@ int	ft_envp_lstsize(t_envp *lst, bool ignore_nulls)
 	return (size);
 }
 
-char	**ft_envp_lst_to_char_array(t_envp *lst, bool ignore_nulls)
+/**
+ * @brief Converts the environment variable linked list to a char array
+ * 
+ * @param ms Pointer to the shell structure containing the envp list.
+ * @param export_style If true, formats output for export; otherwise, standard key=value.
+ * @return A newly allocated NULL-terminated array of strings representing environment variables.
+ */
+char	**ft_envp_lst_to_char_array(t_shell *ms, bool export_style)
 {
 	int		n_vars;
 	char	**output;
 	size_t	i;
+	t_envp *lst;
 
 	i = 0;
-	n_vars = ft_envp_lstsize(lst, ignore_nulls);
+	lst = ms->envp;
+	n_vars = ft_envp_lstsize(lst, !export_style);
 	output = ft_calloc(n_vars + 1, sizeof(*output));
 	if (!output)
-		return (NULL);
+		exit_shell(ms, EXIT_FAILURE); // TODO: check correct error
 	while (lst)
 	{
-		if (lst->value || !ignore_nulls)
+		if (lst->value || export_style)
 		{
 			if (lst->value)
-				output[i] = ft_strjoin_three(lst->key, "=", lst->value);
+				if (export_style)
+					output[i] = ft_strjoin_five("declare -x ", lst->key, "=\"", lst->value, "\"");
+				else
+					output[i] = ft_strjoin_three(lst->key, "=", lst->value);
 			else
-				output[i] = ft_strdup(lst->key);
+				if (export_style)
+					output[i] = ft_strjoin("declare -x ", lst->key);
+				else
+					output[i] = ft_strdup(lst->key);
 			if (!output[i])
-				return (free_char_array(output), NULL);
+			{
+				free_char_array(output);
+				exit_shell(ms, EXIT_FAILURE); // TODO: check correct error
+			}
 			i++;
 		}
 		lst = lst->next;

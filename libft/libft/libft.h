@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <unistd.h>
 # include <stdint.h>
+# include <stdarg.h>
 
 typedef struct s_list
 {
@@ -83,6 +84,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
+
+char	*ft_strjoin_five(const char *s1, const char *s2, const char *s3, 
+	const char *s4, const char *s5);
 
 char	*ft_strtrim(char const *s1, char const *set);
 

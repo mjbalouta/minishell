@@ -22,20 +22,6 @@ t_envp	*init_envp(t_shell *ms, char **envp)
 	}
 	if (set_minimal_env(&head) != 0)
 		exit_shell(ms, EXIT_FAILURE);			// TODO: check correct error
-	// TODO: remove block
-	printf("----- received envp -----\n");
-	print_array_of_char(envp);
-	char	**envp2;
-	envp2 = ft_envp_lst_to_char_array(head, true);
-	i = 0;
-	printf("----- envp without nulls -----\n");
-	print_array_of_char(envp2);
-	free_char_array(envp2);
-	envp2 = ft_envp_lst_to_char_array(head, false);
-	printf("----- envp with nulls -----\n");
-	print_array_of_char(envp2);
-	free_char_array(envp2);
-	//
 	return (head);
 }
 

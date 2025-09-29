@@ -21,6 +21,7 @@ extern int	g_signal_number;
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
 void	exit_shell(t_shell *ms, int exit_status);
+void	debug_init_shell(t_shell *ms, char **envp);
 
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
@@ -45,7 +46,7 @@ void	ft_envp_lstadd_back(t_envp **lst, t_envp *new);
 void	ft_envp_lstclear(t_envp **envp);
 void	ft_envp_lstprint(t_envp *lst);
 int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
-char	**ft_envp_lst_to_char_array(t_envp *lst, bool ignore_nulls);
+char	**ft_envp_lst_to_char_array(t_shell *ms, bool export_style);
 char	*ft_getenv(const char *varname, t_envp *lst);
 char	*ft_getenv2(const char *key, t_envp *lst);
 t_envp	*ft_checkenv(char *key, t_envp *lst);
