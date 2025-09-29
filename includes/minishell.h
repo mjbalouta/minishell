@@ -52,8 +52,8 @@ int		count_commands(t_shell *ms);
 int		create_pipes(t_shell *ms);
 void	init_pids_container(t_shell *ms);
 int		wait_for_child(t_shell *ms, int cmd_count);
-void	define_fds(t_command *comm, int *pipefd);
-void	execute_pipe_cmd(t_command *comm, int *pipefd, int i, t_shell *ms);
+void	define_fds(t_command *comm, int *pipefd, int i);
+void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
 

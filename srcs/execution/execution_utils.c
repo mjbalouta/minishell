@@ -50,13 +50,15 @@ int	wait_for_child(t_shell *ms, int cmd_count)
  * @param comm 
  * @param pipefd 
  */
-void	define_fds(t_command *comm, int *pipefd)
+void	define_fds(t_command *comm, int *pipefd, int i)
 {
 	if (comm->redirection->type == T_REDIRECT_INPUT)
-		pipefd[0] = open(comm->redirection->filename, O_RDONLY);
+		comm->prev_fd = open(comm->redirection->filename, O_RDONLY);
 	else if (comm->redirection->type == T_REDIRECT_OUTPUT)
 		pipefd[1] = open(comm->redirection->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (pipefd[0] < 0 || pipefd[1] < 0)
+	else if (i == 0)
+		comm->prev_fd = STDIN_FILENO;
+	if (comm->prev_fd < 0 || pipefd[1] < 0)
 	{
 		perror(comm->redirection->filename);
 		exit(1);

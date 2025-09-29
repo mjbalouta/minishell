@@ -8,22 +8,29 @@
  * @param i 
  * @param ms 
  */
-void	execute_pipe_cmd(t_command *comm, int *pipefd, int i, t_shell *ms)
+void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes)
 {
-	if (comm->redirection)
-		define_fds(comm, pipefd);
-	if (i == 0)
-		comm->prev_fd = pipefd[0];
-	dup2(comm->prev_fd, STDIN_FILENO);
-	dup2(pipefd[1], STDOUT_FILENO);
+	if (ms->command->redirection)
+		define_fds(ms->command, pipefd, i);
+	if (i >= 0 && i != nr_pipes)
+	{
+		pipefd[0] = ms->command->prev_fd;
+		dup2(pipefd[0], STDIN_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
+	}
+	if (i == nr_pipes)
+	{
+		dup2(ms->command->prev_fd, STDIN_FILENO);
+		dup2(STDOUT_FILENO, STDOUT_FILENO);
+	}
+	ms->command->prev_fd = pipefd[0];
 	close(pipefd[0]);
 	close(pipefd[1]);
-	close(comm->prev_fd);
 	// if (comm->is_builtin == 0)
 	// 	//funcao para identificar qual o builtin e reencaminhar para a funcao de execucao desse builtin
 	// else
 	// {
-	if (execve(comm->comm_path, comm->args, ms->full_envp) == -1)
+	if (execve(ms->command->comm_path, ms->command->args, ms->full_envp) == -1)
 		exit(0);
 	// }
 }
@@ -35,10 +42,10 @@ void	execute_pipe_cmd(t_command *comm, int *pipefd, int i, t_shell *ms)
  */
 void	handle_processes(t_shell *ms)
 {
-	int	nr_pipes;
-	int	i;
-	int pipefd[2];
-	int	id;
+	int			nr_pipes;
+	int			i;
+	int			pipefd[2];
+	int			id;
 
 	nr_pipes = count_commands(ms) - 1;
 	i = -1;
@@ -46,34 +53,20 @@ void	handle_processes(t_shell *ms)
 	init_pids_container(ms);
 	// if (nr_pipes == 0 && ms->command->is_builtin == 0)
 	// 	//funcao para identificar builtin
-	if (nr_pipes == 0 && ms->command->is_builtin == 1) // FUNCIONA SEM REDIRECTS, COM REDIRECTS NÃO, VER COMO FAZER
+	while (++i <= nr_pipes)
 	{
+		if (pipe(pipefd) != 0)
+			exit(1); //create function to exit safely, freeing mem and exiting with exit code
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)
 			exit(1);
 		if (ms->pid[id] == 0)
-		{
-			if (execve(ms->command->comm_path, ms->command->args, ms->full_envp) == -1)
-				exit(0);
-		}
+			execute_pipe_cmd(pipefd, i, ms, nr_pipes);
+		ms->command = ms->command->next;
+		close(pipefd[1]);
+		id++;
 	}
-	else
-	{
-		while (++i < nr_pipes)
-		{
-			if (pipe(pipefd) != 0)
-				exit(1); //create function to exit safely, freeing mem and exiting with exit code
-			ms->pid[id] = fork();
-			if (ms->pid[id] < 0)
-				exit(1);
-			if (ms->pid[id] == 0)
-				execute_pipe_cmd(ms->command, pipefd, i, ms);
-			ms->command->prev_fd = pipefd[0];
-			close(pipefd[1]);
-			ms->command = ms->command->next;
-			id++;
-		}
-	}
+	close(pipefd[0]);
 	ms->exit_status = wait_for_child(ms, id);
 }
 
