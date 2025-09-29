@@ -46,6 +46,7 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
+	char		**full_envp;
 	t_envp		*envp;
 	char		*prompt;
 	char		*input;

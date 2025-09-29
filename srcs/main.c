@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 		if (*ms.input)
 			add_history(ms.input);
 		ms.token = tokenizer(&ms);
-		ft_token_lstprint(ms.token);
+		// ft_token_lstprint(ms.token);
 		if (verify_tokens(&ms) == -1)
 			return (ft_printf("token error")); //ver erro a retornar
 		create_cmd_list(&ms);

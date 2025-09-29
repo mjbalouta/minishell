@@ -22,12 +22,12 @@ void	init_pids_container(t_shell *ms)
 void	init(t_shell *ms, char **envp)
 {
 	init_envp(ms, envp);
-	ms->prompt = SHELL_NAME": ";
+	ms->full_envp = envp;
+	ms->prompt = "$";
+	// ms->prompt = SHELL_NAME": ";
 	ms->input = NULL;
 	ms->token = NULL;
 	ms->exit_status = 0;
 	g_signal_number = 0;
 	ms->command = NULL;
-	ms->command->prev_fd = -1;
-	init_pids_container(ms);
 }

@@ -15,6 +15,7 @@ SRCS			= $(addprefix srcs/, \
 				parsing/verify_commands.c \
 				execution/build_comm_path.c \
 				execution/pipes.c \
+				execution/execution_utils.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft

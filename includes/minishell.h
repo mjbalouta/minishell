@@ -9,6 +9,7 @@
 # include <sys/types.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 
 # include "structs.h"
 # include "../libft/get-next-line/get_next_line.h"
@@ -45,9 +46,17 @@ int		ft_envp_lstsize(t_envp *lst, bool ignore_nulls);
 char	*ft_getenv(const char *varname, t_envp *lst);
 
 int		is_path(t_shell *ms);
+char	*create_test_path(char *path, char *command);
 void	fill_path(t_shell *ms);
 int		count_commands(t_shell *ms);
 int		create_pipes(t_shell *ms);
-int		execute(t_shell *ms);
 void	init_pids_container(t_shell *ms);
+int		wait_for_child(t_shell *ms, int cmd_count);
+void	define_fds(t_command *comm, int *pipefd);
+void	execute_pipe_cmd(t_command *comm, int *pipefd, int i, t_shell *ms);
+void	handle_processes(t_shell *ms);
+void	execute(t_shell *ms);
+
+
+
 #endif
