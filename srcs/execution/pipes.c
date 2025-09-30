@@ -10,8 +10,11 @@
  */
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
+	int	out_fd;
+
+	out_fd = -1;
 	if (ms->command->redirection)
-		define_fds(ms, pipefd);
+		define_fds(ms, pipefd, prev_fd, out_fd);
 	if (i == 0)
 			dup2(pipefd[1], STDOUT_FILENO);
 	else if (i == (ms->nr_commands - 1))
@@ -74,12 +77,13 @@ void	handle_processes(t_shell *ms)
 		if (i < ms->nr_commands - 1)
 		{
 			close(pipefd[1]);
-			close(prev_fd);
 			prev_fd = pipefd[0];
 		}
 		if (ms->command->next)
 			ms->command = ms->command->next;
 	}
+	if (prev_fd != -1)
+   		close(prev_fd);
 	ms->exit_status = wait_for_child(ms, id);
 }
 
