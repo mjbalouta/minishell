@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_envp	*init_envp(t_shell *ms, char **envp)
+void	init_envp(t_shell *ms, char **envp)
 {
 	int		i;
 	t_envp	*head;
@@ -22,7 +22,7 @@ t_envp	*init_envp(t_shell *ms, char **envp)
 	}
 	if (set_minimal_env(&head) != 0)
 		exit_shell(ms, EXIT_FAILURE);			// TODO: check correct error
-	return (head);
+	ms->envp = head;
 }
 
 int	set_minimal_env(t_envp **lst)

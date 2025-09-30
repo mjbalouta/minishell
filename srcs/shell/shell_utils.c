@@ -17,9 +17,8 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->exit_status = 0;
 	ms->command = NULL;
-	ms->envp = init_envp(ms, envp);
+	init_envp(ms, envp);
 	g_signal_number = 0;
-	debug_init_shell(ms, envp);	// TODO: remove this line
 }
 
 void	exit_shell(t_shell *ms, int exit_status)
@@ -31,6 +30,7 @@ void	exit_shell(t_shell *ms, int exit_status)
 	exit(exit_status);
 }
 
+// TODO: remove this function
 void debug_init_shell(t_shell *ms, char **envp)
 {
 	printf("DEBUG: Shell initialized\n");
@@ -59,3 +59,4 @@ void debug_init_shell(t_shell *ms, char **envp)
 	print_array_of_char(envp2);
 	free_char_array(envp2);
 }
+// End of TODO
