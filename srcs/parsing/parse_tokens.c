@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/09/25 17:51:22 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/09/27 11:50:24 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,6 @@ void	create_cmd_list(t_shell *ms)
 		tmp = tmp->next;
 	}
 	verify_if_bultin(ms);
-	test_printing(ms); //function for testing
+	// test_printing(ms); //function for testing
 }
 

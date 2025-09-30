@@ -47,7 +47,7 @@ char	*create_test_path(char *path, char *command)
  * 
  * @param ms 
  */
-void    fill_path(t_shell *ms)
+void    fill_path(t_shell *ms, t_command *command)
 {
 	char	*path_full_str;
 	char	**path_list;
@@ -66,12 +66,13 @@ void    fill_path(t_shell *ms)
 	i = 0;
 	while (path_list[i])
 	{
-		test_path = create_test_path(path_list[i], ms->command->args[0]);
+		test_path = create_test_path(path_list[i], command->args[0]);
 		if (access(test_path, X_OK) == 0)
 		{
-			ms->command->comm_path = test_path;
+			command->comm_path = test_path;
 			return ;
 		}
 		i++;
+		free(test_path);
 	}
 }

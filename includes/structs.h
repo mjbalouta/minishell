@@ -45,12 +45,15 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
+	int			nr_commands;
+	char		**full_envp;
 	t_envp		*envp;
 	char		*prompt;
 	char		*input;
 	t_token		*token;
 	t_command 	*command;
 	int			exit_status;
+	pid_t		*pid;
 }	t_shell;
 
 #endif
