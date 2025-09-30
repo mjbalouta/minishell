@@ -47,13 +47,13 @@ char	*ft_getenv(const char *varname, t_envp *lst);
 
 int		is_path(t_shell *ms);
 char	*create_test_path(char *path, char *command);
-void	fill_path(t_shell *ms);
+void	fill_path(t_shell *ms, t_command *command);
 int		count_commands(t_shell *ms);
 int		create_pipes(t_shell *ms);
 void	init_pids_container(t_shell *ms);
 int		wait_for_child(t_shell *ms, int cmd_count);
-void	define_fds(t_command *comm, int *pipefd);
-void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes);
+void	define_fds(t_shell *ms, int *pipefd);
+void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
 

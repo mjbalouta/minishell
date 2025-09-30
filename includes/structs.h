@@ -33,7 +33,6 @@ typedef struct s_command
 	char 				**args;
 	char				*comm_path;
 	t_redir 			*redirection; //um comando pode ter mais do que um redirect
-	int					prev_fd;
 	struct s_command 	*next;
 }	t_command;
 
@@ -46,6 +45,7 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
+	int			nr_commands;
 	char		**full_envp;
 	t_envp		*envp;
 	char		*prompt;

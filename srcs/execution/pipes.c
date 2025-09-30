@@ -8,35 +8,35 @@
  * @param i 
  * @param ms 
  */
-void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes)
+void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
 	if (ms->command->redirection)
-		define_fds(ms->command, pipefd);
-	if (i > 0 && i != nr_pipes)
+		define_fds(ms, pipefd);
+	if (i == 0)
+			dup2(pipefd[1], STDOUT_FILENO);
+	else if (i == (ms->nr_commands - 1))
+		dup2(prev_fd, STDIN_FILENO);
+	else
 	{
-		dup2(ms->command->prev_fd, STDIN_FILENO);
+		dup2(prev_fd, STDIN_FILENO);
 		dup2(pipefd[1], STDOUT_FILENO);
 	}
-	else if (i == nr_pipes)
+	if (prev_fd != -1)
+		close (prev_fd);
+	if (i < ms->nr_commands - 1)
 	{
-		dup2(ms->command->prev_fd, STDIN_FILENO);
 		close(pipefd[1]);
+		close(pipefd[0]);
 	}
-	else if (i == 0)
-	{
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-
-	}
-	ms->command->prev_fd = pipefd[0];
-	close(pipefd[0]);
-	close(pipefd[1]);
 	// if (comm->is_builtin == 0)
 	// 	//funcao para identificar qual o builtin e reencaminhar para a funcao de execucao desse builtin
 	// else
 	// {
 	if (execve(ms->command->comm_path, ms->command->args, ms->full_envp) == -1)
+	{
+		perror("execve");
 		exit(0);
+	}
 	// }
 }
 
@@ -47,20 +47,21 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int nr_pipes)
  */
 void	handle_processes(t_shell *ms)
 {
-	int			nr_pipes;
-	int			i;
-	int			pipefd[2];
-	int			id;
+	int	i;
+	int	pipefd[2];
+	int	id;
+	int	prev_fd;
 
-	nr_pipes = count_commands(ms) - 1;
+	ms->nr_commands = count_commands(ms);
 	i = -1;
 	id = 0;
+	prev_fd = -1;
 	init_pids_container(ms);
 	// if (nr_pipes == 0 && ms->command->is_builtin == 0)
 	// 	//funcao para identificar builtin
-	while (++i <= nr_pipes)
+	while (++i < ms->nr_commands)
 	{
-		if (i < nr_pipes)
+		if (i < (ms->nr_commands - 1))
         {
             if (pipe(pipefd) != 0)
                 exit(1); //create function to exit safely, freeing mem and exiting with exit code
@@ -69,11 +70,16 @@ void	handle_processes(t_shell *ms)
 		if (ms->pid[id] < 0)
 			exit(1);
 		if (ms->pid[id++] == 0)
-			execute_pipe_cmd(pipefd, i, ms, nr_pipes);
-		ms->command = ms->command->next;
-		close(pipefd[1]);
+			execute_pipe_cmd(pipefd, i, ms, prev_fd);
+		if (i < ms->nr_commands - 1)
+		{
+			close(pipefd[1]);
+			close(prev_fd);
+			prev_fd = pipefd[0];
+		}
+		if (ms->command->next)
+			ms->command = ms->command->next;
 	}
-	close(pipefd[0]);
 	ms->exit_status = wait_for_child(ms, id);
 }
 
@@ -91,7 +97,7 @@ void	execute(t_shell *ms)
 	while (temp)
 	{
 		if (temp->is_builtin == 1)
-			fill_path(ms);
+			fill_path(ms, temp);
 		temp = temp->next;
 	}
 	handle_processes(ms);
