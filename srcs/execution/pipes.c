@@ -10,11 +10,8 @@
  */
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
-	int	out_fd;
-
-	out_fd = -1;
 	if (ms->command->redirection)
-		define_fds(ms, pipefd, prev_fd, out_fd);
+		define_fds(ms, pipefd, prev_fd);
 	if (i == 0)
 			dup2(pipefd[1], STDOUT_FILENO);
 	else if (i == (ms->nr_commands - 1))

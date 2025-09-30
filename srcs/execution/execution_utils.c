@@ -60,21 +60,28 @@ int	wait_for_child(t_shell *ms, int cmd_count)
  * @param comm 
  * @param pipefd 
  */
-void	define_fds(t_shell *ms, int *pipefd, int prev_fd, int out_fd)
+void	define_fds(t_shell *ms, int *pipefd, int prev_fd)
 {
-	if (ms->command->redirection->type == T_REDIRECT_INPUT)
+	int	out_fd;
+
+	out_fd = -1;
+	while (ms->command->redirection)
 	{
-		prev_fd = open(ms->command->redirection->filename, O_RDONLY);
-		dup2(prev_fd, STDIN_FILENO);
-	}
-	else if (ms->command->redirection->type == T_REDIRECT_OUTPUT)
-	{
-		out_fd = open(ms->command->redirection->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		dup2(out_fd, STDOUT_FILENO);
-	}
-	if (prev_fd < 0 || pipefd[1] < 0)
-	{
-		perror(ms->command->redirection->filename);
-		exit(1);
+		if (ms->command->redirection->type == T_REDIRECT_INPUT)
+		{
+			prev_fd = open(ms->command->redirection->filename, O_RDONLY);
+			dup2(prev_fd, STDIN_FILENO);
+		}
+		else if (ms->command->redirection->type == T_REDIRECT_OUTPUT)
+		{
+			out_fd = open(ms->command->redirection->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			dup2(out_fd, STDOUT_FILENO);
+		}
+		if (prev_fd < 0 || pipefd[1] < 0)
+		{
+			perror(ms->command->redirection->filename);
+			exit(1);
+		}
+		ms->command->redirection = ms->command->redirection->next;
 	}
 }
