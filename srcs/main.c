@@ -7,9 +7,8 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	ms;
 
 	(void)argv;
-	(void)envp;
 	check_args(argc);
-	init(&ms, envp);
+	init_shell(&ms, envp);
 	while (true)
 	{
 		ms.input = readline(ms.prompt);
@@ -23,7 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		ms.token = tokenizer(&ms);
 		// ft_token_lstprint(ms.token);
 		if (verify_tokens(&ms) == -1)
-			return (ft_printf("token error")); //ver erro a retornar
+			return (ft_printf("token error")); // TODO: ver erro a retornar
 		create_cmd_list(&ms);
 		ft_token_lstclear(&ms.token);
 		execute(&ms);

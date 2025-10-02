@@ -4,10 +4,10 @@ INCLUDES_PATH	= includes
 INCLUDES		= -I$(INCLUDES_PATH)
 CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) $(INCLUDES) -g
 SRCS			= $(addprefix srcs/, \
-				main.c init.c \
+				main.c \
+				shell/shell_utils.c \
 				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
 				tokenizer/tokenizer_utils.c \
-				clean_functions.c \
 				environment/environment.c environment/envp_lst_utils.c \
 				environment/envp_utils.c \
 				parsing/parse_tokens.c \

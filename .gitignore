@@ -4,3 +4,6 @@ libft.a
 libftprintf.a
 minishell
 readline.supp
+.vscode/
+.DS_Store
+.github/
