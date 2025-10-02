@@ -19,7 +19,7 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 	else
 	{
 		dup2(prev_fd, STDIN_FILENO);
-		dup2(pipefd[1], STDOUT_FILENO);
+		// dup2(pipefd[1], STDOUT_FILENO);
 	}
 	if (prev_fd != -1)
 		close (prev_fd);
@@ -93,6 +93,7 @@ void	execute(t_shell *ms)
 {
 	t_command	*temp;
 
+	ms->full_envp = ft_envp_lst_to_char_array(ms, false);
 	temp = ms->command;
 	init_pids_container(ms);
 	while (temp)
@@ -102,4 +103,5 @@ void	execute(t_shell *ms)
 		temp = temp->next;
 	}
 	handle_processes(ms);
+	free_char_array(ms->full_envp);
 }
