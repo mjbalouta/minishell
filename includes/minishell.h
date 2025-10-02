@@ -23,6 +23,7 @@ void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
 void	exit_shell(t_shell *ms, int exit_status);
 void	debug_init_shell(t_shell *ms, char **envp);
+void	print_error_and_exit(t_shell *ms, char *message, int exit_status);
 
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
@@ -55,6 +56,10 @@ int		ft_setenv(char *key, char *value, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
+
+void	expander(t_shell *ms);
+char	*expand_word(char *word, t_shell *ms);
+char	*expand_tilde(char *str, t_envp *env);
 
 int		is_path(t_shell *ms);
 char	*create_test_path(char *path, char *command);

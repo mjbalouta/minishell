@@ -19,6 +19,7 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->command = NULL;
 	init_envp(ms, envp);
 	g_signal_number = 0;
+	debug_init_shell(ms, envp); // TODO: remove this line
 }
 
 void	exit_shell(t_shell *ms, int exit_status)
@@ -30,12 +31,21 @@ void	exit_shell(t_shell *ms, int exit_status)
 	exit(exit_status);
 }
 
+void	print_error_and_exit(t_shell *ms, char *message, int exit_status)
+{
+	ft_putstr_fd(SHELL_NAME": ", 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
+	exit_shell(ms, exit_status);
+}
+
 // TODO: remove this function
 void debug_init_shell(t_shell *ms, char **envp)
 {
 	printf("DEBUG: Shell initialized\n");
 	printf("DEBUG: Prompt: %s\n", ms->prompt);
 	printf("DEBUG: Exit status: %d\n", ms->exit_status);
+	ft_setenv("NORMAL", "VAR NORMAL", &ms->envp);
 	ft_setenv("NULO", NULL, &ms->envp);
 	ft_setenv("VAZIO", "", &ms->envp);
 	if (ms->envp)

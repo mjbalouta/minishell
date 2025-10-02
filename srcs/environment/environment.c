@@ -5,6 +5,8 @@ void	init_envp(t_shell *ms, char **envp)
 	int		i;
 	t_envp	*head;
 	char	*equal_ptr;
+	char	*key;
+	char	*value;
 
 	i = 0;
 	head = NULL;
@@ -13,10 +15,22 @@ void	init_envp(t_shell *ms, char **envp)
 		equal_ptr = ft_strchr(envp[i], '=');
 		if (equal_ptr)
 		{
-			*equal_ptr = '\0';
-			if (add_envp(envp[i], equal_ptr + 1, &head) != 0)
-				exit_shell(ms, EXIT_FAILURE);	// TODO: check correct error
-			*equal_ptr = '=';
+			key = ft_substr(envp[i], 0, equal_ptr - envp[i]);
+			value = ft_strdup(equal_ptr + 1);
+			if (!key || !value)
+			{
+				free(key);
+				free(value);
+				exit_shell(ms, EXIT_FAILURE);
+			}
+			if (add_envp(key, value, &head) != 0)
+			{
+				free(key);
+				free(value);
+				exit_shell(ms, EXIT_FAILURE);
+			}
+			free(key);
+			free(value);
 		}
 		i++;
 	}
