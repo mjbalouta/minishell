@@ -7,3 +7,6 @@ readline.supp
 .vscode/
 .DS_Store
 .github/
+teste/
+infile
+outfile
