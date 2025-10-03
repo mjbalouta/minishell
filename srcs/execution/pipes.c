@@ -10,17 +10,12 @@
  */
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
-	if (ms->command->redirection)
-		define_fds(ms, pipefd, prev_fd);
-	if (i == 0)
-			dup2(pipefd[1], STDOUT_FILENO);
-	else if (i == (ms->nr_commands - 1))
-		dup2(prev_fd, STDIN_FILENO);
-	else
+	if (!ms->command->comm_path)
 	{
-		dup2(prev_fd, STDIN_FILENO);
-		// dup2(pipefd[1], STDOUT_FILENO);
-	}
+		perror(ms->command->args[0]);
+		exit(127);
+	} //ERROR: NO SUCH FILE OR DIRECTORY
+	define_fds(ms, pipefd, prev_fd, i);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (i < ms->nr_commands - 1)
@@ -34,7 +29,8 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 	// {
 	if (execve(ms->command->comm_path, ms->command->args, ms->full_envp) == -1)
 	{
-		perror("execve");
+
+		perror(ms->command->args[0]);
 		exit(0);
 	}
 	// }
