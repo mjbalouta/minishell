@@ -70,9 +70,11 @@ void    fill_path(t_shell *ms, t_command *command)
 		if (access(test_path, X_OK) == 0)
 		{
 			command->comm_path = test_path;
+			free_char_array(path_list);
 			return ;
 		}
 		i++;
 		free(test_path);
 	}
+	free_char_array(path_list);
 }
