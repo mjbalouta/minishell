@@ -23,6 +23,8 @@ void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
 void	exit_shell(t_shell *ms, int exit_status);
 void	debug_init_shell(t_shell *ms, char **envp);
+void	print_error_and_exit(t_shell *ms, char *message, int exit_status);
+void	print_error(char *message);
 
 int		is_redir(t_token *token);
 int		count_args(t_shell *ms);
@@ -32,7 +34,7 @@ void	verify_if_bultin(t_shell *ms);
 void	ft_cmd_lstclear(t_command **cmd);
 void	ft_redir_lstclear(t_redir **redir);
 
-t_token *tokenizer(t_shell *ms);
+void	tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
 bool	ft_isseparator(int c);
 bool	find_matching_quote(char quote,char *input, size_t *i);
@@ -41,7 +43,7 @@ void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
 
-void	init_envp(t_shell *ms, char **envp);
+int		init_envp(t_shell *ms, char **envp);
 int		set_minimal_env(t_envp **lst);
 int		add_envp(char *key, char *value, t_envp **lst);
 t_envp	*ft_envp_lstnew(char *key, char *value);
@@ -57,6 +59,10 @@ int		ft_setenv(char *key, char *value, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
+
+void	expander(t_shell *ms);
+char	*expand_word(char *word, t_shell *ms);
+char	*expand_tilde(char *str, t_envp *env);
 
 int		is_path(t_shell *ms);
 char	*create_test_path(char *path, char *command);

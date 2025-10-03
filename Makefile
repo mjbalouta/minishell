@@ -10,6 +10,7 @@ SRCS			= $(addprefix srcs/, \
 				tokenizer/tokenizer_utils.c \
 				environment/environment.c environment/envp_lst_utils.c \
 				environment/envp_utils.c \
+				expander/expander.c \
 				parsing/parse_tokens.c \
 				parsing/verify_tokens.c \
 				parsing/verify_commands.c \

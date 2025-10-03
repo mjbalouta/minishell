@@ -51,11 +51,11 @@ static bool	process_token_word(t_token **head, char **input)
 	{
 		if (ft_isquote((*input)[i]))
 		{
-			// Quotes handling
 			if (!find_matching_quote((*input)[i], *input, &i))
 			{
 				*input += i;
-				return(printf("Matching quote not found!!!\n"), false);
+				print_error("Syntax error: unmatched quote");
+				return(false);
 			}
 		}
 		else
@@ -69,7 +69,7 @@ static bool	process_token_word(t_token **head, char **input)
 	return (true);
 }
 
-t_token *tokenizer(t_shell *ms)
+void	tokenizer(t_shell *ms)
 {
 	t_token	*head;
 	char	*input;
@@ -90,6 +90,5 @@ t_token *tokenizer(t_shell *ms)
 	}
 	free(ms->input);
 	ms->input = NULL;
-	// ft_token_lstprint(head);	// TODO: to remove
-	return (head);
+	ms->token = head;
 }
