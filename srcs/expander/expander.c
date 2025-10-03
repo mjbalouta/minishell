@@ -20,12 +20,12 @@ char *expand_exit_status(char *result, int *i, t_shell *ms)
 	if (!status_str)
 	{
 		free(result);
-		print_error_and_exit(ms, "Memory allocation error\n", EXIT_FAILURE);
+		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 	}
 	result = ft_strjoin_free(result, status_str);
 	free(status_str);
 	if (!result)
-		print_error_and_exit(ms, "Memory allocation error\n", EXIT_FAILURE);
+		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 	(*i)++;
 	return (result);
 }
@@ -111,7 +111,7 @@ void	expander(t_shell *ms)
 		{
 			expanded_word = expand_word(current->word, ms);
 			if (expanded_word == NULL)
-				print_error_and_exit(ms, "Expansion error\n", EXIT_FAILURE);
+				print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 			free(current->word);
 			current->word = expanded_word;
 		}

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	init_envp(t_shell *ms, char **envp)
+int	init_envp(t_shell *ms, char **envp)
 {
 	int		i;
 	t_envp	*head;
@@ -18,25 +18,18 @@ void	init_envp(t_shell *ms, char **envp)
 			key = ft_substr(envp[i], 0, equal_ptr - envp[i]);
 			value = ft_strdup(equal_ptr + 1);
 			if (!key || !value)
-			{
-				free(key);
-				free(value);
-				exit_shell(ms, EXIT_FAILURE);
-			}
+				return (free(key), free(value), -1);
 			if (add_envp(key, value, &head) != 0)
-			{
-				free(key);
-				free(value);
-				exit_shell(ms, EXIT_FAILURE);
-			}
+				return (free(key), free(value), -1);
 			free(key);
 			free(value);
 		}
 		i++;
 	}
 	if (set_minimal_env(&head) != 0)
-		exit_shell(ms, EXIT_FAILURE);			// TODO: check correct error
+		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 	ms->envp = head;
+	return (0);
 }
 
 int	set_minimal_env(t_envp **lst)

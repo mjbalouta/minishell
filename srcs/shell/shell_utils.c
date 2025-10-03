@@ -17,7 +17,8 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->exit_status = 0;
 	ms->command = NULL;
-	init_envp(ms, envp);
+	if (init_envp(ms, envp) != 0)
+		print_error_and_exit(ms, "Memory allocation error\n", EXIT_FAILURE);
 	g_signal_number = 0;
 }
 
@@ -36,6 +37,13 @@ void	print_error_and_exit(t_shell *ms, char *message, int exit_status)
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("\n", 2);
 	exit_shell(ms, exit_status);
+}
+
+void	print_error(char *message)
+{
+	ft_putstr_fd(SHELL_NAME": ", 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 // TODO: remove this function
