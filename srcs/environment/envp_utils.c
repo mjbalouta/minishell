@@ -84,7 +84,7 @@ int	ft_setenv(char *key, char *value, t_envp **lst)
 		new_value = ft_strdup(value);
 		if (!new_value)
 			return (-1);
-		free(env_node->value);  // Free old value to prevent memory leak
+		free(env_node->value);
 		env_node->value = new_value;
 	}
 	return (0);

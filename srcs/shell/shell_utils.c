@@ -19,12 +19,11 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->command = NULL;
 	init_envp(ms, envp);
 	g_signal_number = 0;
-	debug_init_shell(ms, envp); // TODO: remove this line
 }
 
 void	exit_shell(t_shell *ms, int exit_status)
 {
-	// Free allocated memory before exiting
+	// TODO: Free allocated memory before exiting
 	free(ms->input);
 	ft_envp_lstclear(&ms->envp);
 	ft_token_lstclear(&ms->token);

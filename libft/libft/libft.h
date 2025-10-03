@@ -6,7 +6,7 @@
 /*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 15:31:38 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/09/27 17:25:31 by josemigu         ###   ########.fr       */
+/*   Updated: 2025/10/03 12:29:39 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 char	*ft_strjoin(char const *s1, char const *s2);
+
+char	*ft_strjoin_free(char *s1, char *s2);
+
+char	*ft_strjoin_char(char *s, char c);
 
 char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 
