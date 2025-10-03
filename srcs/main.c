@@ -19,15 +19,20 @@ int	main(int argc, char **argv, char **envp)
         }
 		if (*ms.input)
 			add_history(ms.input);
-		tokenizer(&ms);
+		if (tokenizer(&ms) != 0)
+		{
+			free(ms.input);
+			ms.input = NULL;
+			continue ;
+		}
 		expander(&ms);
+/* 
 		if (verify_tokens(&ms) == -1)
 			return (ft_printf("token error")); // TODO: ver erro a retornar
 		create_cmd_list(&ms);
-		ft_token_lstclear(&ms.token);
 		execute(&ms);
-		ms.token = NULL;
-		free(ms.input);
+*/
 	}
-	return (ms.exit_status);
+	exit_shell(&ms, ms.exit_status);
+	return (0);
 }

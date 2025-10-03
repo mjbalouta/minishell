@@ -19,6 +19,9 @@ SRCS			= $(addprefix srcs/, \
 				execution/pipes.c \
 				execution/execution_utils.c \
 				execution/handle_fds.c \
+				signals/signals.c \
+				builtins/env.c \
+				temp.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft
@@ -40,7 +43,7 @@ $(NAME): $(LIBFT) $(OBJS)
 
 valgrind: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
-	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all ./$(NAME)
+	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 clean:
 	@echo "Removing objects..."
