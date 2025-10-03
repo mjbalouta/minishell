@@ -57,12 +57,7 @@ void    fill_path(t_shell *ms, t_command *command)
 	if (is_path(ms))
 		return ;
 	path_full_str = ft_getenv("PATH", ms->envp);
-	// ft_printf("PATH: %s\n", path_full_str);
 	path_list = ft_split(path_full_str, ':');
-	// int i = 0;
-	// ft_printf("PATH_LIST:");
-	// while (path_list[i])
-	// 	ft_printf("%s\n", path_list[i++]);
 	i = 0;
 	while (path_list[i])
 	{

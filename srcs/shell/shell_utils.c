@@ -25,8 +25,10 @@ void	init_shell(t_shell *ms, char **envp)
 void	exit_shell(t_shell *ms, int exit_status)
 {
 	// TODO: Free allocated memory before exiting
-	free(ms->input);
+	if (ms->full_envp)
+		free_char_array(ms->full_envp);
 	ft_envp_lstclear(&ms->envp);
+	free(ms->input);
 	ft_token_lstclear(&ms->token);
 	if (ms->command)
 		ft_cmd_lstclear(&ms->command);

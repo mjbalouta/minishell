@@ -102,8 +102,8 @@ void	expander(t_shell *ms)
 	t_token	*current;
 	char	*expanded_word;
 
-	ft_printf("--- Expander Start ---\n");
-	ft_token_lstprint(ms->token); // Debug: print tokens before expansion
+	// ft_printf("--- Expander Start ---\n");
+	// ft_token_lstprint(ms->token); // Debug: print tokens before expansion
 	current = ms->token;
 	while (current != NULL)
 	{
@@ -117,6 +117,6 @@ void	expander(t_shell *ms)
 		}
 		current = current->next;
 	}
-	ft_printf("--- Expander End ---\n");
-	ft_token_lstprint(ms->token); // Debug: print tokens after expansion
+	// ft_printf("--- Expander End ---\n");
+	// ft_token_lstprint(ms->token); // Debug: print tokens after expansion
 }

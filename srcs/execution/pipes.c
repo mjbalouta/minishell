@@ -55,7 +55,7 @@ void	handle_processes(t_shell *ms)
 	init_pids_container(ms);
 	// if (nr_pipes == 0 && ms->command->is_builtin == 0)
 	// 	//funcao para identificar builtin
-	while (++i < ms->nr_commands)
+	while (++i < ms->nr_commands && ms->command)
 	{
 		if (i < (ms->nr_commands - 1))
         {
@@ -72,8 +72,7 @@ void	handle_processes(t_shell *ms)
 			close(pipefd[1]);
 			prev_fd = pipefd[0];
 		}
-		if (ms->command->next)
-			ms->command = ms->command->next;
+		ms->command = ms->command->next;
 	}
 	if (prev_fd != -1)
    		close(prev_fd);
@@ -99,5 +98,6 @@ void	execute(t_shell *ms)
 		temp = temp->next;
 	}
 	handle_processes(ms);
+	free(ms->pid);
 	free_char_array(ms->full_envp);
 }

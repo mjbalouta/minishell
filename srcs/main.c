@@ -28,6 +28,8 @@ int	main(int argc, char **argv, char **envp)
 		execute(&ms);
 		ms.token = NULL;
 		free(ms.input);
+		ft_cmd_lstclear(&ms.command);
 	}
-	return (ms.exit_status);
+	exit_shell(&ms, ms.exit_status);
+	return (0);
 }
