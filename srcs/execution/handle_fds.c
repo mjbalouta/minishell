@@ -74,6 +74,11 @@ void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms)
 		dup2(prev_fd, STDIN_FILENO);
 }
 
+void	handle_heredoc_input()
+{
+	
+}
+
 /**
  * @brief tracks if there are redirections or not in the commands and calls
  * the needed function to define fds for communication between pipes
@@ -94,6 +99,8 @@ void	define_fds(t_shell *ms, int *pipefd, int prev_fd, int i)
 				handle_input_redir(prev_fd, ms, pipefd, i);
 			else if (ms->command->redirection->type == T_REDIRECT_OUTPUT || ms->command->redirection->type == T_REDIRECT_OUTPUT_APPEND)
 				handle_output_redir(prev_fd, ms, out_fd, i);
+			else if (ms->command->redirection->type == T_HEREDOC)
+				handle_heredoc_input();
 			ms->command->redirection = ms->command->redirection->next;
 		}
 	}
