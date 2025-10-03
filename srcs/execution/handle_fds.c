@@ -14,7 +14,7 @@ void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i)
 	if (prev_fd < 0)
 	{
 		perror(ms->command->redirection->filename);
-		exit(1);
+		exit_shell(ms, 1);
 	}
 	if (i >= 0 && i < (ms->nr_commands - 1))
 	{
@@ -42,7 +42,7 @@ void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i)
 	if (out_fd < 0)
 	{
 		perror(ms->command->redirection->filename);
-		exit(1);
+		exit_shell(ms, 1);
 	}
 	if (i > 0)
 	{
@@ -63,9 +63,9 @@ void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i)
  */
 void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms)
 {
-	if (i == 0)
-		dup2(pipefd[1], STDOUT_FILENO);
-	else if (i > 0 && i < (ms->nr_commands - 1))
+	if (i == 0 && i != (ms->nr_commands - 1))
+	 	dup2(pipefd[1], STDOUT_FILENO);
+	if (i > 0 && i < (ms->nr_commands - 1))
 	{
 		dup2(prev_fd, STDIN_FILENO);
 		dup2(pipefd[1], STDOUT_FILENO);

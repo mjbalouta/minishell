@@ -27,6 +27,10 @@ void	exit_shell(t_shell *ms, int exit_status)
 	free(ms->input);
 	ft_envp_lstclear(&ms->envp);
 	ft_token_lstclear(&ms->token);
+	if (ms->command)
+		ft_cmd_lstclear(&ms->command);
+	if (ms->pid)
+		free(ms->pid);
 	exit(exit_status);
 }
 

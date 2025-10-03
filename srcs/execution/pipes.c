@@ -12,9 +12,9 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
 	if (!ms->command->comm_path)
 	{
-		perror(ms->command->args[0]);
-		exit(127);
-	} //ERROR: NO SUCH FILE OR DIRECTORY
+		fprintf(stderr, "%s: command not found\n", ms->command->args[0]); //FAZER UMA CUSTON FPRINTF
+		exit_shell(ms, 127);
+	}
 	define_fds(ms, pipefd, prev_fd, i);
 	if (prev_fd != -1)
 		close (prev_fd);
@@ -31,7 +31,7 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 	{
 
 		perror(ms->command->args[0]);
-		exit(0);
+		exit_shell(ms, 1);
 	}
 	// }
 }
@@ -60,11 +60,11 @@ void	handle_processes(t_shell *ms)
 		if (i < (ms->nr_commands - 1))
         {
             if (pipe(pipefd) != 0)
-                exit(1); //create function to exit safely, freeing mem and exiting with exit code
+                exit_shell(ms, 1); //create function to exit safely, freeing mem and exiting with exit code
         }
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)
-			exit(1);
+			exit_shell(ms, 1);
 		if (ms->pid[id++] == 0)
 			execute_pipe_cmd(pipefd, i, ms, prev_fd);
 		if (i < ms->nr_commands - 1)
