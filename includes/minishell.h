@@ -103,5 +103,6 @@ void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
 
 void	ft_env(t_shell *ms, char **args);
+void	ft_exit(t_shell *ms, char **args);
 
 #endif

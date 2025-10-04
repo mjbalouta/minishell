@@ -14,7 +14,7 @@ int	main(int argc, char **argv, char **envp)
 		ms.input = readline(ms.prompt);
         if (!ms.input)
         {
-            printf("exit\n");
+            ft_putendl_fd("exit", 1);
             break;
         }
 		if (*ms.input)

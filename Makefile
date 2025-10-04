@@ -21,6 +21,7 @@ SRCS			= $(addprefix srcs/, \
 				execution/handle_fds.c \
 				signals/signals.c \
 				builtins/env.c \
+				builtins/exit.c \
 				temp.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
