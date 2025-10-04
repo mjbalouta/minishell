@@ -78,7 +78,8 @@ void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i);
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
-
+void	close_pipes(int *pipefd);
+void	write_inside_pipe(int *heredoc_fd, char *line);
 
 
 #endif

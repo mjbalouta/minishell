@@ -52,3 +52,15 @@ int	wait_for_child(t_shell *ms, int cmd_count)
 	}
 	return (last_status >> 8);
 }
+
+void	write_inside_pipe(int *heredoc_fd, char *line)
+{
+	write(heredoc_fd[1], line, ft_strlen(line));
+	write(heredoc_fd[1], "\n", 1);
+}
+
+void	close_pipes(int *pipefd)
+{
+	close(pipefd[0]);
+	close(pipefd[1]);
+}
