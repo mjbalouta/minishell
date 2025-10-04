@@ -1,9 +1,19 @@
 #include "minishell.h"
 
+/* 
+ * Signal handler for SIGINT (Ctrl+C).
+ * Prints a newline, resets the readline prompt, and sets the global exit status
+ * to 130.
+ * This ensures the shell remains responsive and does not exit on Ctrl+C.
+ */
 static void	handle_sigint(int sig)
 {
 	(void)sig;
-	exit(EXIT_FAILURE);
+	ft_putstr_fd("\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_exit_status = 130;
 }
 
 void	init_signals(void)
@@ -17,8 +27,8 @@ void	init_signals(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
-		print_error("Error changing signals action");
-		exit(EXIT_FAILURE);
+		perror("sigaction");
+		exit(errno);
 	}
 
 	// Ignore SIGQUIT
@@ -28,7 +38,7 @@ void	init_signals(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
-		print_error("Error changing signals action");
-		exit(EXIT_FAILURE);
+		perror("sigaction");
+		exit(errno);
 	}
 }

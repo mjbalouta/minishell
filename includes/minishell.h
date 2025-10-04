@@ -4,14 +4,29 @@
 # define _POSIX_C_SOURCE 200809L
 # define SHELL_NAME "minishell"
 
+#ifndef ECHOCTL
+# define ECHOCTL 0001000
+#endif
+
+#if defined (READLINE_LIBRARY)
+#  include "posixstat.h"
+#  include "readline.h"
+#  include "history.h"
+#else
+#  include <sys/stat.h>
+#  include <readline/readline.h>
+#  include <readline/history.h>
+#endif
+
 # include <stdio.h>
 # include <stdbool.h>
+# include <termios.h>
 # include <unistd.h>
 # include <sys/types.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <errno.h>
+# include <stdlib.h>
 
 # include "structs.h"
 # include "../libft/get-next-line/get_next_line.h"
@@ -19,7 +34,7 @@
 # include "../libft/printf/libftprintf.h"
 
 // Global variable
-extern int	g_signal_number;
+extern volatile sig_atomic_t	g_exit_status;
 
 // TODO: remove this prototype
 void	ft_envp_lstprint(t_envp *lst);
@@ -27,6 +42,7 @@ void	ft_envp_lstprint(t_envp *lst);
 
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
+void	free_shell(t_shell *ms);
 void	exit_shell(t_shell *ms, int exit_status);
 void	debug_init_shell(t_shell *ms, char **envp);
 void	print_error_and_exit(t_shell *ms, char *message, int exit_status);

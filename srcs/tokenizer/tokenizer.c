@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	add_token(char *word, t_token_type type, t_token **head)
+static int	add_token(char *word, t_token_type type, t_token **head)
 {
 	t_token	*token;
 
@@ -8,42 +8,45 @@ static void	add_token(char *word, t_token_type type, t_token **head)
 	if (!token)
 	{
 		ft_token_lstclear(head);
-		return ;
+		return (EXIT_FAILURE);
 	}
 	ft_token_lstadd_back(head, token);
-	return ;
+	return (EXIT_SUCCESS);
 }
 
 int	process_token_redir_pipe(t_token **head, char **input)
 {
+	int		ret;
+
 	if (**input == '<')
 		if (*(*input + 1) == '<')
 		{
-			add_token("<<", T_HEREDOC, head);
+			ret = add_token("<<", T_HEREDOC, head);
 			(*input)++;
 		}
 	else
-		add_token("<", T_REDIRECT_INPUT, head);
+		ret = add_token("<", T_REDIRECT_INPUT, head);
 	else
 		if (**input == '>')
 			if (*(*input + 1) == '>')
 			{
-				add_token(">>", T_REDIRECT_OUTPUT_APPEND, head);
+				ret = add_token(">>", T_REDIRECT_OUTPUT_APPEND, head);
 				(*input)++;
 			}
 	else
-		add_token(">", T_REDIRECT_OUTPUT, head);
+		ret = add_token(">", T_REDIRECT_OUTPUT, head);
 	else
 		if (**input == '|')
-			add_token("|", T_PIPE, head);
+			ret = add_token("|", T_PIPE, head);
 	(*input)++;
-	return (0);
+	return (ret);
 }
 
 int	process_token_word(t_token **head, char **input)
 {
 	char	*word;
 	size_t	i;
+	int		ret;
 
 	i = 0;
 	while ((*input)[i] && !ft_isseparator((*input)[i]))
@@ -54,7 +57,7 @@ int	process_token_word(t_token **head, char **input)
 			{
 				*input += i;
 				print_error("Syntax error: unmatched quote");
-				return (-1);
+				return (EXIT_FAILURE);
 			}
 		}
 		else
@@ -62,11 +65,13 @@ int	process_token_word(t_token **head, char **input)
 	}
 	word = ft_substr(*input, 0, i);
 	if (!word)
-		return (-1);
-	add_token(word, T_WORD, head);
+		return (EXIT_FAILURE);
+	ret = add_token(word, T_WORD, head);
 	free(word);
+	if (ret != EXIT_SUCCESS)
+		return (EXIT_FAILURE);
 	*input += i;
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	tokenizer(t_shell *ms)
@@ -85,15 +90,15 @@ int	tokenizer(t_shell *ms)
 			break ;
 		if (*input == '<' || *input == '>' || *input == '|')
 		{
-			if (process_token_redir_pipe(&head, &input) != 0)
+			if (process_token_redir_pipe(&head, &input) != EXIT_SUCCESS)
 				return (ft_token_lstclear(&head), -1);
 		}
 		else
-			if (process_token_word(&head, &input) != 0)
+			if (process_token_word(&head, &input) != EXIT_SUCCESS)
 				return (ft_token_lstclear(&head), -1);
 	}
 	free(ms->input);
 	ms->input = NULL;
 	ms->token = head;
-	return (0);
+	return (EXIT_SUCCESS);
 }
