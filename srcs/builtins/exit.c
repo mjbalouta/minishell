@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+// TODO: check for negatives numbers and numbers > 255
+
 static int	check_arg_is_int(char *nptr)
 {
 	long	value;
@@ -29,6 +31,16 @@ static int	check_arg_is_int(char *nptr)
 	return (EXIT_SUCCESS);
 }
 
+static int	normalized_exit_status(int exit_status)
+{
+	if (exit_status < 0)
+		return (256 + (exit_status % 256));
+	else if (exit_status > 255)
+		return (exit_status % 256);
+	else
+		return (exit_status);
+}
+
 void	ft_exit(t_shell *ms, char **args)
 {
 	if (args && args[2])
@@ -48,5 +60,5 @@ void	ft_exit(t_shell *ms, char **args)
 		else
 			g_exit_status = (unsigned char)(ft_atoi(args[1]));
 	}
-	exit_shell(ms, g_exit_status);
+	exit_shell(ms, normalized_exit_status(g_exit_status));
 }
