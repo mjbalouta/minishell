@@ -52,7 +52,7 @@ typedef struct s_shell
 	char		*input;
 	t_token		*token;
 	t_command 	*command;
-	int			exit_status;
+	int			exit_status;	// TODO: remove this field
 	pid_t		*pid;
 }	t_shell;
 

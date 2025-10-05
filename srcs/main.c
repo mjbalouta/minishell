@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int	g_signal_number;
+volatile sig_atomic_t	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -14,22 +14,23 @@ int	main(int argc, char **argv, char **envp)
 		ms.input = readline(ms.prompt);
         if (!ms.input)
         {
-            printf("exit\n");
+            ft_putendl_fd("exit", 1);
             break;
         }
 		if (*ms.input)
 			add_history(ms.input);
-		tokenizer(&ms);
+		if (tokenizer(&ms) != 0)
+		{
+			free(ms.input);
+			ms.input = NULL;
+			continue ;
+		}
 		expander(&ms);
 		if (verify_tokens(&ms) == -1)
 			return (ft_printf("token error")); // TODO: ver erro a retornar
 		create_cmd_list(&ms);
-		ft_token_lstclear(&ms.token);
 		execute(&ms);
-		ms.token = NULL;
-		free(ms.input);
-		ft_cmd_lstclear(&ms.command);
 	}
-	exit_shell(&ms, ms.exit_status);
-	return (0);
+	free_shell(&ms);
+	return(g_exit_status);
 }

@@ -1,21 +1,21 @@
 #include "minishell.h"
 
-char *expand_tilde(char *str, t_envp *env)
+char	*expand_tilde(char *str, t_envp *env)
 {
-	char *home;
+	char	*home;
 
 	if (str[0] != '~')
 		return (ft_strdup(str));
-    home = ft_getenv("HOME", env);
+	home = ft_getenv("HOME", env);
 	if (!home)
-		return (ft_strdup(str));	
+		return (ft_strdup(str));
 	return (ft_strjoin(home, str + 1));
 }
 
-char *expand_exit_status(char *result, int *i, t_shell *ms)
+char	*expand_exit_status(char *result, int *i, t_shell *ms)
 {
-	char *status_str;
-	
+	char	*status_str;
+
 	status_str = ft_itoa(ms->exit_status);
 	if (!status_str)
 	{
@@ -30,51 +30,54 @@ char *expand_exit_status(char *result, int *i, t_shell *ms)
 	return (result);
 }
 
-char *expand_variables(char *str, t_shell *ms)
+char	*expand_variables(char *str, t_shell *ms)
 {
-	int     i = 0;
-	int     in_single = 0;
-	int     in_double = 0;
-	char    *result;
-	
-	result = ft_strdup("");
+	int		i;
+	int		start;
+	int		in_single;
+	int		in_double;
+	char	*result;
+	char	*value;
+	char	*varname;
 
+	i = 0;
+	in_single = 0;
+	in_double = 0;
+	result = ft_strdup("");
+	value = NULL;
+	varname = NULL;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_double) // toggle single quotes
+		if (str[i] == '\'' && !in_double)
 		{
 			in_single = !in_single;
 			i++;
 		}
-		else if (str[i] == '"' && !in_single) // toggle double quotes
+		else if (str[i] == '"' && !in_single)
 		{
 			in_double = !in_double;
 			i++;
 		}
-		else if (str[i] == '$' && !in_single) // expand unless in single quotes
+		else if (str[i] == '$' && !in_single)
 		{
 			i++;
-			if (str[i] == '?') // special $?
+			if (str[i] == '?')
 				result = expand_exit_status(result, &i, ms);
 			else if (ft_isalpha(str[i]) || str[i] == '_')
 			{
-				int start = i;
+				start = i;
 				while (ft_isalnum(str[i]) || str[i] == '_')
 					i++;
-				char *varname = ft_substr(str, start, i - start);
-				char *value = ft_getenv2(varname, ms->envp);
+				varname = ft_substr(str, start, i - start);
+				value = ft_getenv2(varname, ms->envp);
 				result = ft_strjoin_free(result, value);
 				free(varname);
 			}
 			else
-				// just a '$' not followed by varname
 				result = ft_strjoin_char(result, '$');
 		}
-		else // normal character
-		{
-			result = ft_strjoin_char(result, str[i]);
-			i++;
-		}
+		else
+			result = ft_strjoin_char(result, str[i++]);
 	}
 	return (result);
 }
@@ -91,9 +94,9 @@ char	*expand_word(char *word, t_shell *ms)
 		result = expand_tilde(result, ms->envp);
 	if (!result)
 		return (NULL);
-    tmp = expand_variables(result, ms);
-    free(result);
-    result = tmp;
+	tmp = expand_variables(result, ms);
+	free(result);
+	result = tmp;
 	return (result);
 }
 

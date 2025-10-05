@@ -63,7 +63,7 @@ int	add_envp(char *key, char *value, t_envp **lst)
 
 	envp = ft_envp_lstnew(key, value);
 	if (!envp)
-		return(-1);
+		return (-1);
 	ft_envp_lstadd_back(lst, envp);
 	return (0);
 }

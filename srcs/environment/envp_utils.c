@@ -87,7 +87,7 @@ int	ft_setenv(char *key, char *value, t_envp **lst)
 		free(env_node->value);
 		env_node->value = new_value;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -101,25 +101,26 @@ int	ft_setenv(char *key, char *value, t_envp **lst)
  */
 int	ft_unsetenv(char *key, t_envp **lst)
 {
-    t_envp *temp = *lst;
-	t_envp *prev;
+	t_envp	*temp;
+	t_envp	*prev;
 
-    if (temp != NULL && ft_strcmp(key, temp->key) == 0)
+	temp = *lst;
+	if (temp != NULL && ft_strcmp(key, temp->key) == 0)
 	{
-        *lst = temp->next;
-        free(temp);
-        return (0);
-    }
-    while (temp != NULL && ft_strcmp(key, temp->key) != 0)
+		*lst = temp->next;
+		free(temp);
+		return (EXIT_SUCCESS);
+	}
+	while (temp != NULL && ft_strcmp(key, temp->key) != 0)
 	{
-        prev = temp;
-        temp = temp->next;
-    }
-    if (temp == NULL)
-        return (0);
-    prev->next = temp->next;
-    free(temp);
-	return (0);
+		prev = temp;
+		temp = temp->next;
+	}
+	if (temp == NULL)
+		return (EXIT_SUCCESS);
+	prev->next = temp->next;
+	free(temp);
+	return (EXIT_SUCCESS);
 }
 
 void	free_char_array(char **array)
@@ -146,5 +147,5 @@ void	print_array_of_char(char **array)
 	{
 		ft_putendl_fd(array[i], 1);
 		i++;
-	}	
+	}
 }
