@@ -17,7 +17,7 @@
 # include "../libft/printf/libftprintf.h"
 
 // Global variable
-extern int	g_exit_status;
+extern int	g_signal_number;
 
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
