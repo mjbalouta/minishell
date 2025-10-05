@@ -76,7 +76,7 @@ void	handle_processes(t_shell *ms)
 	}
 	if (prev_fd != -1)
    		close(prev_fd);
-	ms->exit_status = wait_for_child(ms, id);
+	g_exit_status = wait_for_child(ms, id);
 }
 
 /**

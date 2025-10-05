@@ -30,6 +30,6 @@ int	main(int argc, char **argv, char **envp)
 		free(ms.input);
 		ft_cmd_lstclear(&ms.command);
 	}
-	exit_shell(&ms, ms.exit_status);
+	exit_shell(&ms, g_exit_status);
 	return (0);
 }
