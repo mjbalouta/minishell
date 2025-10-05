@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// TODO: check for negatives numbers and numbers > 255
-
 static int	check_arg_is_int(char *nptr)
 {
 	long	value;
@@ -54,6 +52,7 @@ void	ft_exit(t_shell *ms, char **args)
 	{
 		if (check_arg_is_int(args[1]) != EXIT_SUCCESS)
 		{
+			// TODO: change message to match bash error message
 			print_error("exit: numeric argument required");
 			g_exit_status = 255;
 		}
