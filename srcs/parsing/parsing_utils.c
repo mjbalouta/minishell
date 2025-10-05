@@ -1,29 +1,41 @@
 #include "minishell.h"
 
-void	ft_cmd_lstclear(t_command **cmd)
+void ft_cmd_lstclear(t_command **lst)
 {
-	t_command	*temp;
+    t_command *current;
+    t_command *next;
 
-	while (*cmd)
-	{
-		free((*cmd)->comm_path);
-		free_char_array((*cmd)->args);
-		ft_redir_lstclear(&(*cmd)->redirection);
-		temp = (*cmd)->next;
-		free(*cmd);
-		*cmd = temp;
-	}
+    if (!lst || !*lst)
+        return;
+
+    current = *lst;
+    while (current)
+    {
+        next = current->next;
+        if (current->args)
+            free_char_array(current->args);
+        if (current->comm_path)
+            free(current->comm_path);
+        if (current->redirection)
+            free_redirection_list(current->redirection);
+        free(current);
+        current = next;
+    }
+    *lst = NULL;
 }
 
-void	ft_redir_lstclear(t_redir **redir)
+void free_redirection_list(t_redir *redir)
 {
-	t_redir	*temp;
+    t_redir *current;
+    t_redir *next;
 
-	while (*redir)
-	{
-		free((*redir)->filename);
-		temp = (*redir)->next;
-		free(*redir);
-		*redir = temp;
-	}
+    current = redir;
+    while (current)
+    {
+        next = current->next;
+        if (current->filename)
+            free(current->filename);
+        free(current);
+        current = next;
+    }
 }

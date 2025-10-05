@@ -60,7 +60,7 @@ void	handle_processes(t_shell *ms)
 		if (i < (ms->nr_commands - 1))
         {
             if (pipe(pipefd) != 0)
-                exit_shell(ms, 1); //create function to exit safely, freeing mem and exiting with exit code
+                exit_shell(ms, 1);
         }
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)

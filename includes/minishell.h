@@ -55,8 +55,8 @@ int		count_args(t_shell *ms);
 void	create_cmd_list(t_shell *ms);
 int		verify_tokens(t_shell *ms);
 void	verify_if_bultin(t_shell *ms);
-void	ft_cmd_lstclear(t_command **cmd);
-void	ft_redir_lstclear(t_redir **redir);
+void	ft_cmd_lstclear(t_command **lst);
+void	free_redirection_list(t_redir *redir);
 
 int		tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
