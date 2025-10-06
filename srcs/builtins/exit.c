@@ -39,7 +39,7 @@ static int	normalized_exit_status(int exit_status)
 		return (exit_status);
 }
 
-void	ft_exit(t_shell *ms, char **args)
+void	execute_exit(t_shell *ms, char **args)
 {
 	if (args && args[2])
 	{

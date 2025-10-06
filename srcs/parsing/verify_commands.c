@@ -12,6 +12,8 @@ void	verify_if_bultin(t_shell *ms)
 	temp = ms->command;
 	while (temp)
 	{
+		if (!temp->args[0])
+			temp = temp->next;
 		if ((ft_strcmp(temp->args[0], "echo") == 0)
 			|| (ft_strcmp(temp->args[0], "cd") == 0)
 			|| (ft_strcmp(temp->args[0], "pwd") == 0)

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_env(t_shell *ms, char **args)
+void	execute_env(t_shell *ms, char **args)
 {
 	if (args && args[1])
 	{

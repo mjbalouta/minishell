@@ -55,8 +55,8 @@ int		count_args(t_shell *ms);
 void	create_cmd_list(t_shell *ms);
 int		verify_tokens(t_shell *ms);
 void	verify_if_bultin(t_shell *ms);
-void	ft_cmd_lstclear(t_command **cmd);
-void	ft_redir_lstclear(t_redir **redir);
+void	ft_cmd_lstclear(t_command **lst);
+void	free_redirection_list(t_redir *redir);
 
 int		tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
@@ -87,7 +87,7 @@ void	expander(t_shell *ms);
 char	*expand_word(char *word, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 
-int		is_path(t_shell *ms);
+int		is_path(t_command *command);
 char	*create_test_path(char *path, char *command);
 void	fill_path(t_shell *ms, t_command *command);
 int		count_commands(t_shell *ms);
@@ -105,5 +105,8 @@ void	close_pipes(int *pipefd);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
+void	verify_comm_path(t_shell *ms);
+
+void	select_builtin(t_shell *ms);
 
 #endif

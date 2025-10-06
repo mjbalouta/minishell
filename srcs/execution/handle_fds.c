@@ -10,6 +10,7 @@
  */
 void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i)
 {
+	verify_comm_path(ms);
 	prev_fd = open(ms->command->redirection->filename, O_RDONLY);
 	if (prev_fd < 0)
 	{
@@ -35,6 +36,7 @@ void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i)
  */
 void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i)
 {
+	verify_comm_path(ms);
 	if (ms->command->redirection->type == T_REDIRECT_OUTPUT)
 		out_fd = open(ms->command->redirection->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (ms->command->redirection->type == T_REDIRECT_OUTPUT_APPEND)
@@ -63,6 +65,7 @@ void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i)
  */
 void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms)
 {
+	verify_comm_path(ms);
 	if (i == 0 && i != (ms->nr_commands - 1))
 	 	dup2(pipefd[1], STDOUT_FILENO);
 	if (i > 0 && i < (ms->nr_commands - 1))
