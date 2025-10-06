@@ -18,6 +18,7 @@ int	process_token_redir_pipe(t_token **head, char **input)
 {
 	int		ret;
 
+	ret = 0;
 	if (**input == '<')
 		if (*(*input + 1) == '<')
 		{

@@ -6,16 +6,16 @@
  * @param ms 
  * @return 1 -> is a path; 0 -> is not a path.
  */
-int    is_path(t_shell *ms)
+int    is_path(t_command *command)
 {
     int i;
 
     i = 0;
-    while (ms->command->args[0][i])
+    while (command->args[0][i])
     {
-        if (ms->command->args[0][i] == '/')
+        if (command->args[0][i] == '/')
         {
-            ms->command->comm_path = ms->command->args[0];
+            command->comm_path = command->args[0];
             return (1);
         }
         i++;
@@ -54,7 +54,7 @@ void    fill_path(t_shell *ms, t_command *command)
 	char	*test_path;
 	int		i;
 
-	if (is_path(ms))
+	if (is_path(command))
 		return ;
 	path_full_str = ft_getenv("PATH", ms->envp);
 	path_list = ft_split(path_full_str, ':');
@@ -65,6 +65,7 @@ void    fill_path(t_shell *ms, t_command *command)
 		if (access(test_path, X_OK) == 0)
 		{
 			command->comm_path = test_path;
+			// printf("comm_path: %s\n", command->comm_path);
 			free_char_array(path_list);
 			return ;
 		}

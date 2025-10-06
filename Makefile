@@ -18,8 +18,10 @@ SRCS			= $(addprefix srcs/, \
 				execution/build_comm_path.c \
 				execution/pipes.c \
 				execution/execution_utils.c \
+				execution/execution_utils2.c \
 				execution/handle_fds.c \
 				signals/signals.c \
+				builtins/builtins_utils.c \
 				builtins/env.c \
 				builtins/exit.c \
 				temp.c \

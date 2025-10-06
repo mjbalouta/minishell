@@ -29,7 +29,7 @@ static int	check_arg_is_int(char *nptr)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_exit(t_shell *ms, char **args)
+void	execute_exit(t_shell *ms, char **args)
 {
 	if (args && args[2])
 	{

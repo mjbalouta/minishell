@@ -87,7 +87,7 @@ void	expander(t_shell *ms);
 char	*expand_word(char *word, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 
-int		is_path(t_shell *ms);
+int		is_path(t_command *command);
 char	*create_test_path(char *path, char *command);
 void	fill_path(t_shell *ms, t_command *command);
 int		count_commands(t_shell *ms);
@@ -105,5 +105,8 @@ void	close_pipes(int *pipefd);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
+void	verify_comm_path(t_shell *ms);
+
+void	select_builtin(t_shell *ms);
 
 #endif
