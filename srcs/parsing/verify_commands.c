@@ -14,18 +14,21 @@ void	verify_if_bultin(t_shell *ms)
 	{
 		if (!temp->args[0])
 			temp = temp->next;
-		if ((ft_strcmp(temp->args[0], "echo") == 0)
-			|| (ft_strcmp(temp->args[0], "cd") == 0)
-			|| (ft_strcmp(temp->args[0], "pwd") == 0)
-			|| (ft_strcmp(temp->args[0], "export") == 0)
-			|| (ft_strcmp(temp->args[0], "unset") == 0)
-			|| (ft_strcmp(temp->args[0], "env") == 0)
-			|| (ft_strcmp(temp->args[0], "exit") == 0))
+		if (temp)
 		{
-			temp->is_builtin = 0;
+			if ((ft_strcmp(temp->args[0], "echo") == 0)
+				|| (ft_strcmp(temp->args[0], "cd") == 0)
+				|| (ft_strcmp(temp->args[0], "pwd") == 0)
+				|| (ft_strcmp(temp->args[0], "export") == 0)
+				|| (ft_strcmp(temp->args[0], "unset") == 0)
+				|| (ft_strcmp(temp->args[0], "env") == 0)
+				|| (ft_strcmp(temp->args[0], "exit") == 0))
+			{
+				temp->is_builtin = 0;
+			}
+			else
+				temp->is_builtin = 1;
+			temp = temp->next;
 		}
-		else
-			temp->is_builtin = 1;
-		temp = temp->next;
 	}
 }

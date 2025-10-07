@@ -11,6 +11,8 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&ms, envp);
 	while (true)
 	{
+		int fd_in = dup(STDIN_FILENO); //guarda os fds base nestas variaveis para sempre que o loop reiniciar os fds darem reset (importante para o heredoc)
+		int fd_out = dup(STDOUT_FILENO);
 		ms.input = readline(ms.prompt);
         if (!ms.input)
         {
@@ -34,6 +36,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_token_lstclear(&ms.token);
 		execute(&ms);
 		ft_cmd_lstclear(&ms.command);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	free_shell(&ms);
 	return(g_exit_status);

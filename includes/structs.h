@@ -29,6 +29,7 @@ typedef struct s_redir
 //estrutura para guardar cada comando entre pipes
 typedef struct s_command
 {
+	int					heredoc_fd;
 	int					is_builtin; //0 para sim, 1 para nao
 	char 				**args;
 	char				*comm_path;

@@ -77,32 +77,52 @@ void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms)
 		dup2(prev_fd, STDIN_FILENO);
 }
 
-void	handle_heredoc_input(t_shell *ms, int i, int *pipefd)
+void	handle_heredoc_input(t_shell *ms)
 {
 	char	*line;
 	int		heredoc_fd[2];
+	t_redir	*redir_list;
+	t_redir	*last_heredoc;
 
-	line = NULL;
-	if (pipe(heredoc_fd) != 0)
-		exit_shell(ms, 1);
-	while (1)
+	redir_list = ms->command->redirection;
+	last_heredoc = 	NULL;
+	while (redir_list)
 	{
-		write(STDOUT_FILENO, "> ", 2);
-		line = get_next_line(0);
-		if (ft_strlen(line) > 0)
-            line[ft_strlen(line) - 1] = '\0';
-		if (ft_strcmp(line, ms->command->redirection->filename) == 0)
-		{
-			free(line);
-			break;
-		}
-		write_inside_pipe(heredoc_fd, line);
-		free(line);
+		if (redir_list->type == T_HEREDOC)
+			last_heredoc = redir_list;
+		redir_list = redir_list->next;
 	}
-	dup2(heredoc_fd[0], STDIN_FILENO);
-	close_pipes(heredoc_fd);
-	if (i != ms->nr_commands - 1)
-		dup2(pipefd[1], STDOUT_FILENO);
+	line = NULL;
+	redir_list = ms->command->redirection;
+	if (last_heredoc && pipe(heredoc_fd) != 0)
+		exit_shell(ms, 1);
+	while (redir_list)
+	{
+		if (redir_list->type == T_HEREDOC)
+		{
+			while (1)
+			{
+				write(STDOUT_FILENO, "> ", 2);
+				line = get_next_line(0);
+				if (ft_strlen(line) > 0)
+					line[ft_strlen(line) - 1] = '\0';
+				if (ft_strcmp(line, redir_list->filename) == 0)
+				{
+					free(line);
+					break;
+				}
+				if (redir_list == last_heredoc)
+					write_inside_pipe(heredoc_fd, line);
+				free(line);
+			}
+		}
+		redir_list = redir_list->next;
+	}
+	if (last_heredoc)
+	{
+		close(heredoc_fd[1]);
+		ms->command->heredoc_fd = heredoc_fd[0];
+	}
 	get_next_line(-1);
 }
 
@@ -127,7 +147,15 @@ void	define_fds(t_shell *ms, int *pipefd, int prev_fd, int i)
 			else if (ms->command->redirection->type == T_REDIRECT_OUTPUT || ms->command->redirection->type == T_REDIRECT_OUTPUT_APPEND)
 				handle_output_redir(prev_fd, ms, out_fd, i);
 			else if (ms->command->redirection->type == T_HEREDOC)
-				handle_heredoc_input(ms, i, pipefd);
+			{
+				dup2(ms->command->heredoc_fd, STDIN_FILENO);
+				close(ms->command->heredoc_fd);
+				if (i != ms->nr_commands - 1 && ms->command->args[0])
+				{
+        			dup2(pipefd[1], STDOUT_FILENO);
+					close(pipefd[1]);
+				}
+			}
 			ms->command->redirection = ms->command->redirection->next;
 		}
 	}

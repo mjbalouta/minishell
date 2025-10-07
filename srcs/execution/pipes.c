@@ -10,6 +10,7 @@
  */
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
+	define_fds(ms, pipefd, prev_fd, i);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (i < ms->nr_commands - 1)
@@ -54,7 +55,8 @@ void	handle_processes(t_shell *ms)
             if (pipe(pipefd) != 0)
                 exit_shell(ms, 1);
         }
-		define_fds(ms, pipefd, prev_fd, i);
+		if (ms->command->redirection && ms->command->redirection->type == T_HEREDOC)
+			handle_heredoc_input(ms);
 		if (ms->command->args[0])
 		{
 			ms->pid[id] = fork();

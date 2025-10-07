@@ -98,6 +98,7 @@ void	define_fds(t_shell *ms, int *pipefd, int prev_fd, int i);
 void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms);
 void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i);
 void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i);
+void	handle_heredoc_input(t_shell *ms);
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);

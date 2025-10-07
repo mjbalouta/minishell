@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/06 16:56:11 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:59:56 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	test_printing(t_shell *ms) //testing
 		}
 		if (tmp->redirection)
 		{
-			ft_printf("redir: ");
+			ft_printf("\nREDIR:\n");
 			while (tmp->redirection)
 			{
-				ft_printf("%d ", tmp->redirection->type);
-				ft_printf("%s ", tmp->redirection->filename);
+				ft_printf("redirection type: %d | ", tmp->redirection->type);
+				ft_printf("filename: %s ", tmp->redirection->filename);
 				tmp->redirection = tmp->redirection->next;
 			}
 		}
@@ -117,10 +117,6 @@ void	create_cmd_list(t_shell *ms)
 				tmp->args[i++] = ms->token->word;
 			else if (is_redir(ms->token) == 1)
 			{
-				tmp->redirection = ft_calloc(1, sizeof(t_redir));
-				if (!tmp->redirection)
-					return ;
-				tmp->redirection = NULL;
 				new_redir_node = ft_calloc(1, sizeof(t_redir));
     			if (!new_redir_node)
         			return;
