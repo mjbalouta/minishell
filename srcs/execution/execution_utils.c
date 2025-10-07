@@ -59,8 +59,11 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 	write(heredoc_fd[1], "\n", 1);
 }
 
-void	close_pipes(int *pipefd)
+void	verify_comm_path(t_shell *ms)
 {
-	close(pipefd[0]);
-	close(pipefd[1]);
+	if (!ms->command->comm_path)
+		{
+			fprintf(stderr, "%s: command not found\n", ms->command->args[0]); //FAZER UMA CUSTON FPRINTF
+			exit_shell(ms, 127);
+		}
 }
