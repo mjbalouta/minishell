@@ -19,7 +19,8 @@ SRCS			= $(addprefix srcs/, \
 				execution/pipes.c \
 				execution/execution_utils.c \
 				execution/execution_utils2.c \
-				execution/handle_fds.c \
+				execution/handle_redirects.c \
+				execution/heredoc.c \
 				signals/signals.c \
 				builtins/builtins_utils.c \
 				builtins/env.c \

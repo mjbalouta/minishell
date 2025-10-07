@@ -87,25 +87,31 @@ void	expander(t_shell *ms);
 char	*expand_word(char *word, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 
+//------------------------------EXECUTE---------------------------------------------
+
 int		is_path(t_command *command);
 char	*create_test_path(char *path, char *command);
 void	fill_path(t_shell *ms, t_command *command);
 int		count_commands(t_shell *ms);
-int		create_pipes(t_shell *ms);
+void	create_pipe(int	*pipefd, t_shell *ms);
 void	init_pids_container(t_shell *ms);
 int		wait_for_child(t_shell *ms, int cmd_count);
-void	define_fds(t_shell *ms, int *pipefd, int prev_fd, int i);
+void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, int i);
 void	handle_without_redir(int i, int *pipefd, int prev_fd, t_shell *ms);
-void	handle_output_redir(int prev_fd, t_shell *ms, int out_fd, int i);
+void	handle_output_redir(int prev_fd, t_shell *ms, int i);
 void	handle_input_redir(int prev_fd, t_shell *ms, int *pipefd, int i);
+void	handle_heredoc_input(t_shell *ms);
+t_redir	*find_last_heredoc(t_redir *redir_list);
+void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
-void	close_pipes(int *pipefd);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
 void	verify_comm_path(t_shell *ms);
+
+//------------------------------BUILTINS---------------------------------------------
 
 void	select_builtin(t_shell *ms);
 

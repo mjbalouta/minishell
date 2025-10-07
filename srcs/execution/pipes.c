@@ -10,6 +10,7 @@
  */
 void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 {
+	handle_redir(ms, pipefd, prev_fd, i);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (i < ms->nr_commands - 1)
@@ -41,38 +42,39 @@ void	handle_processes(t_shell *ms)
 	int	id;
 	int	prev_fd;
 
-	ms->nr_commands = count_commands(ms);
 	i = -1;
 	id = 0;
 	prev_fd = -1;
-	// if (nr_pipes == 0 && ms->command->is_builtin == 0)
+	// if (ms->nr_commands == 1 && ms->command->is_builtin == 0)
 	// 	select_builtin(ms);
-	while (++i < ms->nr_commands && ms->command)
-	{
-		if (i < ms->nr_commands - 1)
-        {
-            if (pipe(pipefd) != 0)
-                exit_shell(ms, 1);
-        }
-		define_fds(ms, pipefd, prev_fd, i);
-		if (ms->command->args[0])
+	// else
+	// {
+		while (++i < ms->nr_commands && ms->command)
 		{
-			ms->pid[id] = fork();
-			if (ms->pid[id] < 0)
-				exit_shell(ms, 1);
-			if (ms->pid[id++] == 0)
-				execute_pipe_cmd(pipefd, i, ms, prev_fd);
+			if (i < ms->nr_commands - 1)
+				create_pipe(pipefd, ms);
+			if (ms->command->redirection && ms->command->redirection->type == T_HEREDOC)
+				handle_heredoc_input(ms);
+			if (ms->command->args[0])
+			{
+				ms->pid[id] = fork();
+				if (ms->pid[id] < 0)
+					exit_shell(ms, 1);
+				if (ms->pid[id++] == 0)
+					execute_pipe_cmd(pipefd, i, ms, prev_fd);
+			}
+			if (i < ms->nr_commands - 1)
+			{
+				close(pipefd[1]);
+				prev_fd = pipefd[0];
+			}
+			ms->command = ms->command->next;
 		}
-		if (i < ms->nr_commands - 1)
-		{
-			close(pipefd[1]);
-			prev_fd = pipefd[0];
-		}
-		ms->command = ms->command->next;
-	}
-	if (prev_fd != -1)
-   		close(prev_fd);
-	ms->exit_status = wait_for_child(ms, id);
+		if (prev_fd != -1)
+			   close(prev_fd);
+		ms->exit_status = wait_for_child(ms, id);
+
+	// }
 }
 
 /**
@@ -93,6 +95,7 @@ void	execute(t_shell *ms)
 			fill_path(ms, temp);
 		temp = temp->next;
 	}
+	ms->nr_commands = count_commands(ms);
 	handle_processes(ms);
 	free(ms->pid);
 	free_char_array(ms->full_envp);
