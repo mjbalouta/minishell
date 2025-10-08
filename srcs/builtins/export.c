@@ -81,10 +81,9 @@ static int	process_export_arg(t_shell *ms, char *arg)
 void	builtin_export(t_shell *ms, char **args)
 {
 	int	i;
-	t_envp	*env;
 	char	**array;
 
-	env = ms->envp;
+	g_exit_status = 0;
 	if (!args || !args[1])
 	{
 		array = ft_envp_lst_to_char_array(ms, true);
@@ -102,5 +101,4 @@ void	builtin_export(t_shell *ms, char **args)
 				EXIT_FAILURE);
 		i++;
 	}
-	g_exit_status = 0;
 }

@@ -63,14 +63,14 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
  */
 void	handle_heredoc_input(t_shell *ms)
 {
-	char	*line;
+//	char	*line;
 	int		heredoc_fd[2];
 	t_redir	*redir_list;
 	t_redir	*last_heredoc;
 
 	redir_list = ms->command->redir;
 	last_heredoc = find_last_heredoc(redir_list);
-	line = NULL;
+//	line = NULL;
 	redir_list = ms->command->redir;
 	if (last_heredoc && pipe(heredoc_fd) != 0)
 		exit_shell(ms, 1);
