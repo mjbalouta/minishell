@@ -60,11 +60,11 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 	write(heredoc_fd[1], "\n", 1);
 }
 
-void	verify_comm_path(t_shell *ms)
+void	verify_comm_path(t_command *command, t_shell *ms)
 {
-	if (!ms->command->comm_path)
+	if (!command->comm_path)
 	{
-		fprintf(stderr, "%s: command not found\n", ms->command->args[0]); //FAZER UMA CUSTON FPRINTF
+		fprintf(stderr, "%s: command not found\n", command->args[0]); //FAZER UMA CUSTON FPRINTF
 		exit_shell(ms, 127);
 	}
 }

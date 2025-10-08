@@ -8,9 +8,9 @@
  * @param i 
  * @param ms 
  */
-void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
+void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd, t_command *command)
 {
-	handle_redir(ms, pipefd, prev_fd, i);
+	handle_redir(ms, pipefd, prev_fd, i, command);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (i < ms->nr_commands - 1)
@@ -22,9 +22,9 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 	// 	select_builtin(ms);
 	// else
 	// {
-	if (execve(ms->command->comm_path, ms->command->args, ms->full_envp) == -1)
+	if (execve(command->comm_path, command->args, ms->full_envp) == -1)
 	{
-		perror(ms->command->args[0]);
+		perror(command->args[0]);
 		exit_shell(ms, 1);
 	}
 	// }
@@ -42,34 +42,36 @@ void	handle_processes(t_shell *ms)
 	int	pipefd[2];
 	int	id;
 	int	prev_fd;
+	t_command	*temp;
 
 	i = -1;
 	id = 0;
 	prev_fd = -1;
-	// if (ms->nr_commands == 1 && ms->command->is_builtin == 0)
-	// 	select_builtin(ms);
+	temp = ms->command;
+	// if (ms->nr_commands == 1 && temp->is_builtin == 0)
+	// 	select_builtin(temp);
 	// else
 	// {
-		while (++i < ms->nr_commands && ms->command)
+		while (++i < ms->nr_commands && temp)
 		{
 			if (i < ms->nr_commands - 1)
 				create_pipe(pipefd, ms);
-			if (ms->command->redir && ms->command->redir->type == T_HEREDOC)
+			if (temp->redir && temp->redir->type == T_HEREDOC)
 				handle_heredoc_input(ms);
-			if (ms->command->args[0])
+			if (temp->args[0])
 			{
 				ms->pid[id] = fork();
 				if (ms->pid[id] < 0)
 					exit_shell(ms, 1);
 				if (ms->pid[id++] == 0)
-					execute_pipe_cmd(pipefd, i, ms, prev_fd);
+					execute_pipe_cmd(pipefd, i, ms, prev_fd, temp);
 			}
 			if (i < ms->nr_commands - 1)
 			{
 				close(pipefd[1]);
 				prev_fd = pipefd[0];
 			}
-			ms->command = ms->command->next;
+			temp = temp->next;
 		}
 		if (prev_fd != -1)
 			close(prev_fd);
