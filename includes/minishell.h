@@ -58,6 +58,8 @@ void	verify_if_bultin(t_shell *ms);
 void	ft_cmd_lstclear(t_command **lst);
 void	free_redirection_list(t_redir *redir);
 
+//------------------------------TOKENIZER---------------------------------------
+
 int		tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
 bool	ft_isseparator(int c);
@@ -66,6 +68,8 @@ t_token	*ft_token_lstnew(char *word, t_token_type type);
 void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
+
+//------------------------------ENVIRONMENT-------------------------------------
 
 int		init_envp(t_shell *ms, char **envp);
 int		set_minimal_env(t_envp **lst);
@@ -83,11 +87,13 @@ int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
 
+//------------------------------EXPANDER----------------------------------------
+
 void	expander(t_shell *ms);
 char	*expand_word(char *word, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 
-//------------------------------EXECUTE---------------------------------------------
+//------------------------------EXECUTE-----------------------------------------
 
 int		is_path(t_command *command);
 char	*create_test_path(char *path, char *command);
@@ -107,12 +113,17 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd);
 void	handle_processes(t_shell *ms);
 void	execute(t_shell *ms);
 void	write_inside_pipe(int *heredoc_fd, char *line);
-void	ft_env(t_shell *ms, char **args);
-void	ft_exit(t_shell *ms, char **args);
 void	verify_comm_path(t_shell *ms);
 
-//------------------------------BUILTINS---------------------------------------------
+//------------------------------BUILTINS----------------------------------------
 
-void	select_builtin(t_shell *ms);
+void	execute_builtin(t_shell *ms, char **args);
+void	builtin_echo(t_shell *ms, char **args);
+void	builtin_cd(t_shell *ms, char **args);
+void	builtin_pwd(t_shell *ms, char **args);
+void	builtin_export(t_shell *ms, char **args);
+void	builtin_unset(t_shell *ms, char **args);
+void	builtin_env(t_shell *ms, char **args);
+void	builtin_exit(t_shell *ms, char **args);
 
 #endif
