@@ -152,3 +152,27 @@ void	print_array_of_char(char **array)
 		i++;
 	}
 }
+
+void	ft_sort_array_of_char(char **array)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		j = i + 1;
+		while (array[j] != NULL)
+		{
+			if (ft_strcmp(array[i], array[j]) > 0)
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}

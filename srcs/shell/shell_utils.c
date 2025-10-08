@@ -29,6 +29,7 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->command = NULL;
 	ms->pid = NULL;
+	ms->full_envp = NULL;
 	if (init_envp(ms, envp) != 0)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 }

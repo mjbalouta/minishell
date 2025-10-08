@@ -82,11 +82,15 @@ void	builtin_export(t_shell *ms, char **args)
 {
 	int	i;
 	t_envp	*env;
+	char	**array;
 
 	env = ms->envp;
 	if (!args || !args[1])
 	{
-		print_array_of_char(ft_envp_lst_to_char_array(ms, true));
+		array = ft_envp_lst_to_char_array(ms, true);
+		ft_sort_array_of_char(array);
+		print_array_of_char(array);
+		free_char_array(array);
 		g_exit_status = 0;
 		return ;
 	}

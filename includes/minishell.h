@@ -67,6 +67,8 @@ void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
 
+//------------------------------ENVIRONMENT-------------------------------------
+
 int		init_envp(t_shell *ms, char **envp);
 int		set_minimal_env(t_envp **lst);
 int		add_envp(char *key, char *value, t_envp **lst);
@@ -82,12 +84,15 @@ int		ft_setenv(char *key, char *value, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
+void	ft_sort_array_of_char(char **array);
+
+//------------------------------EXPANDER----------------------------------------
 
 void	expander(t_shell *ms);
 char	*expand_word(char *word, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 
-//------------------------------EXECUTE---------------------------------------------
+//------------------------------EXECUTE-----------------------------------------
 
 int		is_path(t_command *command);
 char	*create_test_path(char *path, char *command);
@@ -111,7 +116,7 @@ void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
 void	verify_comm_path(t_command *command, t_shell *ms);
 
-//------------------------------BUILTINS---------------------------------------------
+//------------------------------BUILTINS----------------------------------------
 
 void	execute_builtin(t_shell *ms, char **args);
 void	builtin_cd(t_shell *ms, char **args);
