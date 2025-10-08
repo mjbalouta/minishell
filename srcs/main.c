@@ -19,10 +19,9 @@ int	main(int argc, char **argv, char **envp)
             ft_putendl_fd("exit", 1);
             break;
         }
-		//IMPORTANTE: se o input apenas contiver whitespace, não fazemos nada e mostramos novamente o prompt (não adicionar estes ao history)
 		if (*ms.input)
 			add_history(ms.input);
-		if (tokenizer(&ms) != 0)
+		if (tokenizer(&ms) != 0 || ms.token == NULL)
 		{
 			free(ms.input);
 			ft_token_lstclear(&ms.token);

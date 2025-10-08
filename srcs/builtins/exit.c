@@ -39,7 +39,14 @@ static int	normalized_exit_status(int exit_status)
 		return (exit_status);
 }
 
-void	execute_exit(t_shell *ms, char **args)
+static void	print_error_exit_arg(char *arg)
+{
+	ft_putstr_fd(SHELL_NAME": exit: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+}
+
+void	builtin_exit(t_shell *ms, char **args)
 {
 	if (args && args[2])
 	{
@@ -52,9 +59,8 @@ void	execute_exit(t_shell *ms, char **args)
 	{
 		if (check_arg_is_int(args[1]) != EXIT_SUCCESS)
 		{
-			// TODO: change message to match bash error message
-			print_error("exit: numeric argument required");
-			g_exit_status = 255;
+			print_error_exit_arg(args[1]);
+			g_exit_status = 2;
 		}
 		else
 			g_exit_status = (unsigned char)(ft_atoi(args[1]));

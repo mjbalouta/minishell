@@ -23,6 +23,11 @@ SRCS			= $(addprefix srcs/, \
 				execution/heredoc.c \
 				signals/signals.c \
 				builtins/builtins_utils.c \
+				builtins/echo.c \
+				builtins/cd.c \
+				builtins/pwd.c \
+				builtins/export.c \
+				builtins/unset.c \
 				builtins/env.c \
 				builtins/exit.c \
 				temp.c \

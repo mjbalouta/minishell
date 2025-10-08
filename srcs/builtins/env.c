@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	execute_env(t_shell *ms, char **args)
+void	builtin_env(t_shell *ms, char **args)
 {
 	if (args && args[1])
 	{

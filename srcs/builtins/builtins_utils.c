@@ -1,19 +1,19 @@
 #include "minishell.h"
 
-// void	select_builtin(t_command *command)
-// {
-// 	if (ft_strcmp(command->args[0], "echo") == 0)
-// 		execute_echo();
-// 	else if (ft_strcmp(command->args[0], "cd") == 0)
-// 		execute_cd();
-// 	else if (ft_strcmp(command->args[0], "pwd") == 0)
-// 		execute_pwd();
-// 	else if (ft_strcmp(command->args[0], "export") == 0)
-// 		execute_export();
-// 	else if (ft_strcmp(command->args[0], "unset") == 0)
-// 		execute_unset();
-// 	else if (ft_strcmp(command->args[0], "env") == 0)
-// 		execute_env();
-// 	else if (ft_strcmp(command->args[0], "exit") == 0)
-// 		execute_exit();
-// }
+void	execute_builtin(t_shell *ms, char **args)
+{
+	if (ft_strcmp(ms->command->args[0], "echo") == 0)
+		builtin_echo(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "cd") == 0)
+		builtin_cd(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "pwd") == 0)
+		builtin_pwd(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "export") == 0)
+		builtin_export(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "unset") == 0)
+		builtin_unset(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "env") == 0)
+		builtin_env(ms, args);
+	else if (ft_strcmp(ms->command->args[0], "exit") == 0)
+		builtin_exit(ms, args);
+}
