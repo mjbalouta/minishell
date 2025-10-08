@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		expander(&ms);
 		if (verify_tokens(&ms) == -1)
-			return (ft_printf("token error")); // TODO: ver erro a retornar
+			return (ft_printf("syntax error"));
 		create_cmd_list(&ms);
 		ft_token_lstclear(&ms.token);
 		execute(&ms);

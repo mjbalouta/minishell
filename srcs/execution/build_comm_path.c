@@ -6,26 +6,26 @@
  * @param ms 
  * @return 1 -> is a path; 0 -> is not a path.
  */
-int    is_path(t_command *command)
+int	is_path(t_command *command)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (command->args[0][i])
-    {
-        if (command->args[0][i] == '/')
-        {
-            command->comm_path = command->args[0];
-            return (1);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (command->args[0][i])
+	{
+		if (command->args[0][i] == '/')
+		{
+			command->comm_path = command->args[0];
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /**
- * @brief creates the path of the command which will be tested with the function access()
- * to check if it's executable.
+ * @brief creates the path of the command which will be tested
+ * with the function access() to check if it's executable.
  * 
  * @param path (the current path in which it is searching for the command)
  * @param command 
@@ -47,7 +47,7 @@ char	*create_test_path(char *path, char *command)
  * 
  * @param ms 
  */
-void    fill_path(t_shell *ms, t_command *command)
+void	fill_path(t_shell *ms, t_command *command)
 {
 	char	*path_full_str;
 	char	**path_list;
@@ -65,7 +65,6 @@ void    fill_path(t_shell *ms, t_command *command)
 		if (access(test_path, X_OK) == 0)
 		{
 			command->comm_path = test_path;
-			// printf("comm_path: %s\n", command->comm_path);
 			free_char_array(path_list);
 			return ;
 		}

@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/07 15:59:56 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/08 11:36:50 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@ int	is_redir(t_token *token)
 {
 	if (token->type == T_REDIRECT_INPUT
 		|| token->type == T_REDIRECT_OUTPUT
-		|| token->type == T_REDIRECT_OUTPUT_APPEND
+		|| token->type == T_REDIR_OUTPUT_APPEND
 		|| token->type == T_HEREDOC)
 		return (1);
 	return (0);
 }
 
 /**
- * @brief counts args until it finds a pipe (doesn't count redirections and file names)
+ * @brief counts args until it finds a pipe (doesn't count redirections
+ * and file names)
  * 
  * @param ms 
  * @return nr_args 
@@ -53,6 +54,7 @@ int	count_args(t_shell *ms)
 	}
 	return (nr_args);
 }
+
 /*DELETE LATER*/
 void	test_printing(t_shell *ms) //testing
 {
@@ -68,14 +70,14 @@ void	test_printing(t_shell *ms) //testing
 			ft_printf("%s ", tmp->args[z]);
 			z++;
 		}
-		if (tmp->redirection)
+		if (tmp->redir)
 		{
 			ft_printf("\nREDIR:\n");
-			while (tmp->redirection)
+			while (tmp->redir)
 			{
-				ft_printf("redirection type: %d | ", tmp->redirection->type);
-				ft_printf("filename: %s ", tmp->redirection->filename);
-				tmp->redirection = tmp->redirection->next;
+				ft_printf("redir type: %d | ", tmp->redir->type);
+				ft_printf("filename: %s ", tmp->redir->filename);
+				tmp->redir = tmp->redir->next;
 			}
 		}
 		i++;
@@ -84,7 +86,6 @@ void	test_printing(t_shell *ms) //testing
 		ft_printf("\n");
 	}
 }
-
 
 /**
  * @brief creates cmd list
@@ -124,10 +125,10 @@ void	create_cmd_list(t_shell *ms)
     			ms->token = ms->token->next;
     			new_redir_node->filename = ms->token->word;
     			new_redir_node->next = NULL;
-    			if (!tmp->redirection) //primeira iteracao
+    			if (!tmp->redir) //primeira iteracao
     			{
-        			tmp->redirection = new_redir_node;
-        			last_redir = tmp->redirection;
+        			tmp->redir = new_redir_node;
+        			last_redir = tmp->redir;
     			}
     			else //iteracoes seguintes
     			{

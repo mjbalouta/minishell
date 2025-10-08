@@ -16,7 +16,7 @@ void	init_pids_container(t_shell *ms)
  * @param ms 
  * @return nr_commands
  */
-int count_commands(t_shell *ms)
+int	count_commands(t_shell *ms)
 {
 	t_command	*temp;
 	int			nr_commands;
@@ -30,6 +30,7 @@ int count_commands(t_shell *ms)
 	}
 	return (nr_commands);
 }
+
 /**
  * @brief waits for every process id (pid) to end
  * 
@@ -62,8 +63,8 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 void	verify_comm_path(t_shell *ms)
 {
 	if (!ms->command->comm_path)
-		{
-			fprintf(stderr, "%s: command not found\n", ms->command->args[0]); //FAZER UMA CUSTON FPRINTF
-			exit_shell(ms, 127);
-		}
+	{
+		fprintf(stderr, "%s: command not found\n", ms->command->args[0]); //FAZER UMA CUSTON FPRINTF
+		exit_shell(ms, 127);
+	}
 }

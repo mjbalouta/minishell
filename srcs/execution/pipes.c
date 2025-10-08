@@ -31,7 +31,8 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd)
 }
 
 /**
- * @brief executes the commands either on the parent process or forks childs to execute them
+ * @brief executes the commands either on the parent process or forks
+ * childs to execute them
  * 
  * @param ms 
  */
@@ -53,7 +54,7 @@ void	handle_processes(t_shell *ms)
 		{
 			if (i < ms->nr_commands - 1)
 				create_pipe(pipefd, ms);
-			if (ms->command->redirection && ms->command->redirection->type == T_HEREDOC)
+			if (ms->command->redir && ms->command->redir->type == T_HEREDOC)
 				handle_heredoc_input(ms);
 			if (ms->command->args[0])
 			{
@@ -71,9 +72,8 @@ void	handle_processes(t_shell *ms)
 			ms->command = ms->command->next;
 		}
 		if (prev_fd != -1)
-			   close(prev_fd);
+			close(prev_fd);
 		ms->exit_status = wait_for_child(ms, id);
-
 	// }
 }
 
