@@ -6,43 +6,43 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/08 16:01:03 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/08 17:05:25 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*DELETE LATER*/
-void	test_printing(t_shell *ms) //testing
-{
-	int i = 0;
-	int z = 0;
-	t_command *tmp = ms->command;
-	while (tmp)
-	{
-		ft_printf("command %d:", i + 1);
-		z = 0;
-		while (tmp->args[z])
-		{
-			ft_printf("%s ", tmp->args[z]);
-			z++;
-		}
-		if (tmp->redir)
-		{
-			ft_printf("\nREDIR:\n");
-			while (tmp->redir)
-			{
-				ft_printf("redir type: %d | ", tmp->redir->type);
-				ft_printf("filename: %s ", tmp->redir->filename);
-				tmp->redir = tmp->redir->next;
-			}
-		}
-		i++;
-		ft_printf("builtin: %d", tmp->is_builtin);
-		tmp = tmp->next;
-		ft_printf("\n");
-	}
-}
+// /*DELETE LATER*/
+// void	test_printing(t_shell *ms) //testing
+// {
+// 	int i = 0;
+// 	int z = 0;
+// 	t_command *tmp = ms->command;
+// 	while (tmp)
+// 	{
+// 		ft_printf("command %d:", i + 1);
+// 		z = 0;
+// 		while (tmp->args[z])
+// 		{
+// 			ft_printf("%s ", tmp->args[z]);
+// 			z++;
+// 		}
+// 		if (tmp->redir)
+// 		{
+// 			ft_printf("\nREDIR:\n");
+// 			while (tmp->redir)
+// 			{
+// 				ft_printf("redir type: %d | ", tmp->redir->type);
+// 				ft_printf("filename: %s ", tmp->redir->filename);
+// 				tmp->redir = tmp->redir->next;
+// 			}
+// 		}
+// 		i++;
+// 		ft_printf("builtin: %d", tmp->is_builtin);
+// 		tmp = tmp->next;
+// 		ft_printf("\n");
+// 	}
+// }
 
 void	create_redir_node(t_shell *ms, t_command *command)
 {
@@ -66,7 +66,7 @@ void	create_redir_node(t_shell *ms, t_command *command)
         last_redir->next = new_redir_node;
     }
 }
-
+//ACRESCENTAR UM POINTER PARA PERCORRER A LISTA DE TOKENS (PARA NAO PERCORRER A LISTA)
 /**
  * @brief creates cmd list
  * 
