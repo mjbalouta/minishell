@@ -16,7 +16,7 @@ char	*expand_exit_status(char *result, int *i, t_shell *ms)
 {
 	char	*status_str;
 
-	status_str = ft_itoa(ms->exit_status);
+	status_str = ft_itoa(g_exit_status);
 	if (!status_str)
 	{
 		free(result);

@@ -48,12 +48,6 @@ static void	print_error_exit_arg(char *arg)
 
 void	builtin_exit(t_shell *ms, char **args)
 {
-	if (args && args[2])
-	{
-		print_error("exit: too many arguments");
-		g_exit_status = 1;
-		return ;
-	}
 	ft_putendl_fd("exit", 1);
 	if (args && args[1])
 	{
@@ -61,9 +55,16 @@ void	builtin_exit(t_shell *ms, char **args)
 		{
 			print_error_exit_arg(args[1]);
 			g_exit_status = 2;
+			exit_shell(ms, g_exit_status);
 		}
 		else
 			g_exit_status = (unsigned char)(ft_atoi(args[1]));
+		if (args && args[2])
+		{
+			print_error("exit: too many arguments");
+			g_exit_status = 1;
+			return ;
+		}
 	}
 	exit_shell(ms, normalized_exit_status(g_exit_status));
 }
