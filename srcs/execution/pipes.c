@@ -38,10 +38,10 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd, t_command *c
  */
 void	handle_processes(t_shell *ms)
 {
-	int	i;
-	int	pipefd[2];
-	int	id;
-	int	prev_fd;
+	int			i;
+	int			pipefd[2];
+	int			id;
+	int			prev_fd;
 	t_command	*temp;
 
 	i = -1;
@@ -91,6 +91,7 @@ void	execute(t_shell *ms)
 	ms->full_envp = ft_envp_lst_to_char_array(ms, false);
 	temp = ms->command;
 	init_pids_container(ms);
+	verify_if_bultin(ms);
 	while (temp)
 	{
 		if (temp->is_builtin == 1)

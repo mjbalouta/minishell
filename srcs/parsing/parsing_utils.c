@@ -1,5 +1,48 @@
 #include "minishell.h"
 
+/**
+ * @brief counts args until it finds a pipe (doesn't count redirections
+ * and file names)
+ * 
+ * @param ms 
+ * @return nr_args 
+ */
+int	count_args(t_shell *ms)
+{
+	int		nr_args;
+	t_token	*temp;
+
+	nr_args = 0;
+	temp = ms->token;
+	while (temp && temp->type != T_PIPE)
+	{
+		if (is_redir(temp) == 1)
+			temp = temp->next->next;
+		else
+		{
+			nr_args++;
+			temp = temp->next;
+		}
+	}
+	return (nr_args);
+}
+
+/**
+ * @brief checks if token->type is redirection or heredoc
+ * 
+ * @param token 
+ * @return 1 = redirection; 0 != redirection 
+ */
+int	is_redir(t_token *token)
+{
+	if (token->type == T_REDIRECT_INPUT
+		|| token->type == T_REDIRECT_OUTPUT
+		|| token->type == T_REDIR_OUTPUT_APPEND
+		|| token->type == T_HEREDOC)
+		return (1);
+	return (0);
+}
+
 void	ft_cmd_lstclear(t_command **lst)
 {
 	t_command	*current;

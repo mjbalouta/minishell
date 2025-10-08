@@ -1,59 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_tokens.c                                     :+:      :+:    :+:   */
+/*   command_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/08 14:11:38 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/08 16:01:03 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief checks if token->type is redirection or heredoc
- * 
- * @param token 
- * @return 1 = redirection; 0 != redirection 
- */
-int	is_redir(t_token *token)
-{
-	if (token->type == T_REDIRECT_INPUT
-		|| token->type == T_REDIRECT_OUTPUT
-		|| token->type == T_REDIR_OUTPUT_APPEND
-		|| token->type == T_HEREDOC)
-		return (1);
-	return (0);
-}
-
-/**
- * @brief counts args until it finds a pipe (doesn't count redirections
- * and file names)
- * 
- * @param ms 
- * @return nr_args 
- */
-int	count_args(t_shell *ms)
-{
-	int		nr_args;
-	t_token	*temp;
-
-	nr_args = 0;
-	temp = ms->token;
-	while (temp && temp->type != T_PIPE)
-	{
-		if (is_redir(temp) == 1)
-			temp = temp->next->next;
-		else
-		{
-			nr_args++;
-			temp = temp->next;
-		}
-	}
-	return (nr_args);
-}
 
 /*DELETE LATER*/
 void	test_printing(t_shell *ms) //testing
@@ -87,6 +44,29 @@ void	test_printing(t_shell *ms) //testing
 	}
 }
 
+void	create_redir_node(t_shell *ms, t_command *command)
+{
+	t_redir		*new_redir_node;
+	t_redir		*last_redir;
+	
+	new_redir_node = ft_calloc(1, sizeof(t_redir));
+    if (!new_redir_node)
+    	return;
+    new_redir_node->type = ms->token->type;
+    ms->token = ms->token->next;
+    new_redir_node->filename = ms->token->word;
+    new_redir_node->next = NULL;
+    if (!command->redir) //primeira iteracao
+   		command->redir = new_redir_node;
+    else //iteracoes seguintes
+    {
+    	last_redir = command->redir;
+        while (last_redir->next)
+            last_redir = last_redir->next;
+        last_redir->next = new_redir_node;
+    }
+}
+
 /**
  * @brief creates cmd list
  * 
@@ -94,48 +74,26 @@ void	test_printing(t_shell *ms) //testing
  */
 void	create_cmd_list(t_shell *ms)
 {
-	int			nr_args;
 	int			i;
 	t_command	*new_cmd_node;
-	t_redir		*new_redir_node;
-	t_command	*tmp;
-	t_redir		*last_redir;
+	t_command	*cmd_temp;
 
 	ms->command = ft_calloc(1, sizeof(t_command));
 	if (!ms->command)
 		return ;
-	tmp = ms->command;
+	cmd_temp = ms->command;
 	while (ms->token)
 	{
 		i = 0;
-		nr_args = count_args(ms);
-		tmp->args = ft_calloc(nr_args + 1, sizeof(char *));
-		if (!tmp->args)
+		cmd_temp->args = ft_calloc(count_args(ms) + 1, sizeof(char *));
+		if (!cmd_temp->args)
 			return ;
 		while (ms->token && ms->token->type != T_PIPE)
 		{
 			if (ms->token->type == T_WORD)
-				tmp->args[i++] = ms->token->word;
+				cmd_temp->args[i++] = ms->token->word;
 			else if (is_redir(ms->token) == 1)
-			{
-				new_redir_node = ft_calloc(1, sizeof(t_redir));
-    			if (!new_redir_node)
-        			return;
-    			new_redir_node->type = ms->token->type;
-    			ms->token = ms->token->next;
-    			new_redir_node->filename = ms->token->word;
-    			new_redir_node->next = NULL;
-    			if (!tmp->redir) //primeira iteracao
-    			{
-        			tmp->redir = new_redir_node;
-        			last_redir = tmp->redir;
-    			}
-    			else //iteracoes seguintes
-    			{
-        			last_redir->next = new_redir_node;
-        			last_redir = last_redir->next;
-    			}
-			}
+				create_redir_node(ms, cmd_temp);
 			ms->token = ms->token->next;
 		}
 		if (!ms->token)
@@ -144,10 +102,9 @@ void	create_cmd_list(t_shell *ms)
 		new_cmd_node = ft_calloc(1, sizeof(t_command));
 		if (!new_cmd_node)
 			return ;
-		tmp->next = new_cmd_node;
-		tmp = tmp->next;
+		cmd_temp->next = new_cmd_node;
+		cmd_temp = cmd_temp->next;
 	}
-	verify_if_bultin(ms);
 	// test_printing(ms); //function for testing
 }
 
