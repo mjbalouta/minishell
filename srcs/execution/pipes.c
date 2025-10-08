@@ -18,16 +18,16 @@ void	execute_pipe_cmd(int *pipefd, int i, t_shell *ms, int prev_fd, t_command *c
 		close(pipefd[1]);
 		close(pipefd[0]);
 	}
-	// if (comm->is_builtin == 0)
-	// 	select_builtin(ms);
-	// else
-	// {
-	if (execve(command->comm_path, command->args, ms->full_envp) == -1)
+	if (command->is_builtin == 0)
+		execute_builtin(ms, command->args);
+	else
 	{
-		perror(command->args[0]);
-		exit_shell(ms, 1);
+		if (execve(command->comm_path, command->args, ms->full_envp) == -1)
+		{
+			perror(command->args[0]);
+			exit_shell(ms, 1);
+		}
 	}
-	// }
 }
 
 /**
@@ -48,10 +48,10 @@ void	handle_processes(t_shell *ms)
 	id = 0;
 	prev_fd = -1;
 	temp = ms->command;
-	// if (ms->nr_commands == 1 && temp->is_builtin == 0)
-	// 	select_builtin(temp);
-	// else
-	// {
+	if (ms->nr_commands == 1 && temp->is_builtin == 0)
+		execute_builtin(ms, temp->args);
+	else
+	{
 		while (++i < ms->nr_commands && temp)
 		{
 			if (i < ms->nr_commands - 1)
@@ -75,8 +75,8 @@ void	handle_processes(t_shell *ms)
 		}
 		if (prev_fd != -1)
 			close(prev_fd);
-		ms->exit_status = wait_for_child(ms, id);
-	// }
+		g_exit_status = wait_for_child(ms, id);
+	}
 }
 
 /**
