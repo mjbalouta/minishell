@@ -11,16 +11,16 @@
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 {
 	handle_redir(ms, pipefd, prev_fd, command);
-	if (!command->args[0])
-		return ;
-	verify_comm_path(command, ms);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (ms->i < ms->nr_commands - 1)
 	{
 		close(pipefd[1]);
-		// close(pipefd[0]);
+		close(pipefd[0]);
 	}
+	if (!command->args[0])
+		return ;
+	verify_comm_path(command, ms);
 	if (command->is_builtin == 0)
 	{
 		execute_builtin(ms, command->args);

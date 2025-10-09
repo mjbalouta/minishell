@@ -37,8 +37,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_token_lstclear(&ms.token);
 		dup2(fd_in, STDIN_FILENO);
 		dup2(fd_out, STDOUT_FILENO);
-		close(fd_in);   // Add this
-    	close(fd_out);  // Add this
+		close(fd_in);
+    	close(fd_out);
 	}
 	free_shell(&ms);
 	return(g_exit_status);

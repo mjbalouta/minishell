@@ -27,6 +27,8 @@ void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir)
 	}
 	else
 		dup2(in_fd, STDIN_FILENO);
+	if (in_fd != -1)
+		close(in_fd);
 }
 
 /**
@@ -60,6 +62,8 @@ void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir)
 	}
 	else
 		dup2(out_fd, STDOUT_FILENO);
+	if (out_fd != -1)
+		close(out_fd);
 }
 
 /**
