@@ -2,10 +2,8 @@
 
 void	builtin_unset(t_shell *ms, char **args)
 {
-	t_envp	*env;
 	int		i;
 
-	env = ms->envp;
 	i = 1;
 	while (args && args[i])
 	{
