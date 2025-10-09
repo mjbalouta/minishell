@@ -7,13 +7,13 @@
  * @param ms 
  * @return nr_args 
  */
-int	count_args(t_shell *ms)
+int	count_args(t_token *token)
 {
 	int		nr_args;
 	t_token	*temp;
 
 	nr_args = 0;
-	temp = ms->token;
+	temp = token;
 	while (temp && temp->type != T_PIPE)
 	{
 		if (is_redir(temp) == 1)
@@ -55,7 +55,7 @@ void	ft_cmd_lstclear(t_command **lst)
 	{
 		next = current->next;
 		if (current->args)
-			free_char_array(current->args);
+			free(current->args);
 		if (current->comm_path)
 			free(current->comm_path);
 		if (current->redir)
@@ -75,8 +75,8 @@ void	free_redirection_list(t_redir *redir)
 	while (current)
 	{
 		next = current->next;
-		if (current->filename)
-			free(current->filename);
+		// if (current->filename)
+		// 	free(current->filename);
 		free(current);
 		current = next;
 	}

@@ -38,10 +38,7 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 	{
 		while (1)
 		{
-			write(STDOUT_FILENO, "> ", 2);
-			line = get_next_line(0);
-			if (ft_strlen(line) > 0)
-				line[ft_strlen(line) - 1] = '\0';
+			line = readline("> ");
 			if (ft_strcmp(line, redir_list->filename) == 0)
 			{
 				free(line);
@@ -61,17 +58,17 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
  * 
  * @param ms 
  */
-void	handle_heredoc_input(t_shell *ms)
+void	handle_heredoc_input(t_command *command, t_shell *ms)
 {
 	char	*line;
 	int		heredoc_fd[2];
 	t_redir	*redir_list;
 	t_redir	*last_heredoc;
 
-	redir_list = ms->command->redir;
+	redir_list = command->redir;
 	last_heredoc = find_last_heredoc(redir_list);
 	line = NULL;
-	redir_list = ms->command->redir;
+	redir_list = command->redir;
 	if (last_heredoc && pipe(heredoc_fd) != 0)
 		exit_shell(ms, 1);
 	while (redir_list)
@@ -83,7 +80,6 @@ void	handle_heredoc_input(t_shell *ms)
 	if (last_heredoc)
 	{
 		close(heredoc_fd[1]);
-		ms->command->heredoc_fd = heredoc_fd[0];
+		command->heredoc_fd = heredoc_fd[0];
 	}
-	get_next_line(-1);
 }

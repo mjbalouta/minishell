@@ -32,11 +32,13 @@ int	main(int argc, char **argv, char **envp)
 		if (verify_tokens(&ms) == -1)
 			return (ft_printf("syntax error"));
 		create_cmd_list(&ms);
-		ft_token_lstclear(&ms.token);
 		execute(&ms);
 		ft_cmd_lstclear(&ms.command);
+		ft_token_lstclear(&ms.token);
 		dup2(fd_in, STDIN_FILENO);
 		dup2(fd_out, STDOUT_FILENO);
+		close(fd_in);   // Add this
+    	close(fd_out);  // Add this
 	}
 	free_shell(&ms);
 	return(g_exit_status);

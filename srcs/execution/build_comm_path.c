@@ -15,7 +15,7 @@ int	is_path(t_command *command)
 	{
 		if (command->args[0][i] == '/')
 		{
-			command->comm_path = command->args[0];
+			command->comm_path = ft_strdup(command->args[0]);
 			return (1);
 		}
 		i++;
@@ -57,6 +57,8 @@ void	fill_path(t_shell *ms, t_command *command)
 	if (is_path(command))
 		return ;
 	path_full_str = ft_getenv("PATH", ms->envp);
+	if (!path_full_str)
+		return ;
 	path_list = ft_split(path_full_str, ':');
 	i = 0;
 	while (path_list[i])
