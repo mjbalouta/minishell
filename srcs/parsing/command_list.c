@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:51:06 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/09 14:15:09 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:45:21 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	create_redir_node(t_token **token, t_command *command)
         last_redir->next = new_redir_node;
     }
 }
-//ACRESCENTAR UM POINTER PARA PERCORRER A LISTA DE TOKENS (PARA NAO PERCORRER A LISTA)
+
 /**
  * @brief creates cmd list
  * 
