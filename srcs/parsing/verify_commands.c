@@ -14,7 +14,10 @@ void	verify_if_bultin(t_shell *ms)
 	while (temp)
 	{
 		if (!temp->args[0])
+		{
+			temp->is_builtin = 1;
 			temp = temp->next;
+		}
 		if (temp)
 		{
 			if ((ft_strcmp(temp->args[0], "echo") == 0)

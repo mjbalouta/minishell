@@ -11,6 +11,9 @@
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 {
 	handle_redir(ms, pipefd, prev_fd, command);
+	if (!command->args[0])
+		return ;
+	verify_comm_path(command, ms);
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (ms->i < ms->nr_commands - 1)
@@ -59,14 +62,14 @@ void	handle_processes(t_shell *ms)
 				create_pipe(pipefd, ms);
 			if (temp->redir && temp->redir->type == T_HEREDOC)
 				handle_heredoc_input(temp, ms);
-			if (temp->args[0])
-			{
-				ms->pid[id] = fork();
-				if (ms->pid[id] < 0)
-					exit_shell(ms, 1);
-				if (ms->pid[id++] == 0)
-					execute_pipe_cmd(pipefd, ms, prev_fd, temp);
-			}
+			// if (temp->args[0])
+			// {
+			ms->pid[id] = fork();
+			if (ms->pid[id] < 0)
+				exit_shell(ms, 1);
+			if (ms->pid[id++] == 0)
+				execute_pipe_cmd(pipefd, ms, prev_fd, temp);
+			// }
 			if (ms->i < ms->nr_commands - 1)
 			{
 				close(pipefd[1]);

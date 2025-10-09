@@ -99,23 +99,14 @@ void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command)
 	t_redir	*temp_redir;
 
 	temp_redir = command->redir;
-	if (temp_redir)
-	{
-		while (temp_redir)
+	while (temp_redir)
 		{
 			if (temp_redir->type == T_REDIRECT_INPUT)
-			{
-				verify_comm_path(command, ms);
 				handle_input_redir(ms, pipefd, temp_redir);
-			}
 			else if (temp_redir->type == T_REDIRECT_OUTPUT || temp_redir->type == T_REDIR_OUTPUT_APPEND)
-			{
-				verify_comm_path(command, ms);
 				handle_output_redir(prev_fd, ms, temp_redir);
-			}
 			else if (temp_redir->type == T_HEREDOC)
 			{
-				verify_comm_path(command, ms);
 				dup2(command->heredoc_fd, STDIN_FILENO);
 				close(command->heredoc_fd);
 				if (ms->i != ms->nr_commands - 1 && command->args[0])
@@ -126,10 +117,6 @@ void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command)
 			}
 			temp_redir = temp_redir->next;
 		}
-	}
-	else
-	{
-		verify_comm_path(command, ms);
+	if (!temp_redir)
 		handle_without_redir(pipefd, prev_fd, ms);
-	}
 }

@@ -52,7 +52,7 @@ $(NAME): $(LIBFT) $(OBJS)
 
 valgrind: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes -s ./$(NAME)
+	@valgrind --suppressions=readline.supp --leak-check=full -s --track-origins=yes --show-leak-kinds=all --track-fds=yes ./$(NAME)
 
 clean:
 	@echo "Removing objects..."
