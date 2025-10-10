@@ -10,6 +10,8 @@
  */
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 {
+	char		**envp;
+
 	handle_redir(ms, pipefd, prev_fd, command);
 	if (prev_fd != -1)
 		close (prev_fd);
@@ -25,11 +27,15 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	}
 	else
 	{
-		if (execve(command->comm_path, command->args, ms->full_envp) == -1)
+		envp = ft_envp_lst_to_char_array(ms, false);
+		if (execve(command->comm_path, command->args, envp) == -1)
 		{
 			perror(command->args[0]);
+			free_char_array(envp);
 			exit_shell(ms, 1);
 		}
+		else
+			free_char_array(envp);
 	}
 }
 
@@ -95,7 +101,6 @@ void	execute(t_shell *ms)
 {
 	t_command	*temp;
 
-	ms->full_envp = ft_envp_lst_to_char_array(ms, false);
 	temp = ms->command;
 	while (temp)
 	{
@@ -109,5 +114,4 @@ void	execute(t_shell *ms)
 	init_pids_container(ms);
 	handle_processes(ms);
 	free(ms->pid);
-	free_char_array(ms->full_envp);
 }
