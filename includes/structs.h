@@ -51,13 +51,11 @@ typedef struct s_shell
 	int			out_fd;
 	int			i; //contador para os comandos
 	int			nr_commands;
-	char		**full_envp;
 	t_envp		*envp;
 	char		*prompt;
 	char		*input;
 	t_token		*token;
 	t_command 	*command;
-	int			exit_status;	// TODO: remove this field
 	pid_t		*pid;
 }	t_shell;
 

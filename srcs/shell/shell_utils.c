@@ -29,16 +29,12 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->command = NULL;
 	ms->pid = NULL;
-	ms->full_envp = NULL;
 	if (init_envp(ms, envp) != 0)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 }
 
 void	free_shell(t_shell *ms)
 {
-	// TODO: Free allocated memory before exiting
-	if (ms->full_envp)
-		free_char_array(ms->full_envp);
 	ft_envp_lstclear(&ms->envp);
 	free(ms->input);
 	ft_token_lstclear(&ms->token);
