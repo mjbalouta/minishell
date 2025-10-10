@@ -48,7 +48,7 @@ static void	print_error_exit_arg(char *arg)
 
 void	builtin_exit(t_shell *ms, t_command *cmd)
 {
-	ft_putendl_fd("exit", 2);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd->args && cmd->args[1])
 	{
 		if (check_arg_is_int(cmd->args[1]) != EXIT_SUCCESS)
