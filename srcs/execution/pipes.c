@@ -50,7 +50,10 @@ void	handle_processes(t_shell *ms)
 	prev_fd = -1;
 	temp = ms->command;
 	if (ms->nr_commands == 1 && temp->is_builtin == 0)
+	{
+		handle_redir(ms, pipefd, prev_fd, temp);
 		execute_builtin(ms, temp);
+	}
 	else
 	{
 		while (++ms->i < ms->nr_commands && temp)
