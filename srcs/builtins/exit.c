@@ -41,14 +41,14 @@ static int	normalized_exit_status(int exit_status)
 
 static void	print_error_exit_arg(char *arg)
 {
-	ft_putstr_fd(SHELL_NAME": exit: ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
+	ft_putstr_fd(SHELL_NAME": exit: ", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 }
 
 void	builtin_exit(t_shell *ms, t_command *cmd)
 {
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", 2);
 	if (cmd->args && cmd->args[1])
 	{
 		if (check_arg_is_int(cmd->args[1]) != EXIT_SUCCESS)

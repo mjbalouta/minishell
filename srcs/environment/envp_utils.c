@@ -141,14 +141,14 @@ void	free_char_array(char **array)
 	free(array);
 }
 
-void	print_array_of_char(char **array)
+void	print_array_of_char(char **array,int fd)
 {
 	int	i;
 
 	i = 0;
 	while (array[i] != NULL)
 	{
-		ft_putendl_fd(array[i], 1);
+		ft_putendl_fd(array[i], fd);
 		i++;
 	}
 }

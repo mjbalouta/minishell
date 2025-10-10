@@ -27,9 +27,9 @@ static bool	is_valid_key(char *key)
 
 static void	print_error_export_arg(char *arg)
 {
-	ft_putstr_fd(SHELL_NAME": export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
+	ft_putstr_fd(SHELL_NAME": export: `", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
 static int	process_export_arg(t_shell *ms, char *arg)
