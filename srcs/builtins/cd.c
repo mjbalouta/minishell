@@ -1,8 +1,10 @@
 #include "minishell.h"
 
-void	builtin_cd(t_shell *ms, char **args)
+void	builtin_cd(t_shell *ms, t_command *cmd)
 {
+
 	(void)ms;
-	(void)args;
+	(void)cmd;
+
 	g_exit_status = 0;
 }

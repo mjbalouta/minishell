@@ -78,13 +78,13 @@ static int	process_export_arg(t_shell *ms, char *arg)
 	return (0);
 }
 
-void	builtin_export(t_shell *ms, char **args)
+void	builtin_export(t_shell *ms, t_command *cmd)
 {
 	int	i;
 	char	**array;
 
 	g_exit_status = 0;
-	if (!args || !args[1])
+	if (!cmd->args || !cmd->args[1])
 	{
 		array = ft_envp_lst_to_char_array(ms, true);
 		ft_sort_array_of_char(array);
@@ -94,9 +94,9 @@ void	builtin_export(t_shell *ms, char **args)
 		return ;
 	}
 	i = 1;
-	while (args && args[i])
+	while (cmd->args && cmd->args[i])
 	{
-		if (process_export_arg(ms, args[i]) != 0)
+		if (process_export_arg(ms, cmd->args[i]) != 0)
 			print_error_and_exit(ms, "export: memory allocation error", 
 				EXIT_FAILURE);
 		i++;

@@ -46,20 +46,20 @@ static void	print_error_exit_arg(char *arg)
 	ft_putstr_fd(": numeric argument required\n", 2);
 }
 
-void	builtin_exit(t_shell *ms, char **args)
+void	builtin_exit(t_shell *ms, t_command *cmd)
 {
 	ft_putendl_fd("exit", 1);
-	if (args && args[1])
+	if (cmd->args && cmd->args[1])
 	{
-		if (check_arg_is_int(args[1]) != EXIT_SUCCESS)
+		if (check_arg_is_int(cmd->args[1]) != EXIT_SUCCESS)
 		{
-			print_error_exit_arg(args[1]);
+			print_error_exit_arg(cmd->args[1]);
 			g_exit_status = 2;
 			exit_shell(ms, g_exit_status);
 		}
 		else
-			g_exit_status = (unsigned char)(ft_atoi(args[1]));
-		if (args && args[2])
+			g_exit_status = (unsigned char)(ft_atoi(cmd->args[1]));
+		if (cmd->args && cmd->args[2])
 		{
 			print_error("exit: too many arguments");
 			g_exit_status = 1;
