@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	builtin_pwd(t_shell *ms, char **args)
+void	builtin_pwd(t_shell *ms, t_command *cmd)
 {
 	char	*path;
 
-	(void)args;
+	(void)cmd->args;
 	path = getcwd(NULL, 0);
 	if (!path)
 		print_error_and_exit(ms, "getcwd failed", errno);

@@ -23,7 +23,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	verify_comm_path(command, ms);
 	if (command->is_builtin == 0)
 	{
-		execute_builtin(ms, command->args);
+		execute_builtin(ms, command);
 		exit(0);
 	}
 	else
@@ -53,7 +53,7 @@ void	handle_processes(t_shell *ms)
 	prev_fd = -1;
 	temp = ms->command;
 	if (ms->nr_commands == 1 && temp->is_builtin == 0)
-		execute_builtin(ms, temp->args);
+		execute_builtin(ms, temp);
 	else
 	{
 		while (++ms->i < ms->nr_commands && temp)

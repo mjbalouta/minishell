@@ -118,13 +118,13 @@ void	verify_comm_path(t_command *command, t_shell *ms);
 
 //------------------------------BUILTINS----------------------------------------
 
-void	execute_builtin(t_shell *ms, char **args);
-void	builtin_cd(t_shell *ms, char **args);
-void	builtin_echo(t_shell *ms, char **args);
-void	builtin_env(t_shell *ms, char **args);
-void	builtin_exit(t_shell *ms, char **args);
-void	builtin_export(t_shell *ms, char **args);
-void	builtin_pwd(t_shell *ms, char **args);
-void	builtin_unset(t_shell *ms, char **args);
+void	execute_builtin(t_shell *ms, t_command *cmd);
+void	builtin_cd(t_shell *ms, t_command *cmd);
+void	builtin_echo(t_shell *ms, t_command *cmd);
+void	builtin_env(t_shell *ms, t_command *cmd);
+void	builtin_exit(t_shell *ms, t_command *cmd);
+void	builtin_export(t_shell *ms, t_command *cmd);
+void	builtin_pwd(t_shell *ms, t_command *cmd);
+void	builtin_unset(t_shell *ms, t_command *cmd);
 
 #endif

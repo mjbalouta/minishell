@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	builtin_env(t_shell *ms, char **args)
+void	builtin_env(t_shell *ms, t_command *cmd)
 {
-	if (args && args[1])
+	if (cmd->args && cmd->args[1])
 	{
 		print_error("env: options or arguments not supported");
 		g_exit_status = 1;
