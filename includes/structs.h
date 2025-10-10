@@ -35,8 +35,6 @@ typedef struct s_command
 	char 				**args;
 	char				*comm_path;
 	t_redir 			*redir; //um comando pode ter mais do que um redirect
-	int					infile;
-	int					outfile;
 	struct s_command 	*next;
 }	t_command;
 
