@@ -66,7 +66,7 @@ void	print_error_and_exit(t_shell *ms, char *message, int exit_status)
 
 void	print_error(char *message)
 {
-	ft_putstr_fd(SHELL_NAME": ", 2);
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd("\n", 2);
+	ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }
