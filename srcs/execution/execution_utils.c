@@ -62,12 +62,10 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 
 void	verify_comm_path(t_command *command, t_shell *ms)
 {
-	if (command->is_builtin == 1)
-	{
-		if (!command->comm_path)
-		{
-			fprintf(stderr, "%s: command not found\n", command->args[0]); //FAZER UMA CUSTON FPRINTF
-			exit_shell(ms, 127);
-		}
-	}
+	if (command->is_builtin == 1 && !command->comm_path)
+    {
+		ft_putstr_fd(command->args[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+		exit_shell(ms, 127);
+    }
 }
