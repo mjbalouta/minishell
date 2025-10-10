@@ -113,7 +113,7 @@ void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command)
 			{
 				dup2(command->heredoc_fd, STDIN_FILENO);
 				close(command->heredoc_fd);
-				if (ms->i != ms->nr_commands - 1 && command->args[0])
+				if (ms->nr_commands > 1 && ms->i != ms->nr_commands - 1 && command->args[0])
 				{
 					dup2(pipefd[1], STDOUT_FILENO);
 					// close(pipefd[1]);

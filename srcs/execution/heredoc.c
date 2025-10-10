@@ -79,5 +79,5 @@ void	handle_heredoc_input(t_command *command, t_shell *ms)
 	{
 		close(heredoc_fd[1]);
 		command->heredoc_fd = heredoc_fd[0];
-	}
+	}	
 }

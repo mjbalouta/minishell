@@ -60,6 +60,11 @@ void	ft_cmd_lstclear(t_command **lst)
 			free(current->comm_path);
 		if (current->redir)
 			free_redirection_list(current->redir);
+		if (current->heredoc_fd != -1)
+		{
+			close(current->heredoc_fd);
+			current->heredoc_fd = -1;
+		}
 		free(current);
 		current = next;
 	}

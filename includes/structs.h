@@ -47,6 +47,8 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
+	int			in_fd;
+	int			out_fd;
 	int			i; //contador para os comandos
 	int			nr_commands;
 	char		**full_envp;

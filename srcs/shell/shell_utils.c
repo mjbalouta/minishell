@@ -46,6 +46,10 @@ void	free_shell(t_shell *ms)
 		ft_cmd_lstclear(&ms->command);
 	if (ms->pid)
 		free(ms->pid);
+	if (ms->in_fd > 2)
+		close(ms->in_fd);
+	if (ms->out_fd > 2)
+		close(ms->out_fd);
 }
 
 void	exit_shell(t_shell *ms, int exit_status)
