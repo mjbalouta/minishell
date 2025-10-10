@@ -51,6 +51,8 @@ void	handle_processes(t_shell *ms)
 	temp = ms->command;
 	if (ms->nr_commands == 1 && temp->is_builtin == 0)
 	{
+		if (temp->redir && temp->redir->type == T_HEREDOC)
+			handle_heredoc_input(temp, ms);
 		handle_redir(ms, pipefd, prev_fd, temp);
 		execute_builtin(ms, temp);
 	}
@@ -95,16 +97,16 @@ void	execute(t_shell *ms)
 
 	ms->full_envp = ft_envp_lst_to_char_array(ms, false);
 	temp = ms->command;
-	init_pids_container(ms);
-	verify_if_bultin(ms);
 	while (temp)
 	{
+		verify_if_bultin(temp);
 		if (temp->is_builtin == 1)
 			fill_path(ms, temp);
 		temp = temp->next;
 	}
 	ms->nr_commands = count_commands(ms);
 	ms->i = -1;
+	init_pids_container(ms);
 	handle_processes(ms);
 	free(ms->pid);
 	free_char_array(ms->full_envp);
