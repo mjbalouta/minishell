@@ -54,7 +54,7 @@ int		is_redir(t_token *token);
 int		count_args(t_token *token);
 void	create_cmd_list(t_shell *ms);
 int		verify_tokens(t_shell *ms);
-void	verify_if_bultin(t_shell *ms);
+void	verify_if_bultin(t_command *cmd);
 void	ft_cmd_lstclear(t_command **lst);
 void	free_redirection_list(t_redir *redir);
 
