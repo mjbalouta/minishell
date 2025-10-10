@@ -85,7 +85,7 @@ void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms)
     {
         dup2(prev_fd, STDIN_FILENO);
         dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
+        // close(pipefd[1]);
     }
     else
         dup2(prev_fd, STDIN_FILENO);
@@ -116,7 +116,7 @@ void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command)
 				if (ms->i != ms->nr_commands - 1 && command->args[0])
 				{
 					dup2(pipefd[1], STDOUT_FILENO);
-					close(pipefd[1]);
+					// close(pipefd[1]);
 				}
 			}
 			temp_redir = temp_redir->next;

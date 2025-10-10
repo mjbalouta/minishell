@@ -14,17 +14,14 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	if (prev_fd != -1)
 		close (prev_fd);
 	if (ms->i < ms->nr_commands - 1)
-	{
 		close(pipefd[1]);
-		close(pipefd[0]);
-	}
 	if (!command->args[0])
-		return ;
+		exit_shell(ms, 0);
 	verify_comm_path(command, ms);
 	if (command->is_builtin == 0)
 	{
 		execute_builtin(ms, command->args);
-		exit(0);
+		exit_shell(ms, 0);
 	}
 	else
 	{
@@ -72,7 +69,8 @@ void	handle_processes(t_shell *ms)
 			// }
 			if (ms->i < ms->nr_commands - 1)
 			{
-				close(pipefd[1]);
+				if (pipefd[1] != -1)
+					close(pipefd[1]);
 				prev_fd = pipefd[0];
 			}
 			temp = temp->next;

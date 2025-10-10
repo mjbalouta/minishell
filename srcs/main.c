@@ -19,6 +19,8 @@ int	main(int argc, char **argv, char **envp)
         if (!ms.input)
         {
             ft_putendl_fd("exit", 1);
+			close(fd_in);
+			close(fd_out);
             break ;
         }
 		if (*ms.input)
@@ -34,16 +36,20 @@ int	main(int argc, char **argv, char **envp)
 		}
 		expander(&ms);
 		if (verify_tokens(&ms) == -1)
+		{
+			close(fd_in);
+			close(fd_out);
 			return (ft_printf("syntax error"));
+		}
 		create_cmd_list(&ms);
 		execute(&ms);
 		ft_cmd_lstclear(&ms.command);
 		ft_token_lstclear(&ms.token);
 		dup2(fd_in, STDIN_FILENO);
 		dup2(fd_out, STDOUT_FILENO);
+		close(fd_in);
+		close(fd_out);
 	}
-	close(fd_in);
-	close(fd_out);
 	free_shell(&ms);
 	return(g_exit_status);
 }
