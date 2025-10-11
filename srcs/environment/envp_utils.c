@@ -71,11 +71,14 @@ t_envp	*ft_checkenv(char *key, t_envp *lst)
  * @param lst environment list
  * @return int
  */
-int	ft_setenv(char *key, char *value, t_envp **lst)
+int	ft_setenv(char *key, char *value, bool concat, t_envp **lst)
 {
 	t_envp	*env_node;
 	char	*new_value;
+	char	*temp;
 
+	if (concat)
+		key[ft_strlen(key) - 1] = '\0';
 	env_node = ft_checkenv(key, *lst);
 	if (!env_node)
 		return (add_envp(key, value, lst));
@@ -83,11 +86,22 @@ int	ft_setenv(char *key, char *value, t_envp **lst)
 	{
 		if (value)
 		{
-			new_value = ft_strdup(value);
-			if (!new_value)
-				return (-1);
-			free(env_node->value);
-			env_node->value = new_value;
+			if (env_node->value && concat)
+			{
+				temp = ft_strjoin(env_node->value, value);
+				if (!temp)
+					return (-1);
+				free(env_node->value);
+				env_node->value = temp;
+			}
+			else
+			{
+				new_value = ft_strdup(value);
+				if (!new_value)
+					return (-1);
+				free(env_node->value);
+				env_node->value = new_value;
+			}
 		}
 	}
 	return (EXIT_SUCCESS);

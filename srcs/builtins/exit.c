@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-static int	check_arg_is_int(char *nptr)
+static int	check_arg_is_longlong(char *nptr)
 {
-	long	value;
-	int		signal;
+	long long	value;
+	int			signal;
+	int 		 digit;
 
 	value = 0;
 	signal = 1;
@@ -20,10 +21,21 @@ static int	check_arg_is_int(char *nptr)
 	while (*nptr)
 	{
 		if (*nptr >= '0' && *nptr <= '9')
-			value = value * 10 + *nptr++ - '0';
+		{
+			digit = *nptr++ - '0';
+			if (signal == 1)
+			{
+				if (value > (LLONG_MAX - digit) / 10)
+					return (EXIT_FAILURE);
+			}
+			else
+			{
+				if (value > (-(LLONG_MIN + digit)) / 10)
+					return (EXIT_FAILURE);
+			}
+			value = value * 10 + digit;
+		}
 		else
-			return (EXIT_FAILURE);
-		if (((value * signal) > INT_MAX) || ((value * signal) < INT_MIN))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -51,14 +63,20 @@ void	builtin_exit(t_shell *ms, t_command *cmd)
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd->args && cmd->args[1])
 	{
-		if (check_arg_is_int(cmd->args[1]) != EXIT_SUCCESS)
+		if (ft_strcmp(cmd->args[1], "--") == 0)
+		{
+			g_exit_status = 0;
+			exit_shell(ms, g_exit_status);
+		}
+		else
+		if (check_arg_is_longlong(cmd->args[1]) != EXIT_SUCCESS)
 		{
 			print_error_exit_arg(cmd->args[1]);
 			g_exit_status = 2;
 			exit_shell(ms, g_exit_status);
 		}
 		else
-			g_exit_status = (unsigned char)(ft_atoi(cmd->args[1]));
+			g_exit_status = (unsigned char)(ft_atoll(cmd->args[1]));
 		if (cmd->args && cmd->args[2])
 		{
 			print_error("exit: too many arguments");

@@ -42,7 +42,7 @@ int	set_minimal_env(t_envp **lst)
 	path = getcwd(NULL, 0);
 	if (!path)
 		return (-1);
-	ret = ft_setenv("PWD", path, lst);
+	ret = ft_setenv("PWD", path, false, lst);
 	free(path);
 	if (ret != 0)
 		return (-1);
@@ -50,7 +50,7 @@ int	set_minimal_env(t_envp **lst)
 	shlvl_ascii = ft_itoa(shlvl + 1);
 	if (!shlvl_ascii)
 		return (-1);
-	ret = ft_setenv("SHLVL", shlvl_ascii, lst);
+	ret = ft_setenv("SHLVL", shlvl_ascii, false, lst);
 	free(shlvl_ascii);
 	if (ret != 0)
 		return (-1);

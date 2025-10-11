@@ -34,8 +34,6 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 			free_char_array(envp);
 			exit_shell(ms, 1);
 		}
-		else
-			free_char_array(envp);
 	}
 }
 
@@ -114,4 +112,5 @@ void	execute(t_shell *ms)
 	init_pids_container(ms);
 	handle_processes(ms);
 	free(ms->pid);
+	ms->pid = NULL;
 }

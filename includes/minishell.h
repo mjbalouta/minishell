@@ -80,7 +80,7 @@ char	**ft_envp_lst_to_char_array(t_shell *ms, bool export_style);
 char	*ft_getenv(const char *varname, t_envp *lst);
 char	*ft_getenv2(const char *key, t_envp *lst);
 t_envp	*ft_checkenv(char *key, t_envp *lst);
-int		ft_setenv(char *key, char *value, t_envp **lst);
+int		ft_setenv(char *key, char *value, bool concat, t_envp **lst);
 int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
