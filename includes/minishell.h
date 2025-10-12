@@ -109,7 +109,7 @@ void	handle_heredoc_input(t_command *command, t_shell *ms);
 t_redir	*find_last_heredoc(t_redir *redir_list);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command);
-void	handle_processes(t_shell *ms);
+void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id);
 void	execute(t_shell *ms);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
@@ -117,6 +117,7 @@ void	ft_exit(t_shell *ms, char **args);
 void	verify_comm_path(t_command *command, t_shell *ms);
 void	close_one_fd(int fd);
 void	close_both_fds(int *fd);
+void	free_pid(t_shell *ms);
 
 
 //------------------------------BUILTINS----------------------------------------

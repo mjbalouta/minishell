@@ -50,21 +50,12 @@ void	execute_single_cmd_builtin(t_command *cmd, t_shell *ms, int prev_fd, int *p
  * 
  * @param ms 
  */
-void	handle_processes(t_shell *ms)
+void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 {
-	int			pipefd[2];
-	int			id;
-	int			prev_fd;
 	t_command	*temp;
 
-	id = 0;
-	prev_fd = -1;
 	temp = ms->command;
-	if (ms->nr_commands == 1 && temp->is_builtin == 0)
-		execute_single_cmd_builtin(temp, ms, prev_fd, pipefd);
-	else
-	{
-		while (++ms->i < ms->nr_commands && temp)
+	while (++ms->i < ms->nr_commands && temp)
 		{
 			if (ms->i < ms->nr_commands - 1)
 				create_pipe(pipefd, ms);
@@ -86,7 +77,6 @@ void	handle_processes(t_shell *ms)
 		close_one_fd(prev_fd);
 		g_exit_status = wait_for_child(ms, id);
 	}
-}
 
 /**
  * @brief main execution function
@@ -96,8 +86,13 @@ void	handle_processes(t_shell *ms)
 void	execute(t_shell *ms)
 {
 	t_command	*temp;
+	int			pipefd[2];
+	int			prev_fd;
+	int			id;
 
 	temp = ms->command;
+	prev_fd = -1;
+	id = 0;
 	while (temp)
 	{
 		verify_if_bultin(temp);
@@ -108,7 +103,10 @@ void	execute(t_shell *ms)
 	ms->nr_commands = count_commands(ms);
 	ms->i = -1;
 	init_pids_container(ms);
-	handle_processes(ms);
-	free(ms->pid);
-	ms->pid = NULL;
+	temp = ms->command;
+	if (ms->nr_commands == 1 && temp->is_builtin == 0)
+		execute_single_cmd_builtin(temp, ms, prev_fd, pipefd);
+	else
+		handle_child_processes(ms, pipefd, prev_fd, id);
+	free_pid(ms);
 }
