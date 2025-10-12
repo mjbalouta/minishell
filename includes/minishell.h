@@ -115,6 +115,9 @@ void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
 void	verify_comm_path(t_command *command, t_shell *ms);
+void	close_one_fd(int fd);
+void	close_both_fds(int *fd);
+
 
 //------------------------------BUILTINS----------------------------------------
 
