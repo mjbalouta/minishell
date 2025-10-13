@@ -33,16 +33,15 @@ static void	print_error_cd(char *arg)
 
 static void	update_pwd_vars(t_shell *ms)
 {
-	char	cwd[PATH_MAX];
 	char	*oldpwd;
 	char	*pwd;
 
 	oldpwd = ft_getenv("PWD", ms->envp);
 	if (oldpwd)
 		ft_setenv("OLDPWD", oldpwd, false, &ms->envp);
-	if (getcwd(cwd, sizeof(cwd)))
+	if (getcwd(ms->cwd, sizeof(ms->cwd)))
 	{
-		pwd = ft_strdup(cwd);
+		pwd = ft_strdup(ms->cwd);
 		if (pwd)
 		{
 			ft_setenv("PWD", pwd, false, &ms->envp);

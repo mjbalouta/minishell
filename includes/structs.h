@@ -60,6 +60,7 @@ typedef struct s_shell
 	t_token		*token;
 	t_command 	*command;
 	pid_t		*pid;
+	char		cwd[PATH_MAX];
 }	t_shell;
 
 #endif

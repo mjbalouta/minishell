@@ -27,6 +27,7 @@
 # include <signal.h>
 # include <errno.h>
 # include <stdlib.h>
+# include <limits.h>
 
 # include "structs.h"
 # include "../libft/get-next-line/get_next_line.h"
