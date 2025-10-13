@@ -39,6 +39,11 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 		while (1)
 		{
 			line = readline("> ");
+			if (!line)
+            {
+                print_error("warning: here-document delimited by end-of-file");
+                return ;
+            }
 			if (ft_strcmp(line, redir_list->filename) == 0)
 			{
 				free(line);
