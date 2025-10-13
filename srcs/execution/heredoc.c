@@ -7,18 +7,18 @@
  * @param redir_list 
  * @return t_redir* last_heredoc 
  */
-t_redir	*find_last_heredoc(t_redir *redir_list)
+t_redir	*find_last_redirection(t_redir *redir_list, t_token_type redirection)
 {
-	t_redir	*last_heredoc;
+	t_redir	*last_redirection;
 
-	last_heredoc = NULL;
+	last_redirection = NULL;
 	while (redir_list)
 	{
-		if (redir_list->type == T_HEREDOC)
-			last_heredoc = redir_list;
+		if (redir_list->type == redirection)
+			last_redirection = redir_list;
 		redir_list = redir_list->next;
 	}
-	return (last_heredoc);
+	return (last_redirection);
 }
 
 /**
@@ -70,7 +70,7 @@ void	handle_heredoc_input(t_command *command, t_shell *ms)
 	t_redir	*last_heredoc;
 
 	redir_list = command->redir;
-	last_heredoc = find_last_heredoc(redir_list);
+	last_heredoc = find_last_redirection(redir_list, T_HEREDOC);
 	redir_list = command->redir;
 	if (last_heredoc && pipe(heredoc_fd) != 0)
 		exit_shell(ms, 1);

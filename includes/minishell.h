@@ -103,10 +103,10 @@ void	init_pids_container(t_shell *ms);
 int		wait_for_child(t_shell *ms, int cmd_count);
 void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command);
 void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms);
-void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir);
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir);
+void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir, t_command *command);
+void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_command *command);
 void	handle_heredoc_input(t_command *command, t_shell *ms);
-t_redir	*find_last_heredoc(t_redir *redir_list);
+t_redir	*find_last_redirection(t_redir *redir_list, t_token_type redirection);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command);
 void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id);
@@ -118,6 +118,7 @@ void	verify_comm_path(t_command *command, t_shell *ms);
 void	close_one_fd(int fd);
 void	close_both_fds(int *fd);
 void	free_pid(t_shell *ms);
+void	define_last_redirection(t_command *cmd);
 
 
 //------------------------------BUILTINS----------------------------------------
