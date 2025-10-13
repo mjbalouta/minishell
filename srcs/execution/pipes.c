@@ -61,6 +61,7 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 				create_pipe(pipefd, ms);
 			if (temp->redir && temp->redir->type == T_HEREDOC)
 				handle_heredoc_input(temp, ms);
+			reset_signals(ms);
 			ms->pid[id] = fork();
 			if (ms->pid[id] < 0)
 				exit_shell(ms, 1);
