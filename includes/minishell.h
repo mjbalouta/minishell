@@ -48,7 +48,12 @@ void	debug_init_shell(t_shell *ms, char **envp);
 void	print_error_and_exit(t_shell *ms, char *message, int exit_status);
 void	print_error(char *message);
 
-void	init_signals();
+//------------------------------SIGNALS-----------------------------------------
+
+void	init_signals(void);
+void	reset_signals(t_shell *ms);
+
+//------------------------------PARSING-----------------------------------------
 
 int		is_redir(t_token *token);
 int		count_args(t_token *token);
@@ -57,6 +62,8 @@ int		verify_tokens(t_shell *ms);
 void	verify_if_bultin(t_command *cmd);
 void	ft_cmd_lstclear(t_command **lst);
 void	free_redirection_list(t_redir *redir);
+
+//------------------------------TOKENIZER---------------------------------------
 
 int		tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
