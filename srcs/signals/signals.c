@@ -42,3 +42,24 @@ void	init_signals(void)
 		exit(errno);
 	}
 }
+
+void	reset_signals(t_shell *ms)
+{
+	struct sigaction	sa;
+
+	// Reset SIGINT
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error resetting SIGINT", errno);
+
+	// Reset SIGQUIT
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error resetting SIGQUIT", errno);
+}
