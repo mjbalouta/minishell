@@ -32,6 +32,13 @@ int	init_envp(t_shell *ms, char **envp)
 	return (0);
 }
 
+static void	print_warning_shlvl(char *arg)
+{
+	ft_putstr_fd(SHELL_NAME": warning: shell level (", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(") too high, resetting to 1\n", STDERR_FILENO);
+}
+
 int	set_minimal_env(t_envp **lst)
 {
 	char	*path;
@@ -50,6 +57,14 @@ int	set_minimal_env(t_envp **lst)
 	shlvl_ascii = ft_itoa(shlvl + 1);
 	if (!shlvl_ascii)
 		return (-1);
+	if (shlvl + 1 > 999)
+	{
+		print_warning_shlvl(shlvl_ascii);
+		free(shlvl_ascii);
+		shlvl_ascii = ft_itoa(1);
+		if (!shlvl_ascii)
+			return (-1);
+	}
 	ret = ft_setenv("SHLVL", shlvl_ascii, false, lst);
 	free(shlvl_ascii);
 	if (ret != 0)
