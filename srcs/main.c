@@ -33,11 +33,9 @@ int	main(int argc, char **argv, char **envp)
 		expander(&ms);
 		if (verify_tokens(&ms) == -1)
 		{
-			ft_printf("syntax error\n");
+			ft_putstr_fd("syntax error\n", STDERR_FILENO);
 			g_exit_status = 2;
-			ft_token_lstclear(&ms.token);
-			free(ms.input);
-			ms.input = NULL;
+			free_shell(&ms);
 			close_both_fds(ms.in_fd, ms.out_fd);
 			continue ;
 		}

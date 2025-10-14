@@ -41,4 +41,10 @@ void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms)
 		free_char_array(envp);
 		exit_shell(ms, 127);
 	}
+	else
+	{
+		perror(command->args[0]);
+		free_char_array(envp);
+		exit_shell(ms, 1);
+	}
 }
