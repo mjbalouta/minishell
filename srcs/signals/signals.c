@@ -82,7 +82,7 @@ void	handle_child_signal(int status)
 			g_exit_status = 131;
 		}
 		else
-			g_exit_status = 128 + WTERMSIG(status);
+			g_exit_status = 128 + sig;
 	}
 	else if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
