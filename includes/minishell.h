@@ -53,6 +53,7 @@ void	print_error(char *message);
 
 void	init_signals(void);
 void	reset_signals(t_shell *ms);
+void	handle_child_signal(int status);
 
 //------------------------------PARSING-----------------------------------------
 
