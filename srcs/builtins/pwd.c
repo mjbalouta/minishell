@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	builtin_pwd(t_shell *ms, t_command *cmd)
+void	builtin_pwd(t_shell *ms, t_cmd *cmd)
 {
 	// char	*path;
 

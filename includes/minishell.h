@@ -60,9 +60,10 @@ int		is_redir(t_token *token);
 int		count_args(t_token *token);
 void	create_cmd_list(t_shell *ms);
 int		verify_tokens(t_shell *ms);
-void	verify_if_bultin(t_command *cmd);
-void	ft_cmd_lstclear(t_command **lst);
+void	verify_if_bultin(t_cmd *cmd);
+void	ft_cmd_lstclear(t_cmd **lst);
 void	free_redirection_list(t_redir *redir);
+void	fill_cmd(t_token **token_temp, t_cmd *cmd_temp);
 
 //------------------------------TOKENIZER---------------------------------------
 
@@ -102,42 +103,44 @@ char	*expand_tilde(char *str, t_envp *env);
 
 //------------------------------EXECUTE-----------------------------------------
 
-int		is_path(t_command *command);
+int		is_path(t_cmd *command);
 char	*create_test_path(char *path, char *command);
-void	fill_path(t_shell *ms, t_command *command);
+void	fill_path(t_shell *ms, t_cmd *command);
 int		count_commands(t_shell *ms);
 void	create_pipe(int	*pipefd, t_shell *ms);
 void	init_pids_container(t_shell *ms);
 int		wait_for_child(t_shell *ms, int cmd_count);
-void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command);
+void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_cmd *command);
 void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms);
-void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir, t_command *command);
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_command *command);
-void	handle_heredoc_input(t_command *command, t_shell *ms);
-t_redir	*find_last_redirection(t_redir *redir_list, t_token_type redirection);
+void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *command);
+void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *command);
+void	handle_heredoc_input(t_cmd *command, t_shell *ms);
+t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
-void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command);
+void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command);
 void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id);
 void	execute(t_shell *ms);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
-void	verify_comm_path(t_command *command, t_shell *ms);
+void	verify_comm_path(t_cmd *command, t_shell *ms);
 void	close_one_fd(int fd);
 void	close_both_fds(int *fd);
 void	free_pid(t_shell *ms);
-void	define_last_redirection(t_command *cmd);
-void	handle_execve_error(t_command *command, char **envp, t_shell *ms);
+void	define_last_redirection(t_cmd *cmd);
+void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms);
+void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd);
+
 
 //------------------------------BUILTINS----------------------------------------
 
-void	execute_builtin(t_shell *ms, t_command *cmd);
-void	builtin_cd(t_shell *ms, t_command *cmd);
-void	builtin_echo(t_shell *ms, t_command *cmd);
-void	builtin_env(t_shell *ms, t_command *cmd);
-void	builtin_exit(t_shell *ms, t_command *cmd);
-void	builtin_export(t_shell *ms, t_command *cmd);
-void	builtin_pwd(t_shell *ms, t_command *cmd);
-void	builtin_unset(t_shell *ms, t_command *cmd);
+void	execute_builtin(t_shell *ms, t_cmd *cmd);
+void	builtin_cd(t_shell *ms, t_cmd *cmd);
+void	builtin_echo(t_shell *ms, t_cmd *cmd);
+void	builtin_env(t_shell *ms, t_cmd *cmd);
+void	builtin_exit(t_shell *ms, t_cmd *cmd);
+void	builtin_export(t_shell *ms, t_cmd *cmd);
+void	builtin_pwd(t_shell *ms, t_cmd *cmd);
+void	builtin_unset(t_shell *ms, t_cmd *cmd);
 
 #endif

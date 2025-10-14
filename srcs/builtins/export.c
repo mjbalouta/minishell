@@ -101,7 +101,7 @@ static int	process_export_arg(t_shell *ms, char *arg)
 	return (0);
 }
 
-void	builtin_export(t_shell *ms, t_command *cmd)
+void	builtin_export(t_shell *ms, t_cmd *cmd)
 {
 	int	i;
 	char	**array;

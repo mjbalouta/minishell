@@ -6,7 +6,7 @@
  * @param ms 
  * @return 1 -> is a path; 0 -> is not a path.
  */
-int	is_path(t_command *command)
+int	is_path(t_cmd *command)
 {
 	int	i;
 
@@ -49,7 +49,7 @@ char	*create_test_path(char *path, char *command)
  * 
  * @param ms 
  */
-void	fill_path(t_shell *ms, t_command *command)
+void	fill_path(t_shell *ms, t_cmd *command)
 {
 	char	*path_full_str;
 	char	**path_list;

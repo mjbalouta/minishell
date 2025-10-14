@@ -26,7 +26,8 @@ void	free_pid(t_shell *ms)
 		ms->pid = NULL;
 	}
 }
-void	handle_execve_error(t_command *command, char **envp, t_shell *ms)
+
+void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms)
 {
 	if (errno == EACCES || errno == EISDIR)
 	{

@@ -15,7 +15,7 @@ static bool	valid_n_option(char *arg, int *i)
 	return (true);
 }
 
-void	builtin_echo(t_shell *ms, t_command *cmd)
+void	builtin_echo(t_shell *ms, t_cmd *cmd)
 {
 	int		i;
 	bool	new_line;

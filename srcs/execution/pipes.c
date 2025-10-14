@@ -8,7 +8,7 @@
  * @param i 
  * @param ms 
  */
-void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
+void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 {
 	char		**envp;
 
@@ -33,10 +33,10 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	}
 }
 
-void	execute_single_cmd_builtin(t_command *cmd, t_shell *ms, int prev_fd, int *pipefd)
+void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd)
 {
 	if (cmd->redir && cmd->redir->type == T_HEREDOC)
-			handle_heredoc_input(cmd, ms);
+		handle_heredoc_input(cmd, ms);
 	handle_redir(ms, pipefd, prev_fd, cmd);
 	execute_builtin(ms, cmd);
 }
@@ -49,31 +49,31 @@ void	execute_single_cmd_builtin(t_command *cmd, t_shell *ms, int prev_fd, int *p
  */
 void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 {
-	t_command	*temp;
+	t_cmd	*temp;
 
 	temp = ms->command;
 	while (++ms->i < ms->nr_commands && temp)
-		{
-			if (ms->i < ms->nr_commands - 1)
-				create_pipe(pipefd, ms);
-			if (temp->redir && temp->redir->type == T_HEREDOC)
-				handle_heredoc_input(temp, ms);
-			ms->pid[id] = fork();
-			if (ms->pid[id] < 0)
-				exit_shell(ms, 1);
-			if (ms->pid[id++] == 0)
-				execute_pipe_cmd(pipefd, ms, prev_fd, temp);
-			close_one_fd(prev_fd);
-			if (ms->i < ms->nr_commands - 1)
-			{
-				close_one_fd(pipefd[1]);
-				prev_fd = pipefd[0];
-			}
-			temp = temp->next;
-		}
+	{
+		if (ms->i < ms->nr_commands - 1)
+			create_pipe(pipefd, ms);
+		if (temp->redir && temp->redir->type == T_HEREDOC)
+			handle_heredoc_input(temp, ms);
+		ms->pid[id] = fork();
+		if (ms->pid[id] < 0)
+			exit_shell(ms, 1);
+		if (ms->pid[id++] == 0)
+			execute_pipe_cmd(pipefd, ms, prev_fd, temp);
 		close_one_fd(prev_fd);
-		g_exit_status = wait_for_child(ms, id);
+		if (ms->i < ms->nr_commands - 1)
+		{
+			close_one_fd(pipefd[1]);
+			prev_fd = pipefd[0];
+		}
+		temp = temp->next;
 	}
+	close_one_fd(prev_fd);
+	g_exit_status = wait_for_child(ms, id);
+}
 
 /**
  * @brief main execution function
@@ -82,10 +82,10 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
  */
 void	execute(t_shell *ms)
 {
-	t_command	*temp;
-	int			pipefd[2];
-	int			prev_fd;
-	int			id;
+	t_cmd	*temp;
+	int		pipefd[2];
+	int		prev_fd;
+	int		id;
 
 	temp = ms->command;
 	prev_fd = -1;
@@ -102,7 +102,7 @@ void	execute(t_shell *ms)
 	init_pids_container(ms);
 	temp = ms->command;
 	if (ms->nr_commands == 1 && temp->is_builtin == 0)
-		execute_single_cmd_builtin(temp, ms, prev_fd, pipefd);
+		exec_single_builtin(temp, ms, prev_fd, pipefd);
 	else
 		handle_child_processes(ms, pipefd, prev_fd, id);
 	free_pid(ms);

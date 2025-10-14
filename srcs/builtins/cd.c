@@ -50,7 +50,7 @@ static void	update_pwd_vars(t_shell *ms)
 	}
 }
 
-void	builtin_cd(t_shell *ms, t_command *cmd)
+void	builtin_cd(t_shell *ms, t_cmd *cmd)
 {
  	char	*path;
   	int		print_path;

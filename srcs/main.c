@@ -11,7 +11,7 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&ms, envp);
 	while (true)
 	{
-		ms.in_fd = dup(STDIN_FILENO); //guarda os fds base nestas variaveis para sempre que o loop reiniciar os fds darem reset (importante para o heredoc)
+		ms.in_fd = dup(STDIN_FILENO);
 		ms.out_fd = dup(STDOUT_FILENO);
 		ms.input = readline(ms.prompt);
         if (!ms.input)

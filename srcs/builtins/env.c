@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	builtin_env(t_shell *ms, t_command *cmd)
+void	builtin_env(t_shell *ms, t_cmd *cmd)
 {
 	char	**array;
 

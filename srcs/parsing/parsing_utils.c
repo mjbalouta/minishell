@@ -37,16 +37,16 @@ int	is_redir(t_token *token)
 {
 	if (token->type == T_REDIRECT_INPUT
 		|| token->type == T_REDIRECT_OUTPUT
-		|| token->type == T_REDIR_OUTPUT_APPEND
+		|| token->type == T_REDIR_OUT_APPEND
 		|| token->type == T_HEREDOC)
 		return (1);
 	return (0);
 }
 
-void	ft_cmd_lstclear(t_command **lst)
+void	ft_cmd_lstclear(t_cmd **lst)
 {
-	t_command	*current;
-	t_command	*next;
+	t_cmd	*current;
+	t_cmd	*next;
 
 	if (!lst || !*lst)
 		return ;
@@ -80,8 +80,6 @@ void	free_redirection_list(t_redir *redir)
 	while (current)
 	{
 		next = current->next;
-		// if (current->filename)
-		// 	free(current->filename);
 		free(current);
 		current = next;
 	}
