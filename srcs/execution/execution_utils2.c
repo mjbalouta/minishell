@@ -26,3 +26,18 @@ void	free_pid(t_shell *ms)
 		ms->pid = NULL;
 	}
 }
+void	handle_execve_error(t_command *command, char **envp, t_shell *ms)
+{
+	if (errno == EACCES || errno == EISDIR)
+	{
+		perror(command->args[0]);
+		free_char_array(envp);
+		exit_shell(ms, 126);
+	}
+	else if (errno == ENOENT || errno == ENOTDIR)
+	{
+		perror(command->args[0]);
+		free_char_array(envp);
+		exit_shell(ms, 127);
+	}
+}

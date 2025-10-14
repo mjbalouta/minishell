@@ -19,6 +19,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	if (!command->args[0])
 		exit_shell(ms, 0);
 	verify_comm_path(command, ms);
+	reset_signals(ms);
 	if (command->is_builtin == 0)
 	{
 		execute_builtin(ms, command);
@@ -28,11 +29,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_command *command)
 	{
 		envp = ft_envp_lst_to_char_array(ms, false);
 		if (execve(command->comm_path, command->args, envp) == -1)
-		{
-			perror(command->args[0]);
-			free_char_array(envp);
-			exit_shell(ms, 1);
-		}
+			handle_execve_error(command, envp, ms);
 	}
 }
 
@@ -61,7 +58,6 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 				create_pipe(pipefd, ms);
 			if (temp->redir && temp->redir->type == T_HEREDOC)
 				handle_heredoc_input(temp, ms);
-			reset_signals(ms);
 			ms->pid[id] = fork();
 			if (ms->pid[id] < 0)
 				exit_shell(ms, 1);

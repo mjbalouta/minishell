@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			close(ms.in_fd);
 			close(ms.out_fd);
-			return (ft_printf("syntax error"));
+			print_error_and_exit(&ms, "syntax error", 2);
 		}
 		create_cmd_list(&ms);
 		execute(&ms);

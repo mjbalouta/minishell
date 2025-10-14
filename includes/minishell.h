@@ -127,7 +127,7 @@ void	close_one_fd(int fd);
 void	close_both_fds(int *fd);
 void	free_pid(t_shell *ms);
 void	define_last_redirection(t_command *cmd);
-
+void	handle_execve_error(t_command *command, char **envp, t_shell *ms);
 
 //------------------------------BUILTINS----------------------------------------
 
