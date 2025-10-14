@@ -36,22 +36,18 @@ int	count_commands(t_shell *ms)
  * 
  * @param ms 
  * @param cmd_count 
- * @return status of the last process id to return to the main function
  */
-int	wait_for_child(t_shell *ms, int cmd_count)
+void wait_for_child(t_shell *ms, int cmd_count)
 {
-	int	last_status;
-	int	status;
-	int	i;
-
-	i = 0;
-	while (i < cmd_count)
-	{
-		waitpid(ms->pid[i], &status, 0);
-		last_status = status;
-		i++;
-	}
-	return (last_status >> 8);
+    int status;
+    int i;
+    i = 0;
+    while (i < cmd_count)
+    {
+        waitpid(ms->pid[i], &status, 0);
+        i++;
+    }
+	handle_child_signal(status);
 }
 
 void	write_inside_pipe(int *heredoc_fd, char *line)

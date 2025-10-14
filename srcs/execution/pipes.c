@@ -15,7 +15,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 	handle_redir(ms, pipefd, prev_fd, command);
 	close_one_fd(prev_fd);
 	if (ms->i < ms->nr_commands - 1)
-		close_both_fds(pipefd);
+		close_both_fds(pipefd[0], pipefd[1]);
 	if (!command->args[0])
 		exit_shell(ms, 0);
 	verify_comm_path(command, ms);
@@ -72,7 +72,7 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 		temp = temp->next;
 	}
 	close_one_fd(prev_fd);
-	g_exit_status = wait_for_child(ms, id);
+	wait_for_child(ms, id);
 }
 
 /**

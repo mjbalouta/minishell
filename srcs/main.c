@@ -17,8 +17,7 @@ int	main(int argc, char **argv, char **envp)
         if (!ms.input)
         {
             ft_putendl_fd("exit", 1);
-			close(ms.in_fd);
-			close(ms.out_fd);
+			close_both_fds(ms.in_fd, ms.out_fd);
             break ;
         }
 		if (*ms.input)
@@ -28,16 +27,19 @@ int	main(int argc, char **argv, char **envp)
 			free(ms.input);
 			ft_token_lstclear(&ms.token);
 			ms.input = NULL;
-			close(ms.in_fd);
-			close(ms.out_fd);
+			close_both_fds(ms.in_fd, ms.out_fd);
 			continue ;
 		}
 		expander(&ms);
 		if (verify_tokens(&ms) == -1)
 		{
-			close(ms.in_fd);
-			close(ms.out_fd);
-			print_error_and_exit(&ms, "syntax error", 2);
+			ft_printf("syntax error\n");
+			g_exit_status = 2;
+			ft_token_lstclear(&ms.token);
+			free(ms.input);
+			ms.input = NULL;
+			close_both_fds(ms.in_fd, ms.out_fd);
+			continue ;
 		}
 		create_cmd_list(&ms);
 		execute(&ms);
@@ -45,8 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_token_lstclear(&ms.token);
 		dup2(ms.in_fd, STDIN_FILENO);
 		dup2(ms.out_fd, STDOUT_FILENO);
-		close(ms.in_fd);
-		close(ms.out_fd);
+		close_both_fds(ms.in_fd, ms.out_fd);
 	}
 	free_shell(&ms);
 	return(g_exit_status);

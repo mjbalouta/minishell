@@ -12,10 +12,10 @@ void	close_one_fd(int fd)
 		close(fd);
 }
 
-void	close_both_fds(int *fd)
+void	close_both_fds(int fd1, int fd2)
 {
-	close_one_fd(fd[0]);
-	close_one_fd(fd[1]);
+	close_one_fd(fd1);
+	close_one_fd(fd2);
 }
 
 void	free_pid(t_shell *ms)
