@@ -63,6 +63,10 @@ char	*expand_variables(char *str, t_shell *ms)
 			i++;
 			if (str[i] == '?')
 				result = expand_exit_status(result, &i, ms);
+			else if (str[i] == '!')
+				i++;
+			else if (str[i] >= '0' && str[i] <= '9')
+				i++;
 			else if (ft_isalpha(str[i]) || str[i] == '_')
 			{
 				start = i;

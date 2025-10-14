@@ -35,7 +35,7 @@ void	builtin_echo(t_shell *ms, t_command *cmd)
 			}
 		print_started = true;
 		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
-		if (cmd->args[i + 1] && cmd->args[i][0])
+		if (cmd->args[i + 1] && cmd->args[i][0] && cmd->args[i + 1][0])
 			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
