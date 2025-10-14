@@ -58,7 +58,7 @@ static void	print_error_exit_arg(char *arg)
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 }
 
-void	builtin_exit(t_shell *ms, t_command *cmd)
+void	builtin_exit(t_shell *ms, t_cmd *cmd)
 {
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd->args && cmd->args[1])

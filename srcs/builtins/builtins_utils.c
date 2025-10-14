@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	execute_builtin(t_shell *ms, t_command *cmd)
+void	execute_builtin(t_shell *ms, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		builtin_echo(ms, cmd);

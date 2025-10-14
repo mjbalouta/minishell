@@ -19,6 +19,7 @@ SRCS			= $(addprefix srcs/, \
 				execution/pipes.c \
 				execution/execution_utils.c \
 				execution/execution_utils2.c \
+				execution/execution_utils3.c \
 				execution/handle_redirects.c \
 				execution/heredoc.c \
 				signals/signals.c \

@@ -7,7 +7,7 @@
  * @param redir_list 
  * @return t_redir* last_heredoc 
  */
-t_redir	*find_last_redirection(t_redir *redir_list, t_token_type redirection)
+t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection)
 {
 	t_redir	*last_redirection;
 
@@ -40,10 +40,10 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 		{
 			line = readline("> ");
 			if (!line)
-            {
-                print_error("warning: here-document delimited by end-of-file");
-                return ;
-            }
+			{
+				print_error("warning: here-document delimited by end-of-file");
+				return ;
+			}
 			if (ft_strcmp(line, redir_list->filename) == 0)
 			{
 				free(line);
@@ -63,14 +63,14 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
  * 
  * @param ms 
  */
-void	handle_heredoc_input(t_command *command, t_shell *ms)
+void	handle_heredoc_input(t_cmd *command, t_shell *ms)
 {
 	int		heredoc_fd[2];
 	t_redir	*redir_list;
 	t_redir	*last_heredoc;
 
 	redir_list = command->redir;
-	last_heredoc = find_last_redirection(redir_list, T_HEREDOC);
+	last_heredoc = find_last_redir(redir_list, T_HEREDOC);
 	redir_list = command->redir;
 	if (last_heredoc && pipe(heredoc_fd) != 0)
 		exit_shell(ms, 1);
@@ -84,5 +84,5 @@ void	handle_heredoc_input(t_command *command, t_shell *ms)
 	{
 		close(heredoc_fd[1]);
 		command->heredoc_fd = heredoc_fd[0];
-	}	
+	}
 }

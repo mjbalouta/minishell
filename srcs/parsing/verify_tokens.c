@@ -11,9 +11,9 @@ int	verify_pipe(t_token *temp)
 {
 	if (temp->type == T_PIPE)
 	{
-		if (!temp->next) // se nao existir token a seguir a um pipe
+		if (!temp->next)
 			return (-1);
-		if (temp->next->type == T_PIPE) // se o token a seguir ao pipe for outro pipe
+		if (temp->next->type == T_PIPE)
 			return (-1);
 	}
 	return (0);
@@ -23,9 +23,9 @@ int	verify_redirect(t_token *temp)
 {
 	if (is_redir(temp) == 1)
 	{
-		if (!temp->next) //se nao existir token depois de um redirect
+		if (!temp->next)
 			return (-1);
-		if (temp->next->type != T_WORD) //se o token a seguir ao redirect nao for uma palavra
+		if (temp->next->type != T_WORD)
 			return (-1);
 	}
 	return (0);
@@ -44,7 +44,7 @@ int	verify_tokens(t_shell *ms)
 	int		is_command;
 
 	temp = ms->token;
-	if (temp->type == T_PIPE) // se o primeiro token for um pipe
+	if (temp->type == T_PIPE)
 		return (-1);
 	while (temp)
 	{
@@ -56,7 +56,7 @@ int	verify_tokens(t_shell *ms)
 				return (-1);
 			temp = temp->next;
 		}
-		if (is_command == 0) // o primeiro "comando" nao contem uma palavra/um comando
+		if (is_command == 0)
 			return (-1);
 		if (!temp)
 			break ;

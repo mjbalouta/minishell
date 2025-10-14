@@ -31,7 +31,7 @@ int	process_token_redir_pipe(t_token **head, char **input)
 		if (**input == '>')
 			if (*(*input + 1) == '>')
 			{
-				ret = add_token(">>", T_REDIR_OUTPUT_APPEND, head);
+				ret = add_token(">>", T_REDIR_OUT_APPEND, head);
 				(*input)++;
 			}
 	else

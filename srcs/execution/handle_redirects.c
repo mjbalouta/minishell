@@ -8,7 +8,7 @@
  * @param pipefd 
  * @param i 
  */
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_command *cmd)
+void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
 {
 	int	in_fd;
 
@@ -42,20 +42,20 @@ void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_command *cmd
  * @param out_fd 
  * @param i 
  */
-void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir, t_command *cmd)
+void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *cmd)
 {
-    int	out_fd;
+	int	out_fd;
 
-    out_fd = -1;
-    if (redir->type == T_REDIRECT_OUTPUT)
-        out_fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    else if (redir->type == T_REDIR_OUTPUT_APPEND)
-        out_fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-    if (out_fd < 0)
-    {
-        perror(redir->filename);
-        exit_shell(ms, 1);
-    }
+	out_fd = -1;
+	if (redir->type == T_REDIRECT_OUTPUT)
+		out_fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else if (redir->type == T_REDIR_OUT_APPEND)
+		out_fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (out_fd < 0)
+	{
+		perror(redir->filename);
+		exit_shell(ms, 1);
+	}
 	if (redir == cmd->last_out_redir || redir == cmd->last_append_redir)
 	{
 		if (ms->i > 0)
@@ -63,7 +63,7 @@ void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir, t_command *cm
 		dup2(out_fd, STDOUT_FILENO);
 	}
 	if (out_fd != -1)
-        close(out_fd);
+		close(out_fd);
 }
 
 /**
@@ -76,38 +76,37 @@ void	handle_output_redir(int prev_fd, t_shell *ms, t_redir *redir, t_command *cm
  */
 void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms)
 {
-    if (ms->i == 0 && ms->i != (ms->nr_commands - 1))
-    {
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-    }
-    else if (ms->i > 0 && ms->i < (ms->nr_commands - 1))
-    {
-        dup2(prev_fd, STDIN_FILENO);
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-    }
-    else
-        dup2(prev_fd, STDIN_FILENO);
+	if (ms->i == 0 && ms->i != (ms->nr_commands - 1))
+	{
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+	}
+	else if (ms->i > 0 && ms->i < (ms->nr_commands - 1))
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+	}
+	else
+		dup2(prev_fd, STDIN_FILENO);
 }
-/**
- * @brief defines last found redirections of different types
- * 
- * @param cmd 
- */
-void	define_last_redirection(t_command *cmd)
-{
-	t_redir	*temp_redir;
 
-	cmd->last_out_redir = NULL;
-	cmd->last_append_redir = NULL;
-	cmd->last_in_redir = NULL;
-	temp_redir = cmd->redir;
-	cmd->last_out_redir = find_last_redirection(temp_redir, T_REDIRECT_OUTPUT);
-	temp_redir = cmd->redir;
-	cmd->last_append_redir = find_last_redirection(temp_redir, T_REDIR_OUTPUT_APPEND);
-	temp_redir = cmd->redir;
-    cmd->last_in_redir = find_last_redirection(temp_redir, T_REDIRECT_INPUT);
+/**
+ * @brief defines fds for heredoc redirect
+ * 
+ * @param ms 
+ * @param command 
+ * @param pipefd 
+ */
+void	handle_heredoc_redir(t_shell *ms, t_cmd *command, int *pipefd)
+{
+	dup2(command->heredoc_fd, STDIN_FILENO);
+	close(command->heredoc_fd);
+	if (ms->nr_commands > 1 && ms->i != ms->nr_commands - 1 && command->args[0])
+	{
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+	}
 }
 
 /**
@@ -117,34 +116,26 @@ void	define_last_redirection(t_command *cmd)
  * @param comm 
  * @param pipefd 
  */
-void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_command *command)
+void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_cmd *command)
 {
-    t_redir	*temp_redir;
+	t_redir	*temp_redir;
 
 	if (!command->redir)
 	{
-        handle_without_redir(pipefd, prev_fd, ms);
+		handle_without_redir(pipefd, prev_fd, ms);
 		return ;
 	}
 	define_last_redirection(command);
-    temp_redir = command->redir;
-    while (temp_redir)
-    {
-        if (temp_redir->type == T_REDIRECT_INPUT)
-            handle_input_redir(ms, pipefd, temp_redir, command);
-        else if (temp_redir->type == T_REDIRECT_OUTPUT
-				|| temp_redir->type == T_REDIR_OUTPUT_APPEND)
-            handle_output_redir(prev_fd, ms, temp_redir, command);
-        else if (temp_redir->type == T_HEREDOC)
-        {
-            dup2(command->heredoc_fd, STDIN_FILENO);
-            close(command->heredoc_fd);
-            if (ms->nr_commands > 1 && ms->i != ms->nr_commands - 1 && command->args[0])
-            {
-                dup2(pipefd[1], STDOUT_FILENO);
-                close(pipefd[1]);
-            }
-        }
-        temp_redir = temp_redir->next;
-    }
+	temp_redir = command->redir;
+	while (temp_redir)
+	{
+		if (temp_redir->type == T_REDIRECT_INPUT)
+			handle_input_redir(ms, pipefd, temp_redir, command);
+		else if (temp_redir->type == T_REDIRECT_OUTPUT
+			|| temp_redir->type == T_REDIR_OUT_APPEND)
+			handle_out_redir(prev_fd, ms, temp_redir, command);
+		else if (temp_redir->type == T_HEREDOC)
+			handle_heredoc_redir(ms, command, pipefd);
+		temp_redir = temp_redir->next;
+	}
 }

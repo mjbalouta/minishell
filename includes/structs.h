@@ -7,7 +7,7 @@ typedef enum e_token_type
 	T_REDIRECT_INPUT,
 	T_REDIRECT_OUTPUT,
 	T_HEREDOC,
-	T_REDIR_OUTPUT_APPEND,
+	T_REDIR_OUT_APPEND,
 	T_PIPE
 }	t_token_type;
 
@@ -27,7 +27,7 @@ typedef struct s_redir
 }	t_redir;
 
 //estrutura para guardar cada comando entre pipes
-typedef struct s_command
+typedef struct s_cmd
 {
 	t_redir				*last_out_redir;
 	t_redir				*last_append_redir;
@@ -38,8 +38,8 @@ typedef struct s_command
 	char 				**args;
 	char				*comm_path;
 	t_redir 			*redir; //um comando pode ter mais do que um redirect
-	struct s_command 	*next;
-}	t_command;
+	struct s_cmd 		*next;
+}	t_cmd;
 
 typedef struct s_envp
 {
@@ -58,7 +58,7 @@ typedef struct s_shell
 	char		*prompt;
 	char		*input;
 	t_token		*token;
-	t_command 	*command;
+	t_cmd 		*command;
 	pid_t		*pid;
 	char		cwd[PATH_MAX];
 }	t_shell;

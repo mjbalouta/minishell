@@ -18,8 +18,8 @@ void	init_pids_container(t_shell *ms)
  */
 int	count_commands(t_shell *ms)
 {
-	t_command	*temp;
-	int			nr_commands;
+	t_cmd	*temp;
+	int		nr_commands;
 
 	temp = ms->command;
 	nr_commands = 0;
@@ -60,12 +60,12 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 	write(heredoc_fd[1], "\n", 1);
 }
 
-void	verify_comm_path(t_command *command, t_shell *ms)
+void	verify_comm_path(t_cmd *command, t_shell *ms)
 {
 	if (command->is_builtin == 1 && !command->comm_path)
-    {
+	{
 		ft_putstr_fd(command->args[0], STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 		exit_shell(ms, 127);
-    }
+	}
 }
