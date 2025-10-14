@@ -104,14 +104,29 @@ char	*expand_word(char *word, t_shell *ms)
 	return (result);
 }
 
+void delete_token(t_shell *ms, t_token *to_delete, t_token *previous)
+{
+	if (to_delete == ms->token)
+	{
+		ms->token = to_delete->next;
+	}
+	else if (previous)
+	{
+		previous->next = to_delete->next;
+	}
+	free(to_delete->word);
+	free(to_delete);
+}
+
 void	expander(t_shell *ms)
 {
 	t_token	*current;
+	t_token *previous;
+	t_token	*to_delete;
 	char	*expanded_word;
 
-	// ft_printf("--- Expander Start ---\n");
-	// ft_token_lstprint(ms->token); // Debug: print tokens before expansion
 	current = ms->token;
+	previous = NULL;
 	while (current != NULL)
 	{
 		if (current->type == T_WORD)
@@ -121,9 +136,15 @@ void	expander(t_shell *ms)
 				print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 			free(current->word);
 			current->word = expanded_word;
+			if (current->word[0] == '\0')
+			{
+				to_delete = current;
+				current = current->next;
+				delete_token(ms, to_delete, previous);
+				continue ;
+			}
 		}
+		previous = current;
 		current = current->next;
 	}
-	// ft_printf("--- Expander End ---\n");
-	// ft_token_lstprint(ms->token); // Debug: print tokens after expansion
 }
