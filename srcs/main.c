@@ -2,6 +2,29 @@
 
 volatile sig_atomic_t	g_exit_status = 0;
 
+int	check_tokens(t_shell *ms)
+{
+	int		result;
+
+	result = verify_tokens(ms);
+	if (result == -1)
+	{
+		ft_putstr_fd("syntax error\n", STDERR_FILENO);
+		g_exit_status = 2;
+		free_shell(ms);
+		close_both_fds(ms->in_fd, ms->out_fd);
+		return (-1);
+	}
+	if (result == 2)
+	{
+		g_exit_status = 0;
+		free_shell(ms);
+		close_both_fds(ms->in_fd, ms->out_fd);
+		return (-1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	ms;
@@ -31,14 +54,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		expander(&ms);
-		if (verify_tokens(&ms) == -1)
-		{
-			ft_putstr_fd("syntax error\n", STDERR_FILENO);
-			g_exit_status = 2;
-			free_shell(&ms);
-			close_both_fds(ms.in_fd, ms.out_fd);
+		if (check_tokens(&ms) == -1)
 			continue ;
-		}
 		create_cmd_list(&ms);
 		execute(&ms);
 		ft_cmd_lstclear(&ms.command);

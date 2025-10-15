@@ -43,6 +43,8 @@ int	verify_tokens(t_shell *ms)
 	t_token	*temp;
 	int		is_command;
 
+	if (!ms->token)
+		return (2);
 	temp = ms->token;
 	if (temp && temp->type == T_PIPE)
 		return (-1);
