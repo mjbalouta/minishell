@@ -56,14 +56,14 @@ void	fill_path(t_shell *ms, t_cmd *command)
 	char	*test_path;
 	int		i;
 
-	if (is_path(command) || !command->args[0])
+	if (is_path(command) || (command->args[0] && !command->args[0][0]))
 		return ;
 	path_full_str = ft_getenv("PATH", ms->envp);
 	if (!path_full_str)
 		return ;
 	path_list = ft_split(path_full_str, ':');
-	i = 0;
-	while (path_list[i])
+	i = -1;
+	while (path_list[++i])
 	{
 		test_path = create_test_path(path_list[i], command->args[0]);
 		if (access(test_path, X_OK) == 0)
@@ -72,7 +72,6 @@ void	fill_path(t_shell *ms, t_cmd *command)
 			free_char_array(path_list);
 			return ;
 		}
-		i++;
 		free(test_path);
 	}
 	free_char_array(path_list);
