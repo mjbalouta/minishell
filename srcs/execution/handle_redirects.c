@@ -16,6 +16,7 @@ void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
 	in_fd = open(redir->filename, O_RDONLY);
 	if (in_fd < 0)
 	{
+		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
 		exit_shell(ms, 1);
 	}
@@ -53,6 +54,7 @@ void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *cmd)
 		out_fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (out_fd < 0)
 	{
+		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
 		exit_shell(ms, 1);
 	}

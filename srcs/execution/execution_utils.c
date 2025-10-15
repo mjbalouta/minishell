@@ -58,10 +58,21 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 
 void	verify_comm_path(t_cmd *command, t_shell *ms)
 {
+	struct stat file_stat;
+
 	if (command->is_builtin == 1 && !command->comm_path)
 	{
+		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		ft_putstr_fd(command->args[0], STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 		exit_shell(ms, 127);
+	}
+	if (stat(command->comm_path, &file_stat) == 0)
+	{
+		if (S_ISDIR(file_stat.st_mode))
+		{
+			perror(command->args[0]);
+			exit_shell(ms, 126);
+		}
 	}
 }

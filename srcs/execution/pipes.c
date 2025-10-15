@@ -35,8 +35,8 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 
 void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd)
 {
-	if (cmd->redir && cmd->redir->type == T_HEREDOC)
-		handle_heredoc_input(cmd, ms);
+	// if (cmd->redir && cmd->redir->type == T_HEREDOC)
+	// 	handle_heredoc_input(cmd, ms);
 	handle_redir(ms, pipefd, prev_fd, cmd);
 	execute_builtin(ms, cmd);
 }
@@ -52,12 +52,13 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 	t_cmd	*temp;
 
 	temp = ms->command;
+	ms->i = -1;
 	while (++ms->i < ms->nr_commands && temp)
 	{
 		if (ms->i < ms->nr_commands - 1)
 			create_pipe(pipefd, ms);
-		if (temp->redir && temp->redir->type == T_HEREDOC)
-			handle_heredoc_input(temp, ms);
+		// if (temp->redir && temp->redir->type == T_HEREDOC)
+		// 	handle_heredoc_input(temp, ms);
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)
 			exit_shell(ms, 1);
@@ -95,10 +96,11 @@ void	execute(t_shell *ms)
 		verify_if_bultin(temp);
 		if (temp->is_builtin == 1)
 			fill_path(ms, temp);
+		if (temp->redir && temp->redir->type == T_HEREDOC)
+			handle_heredoc_input(temp, ms);
 		temp = temp->next;
 	}
 	ms->nr_commands = count_commands(ms);
-	ms->i = -1;
 	init_pids_container(ms);
 	temp = ms->command;
 	if (ms->nr_commands == 1 && temp->is_builtin == 0)
