@@ -56,7 +56,8 @@ void	fill_path(t_shell *ms, t_cmd *command)
 	char	*test_path;
 	int		i;
 
-	if (is_path(command) || (command->args[0] && !command->args[0][0]))
+	if (is_path(command) || !command->args[0]
+		|| (command->args[0] && !command->args[0][0]))
 		return ;
 	path_full_str = ft_getenv("PATH", ms->envp);
 	if (!path_full_str)
