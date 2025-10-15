@@ -64,14 +64,15 @@ void	verify_comm_path(t_cmd *command, t_shell *ms)
 	{
 		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		ft_putstr_fd(command->args[0], STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit_shell(ms, 127);
 	}
 	if (stat(command->comm_path, &file_stat) == 0)
 	{
 		if (S_ISDIR(file_stat.st_mode))
 		{
-			perror(command->args[0]);
+			ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 			exit_shell(ms, 126);
 		}
 	}
