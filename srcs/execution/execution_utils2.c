@@ -31,21 +31,21 @@ void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms)
 {
 	if (errno == EACCES || errno == EISDIR)
 	{
-		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+		// ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(command->args[0]);
 		free_char_array(envp);
 		exit_shell(ms, 126);
 	}
 	else if (errno == ENOENT || errno == ENOTDIR)
 	{
-		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+		// ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(command->args[0]);
 		free_char_array(envp);
 		exit_shell(ms, 127);
 	}
 	else
 	{
-		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+		// ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(command->args[0]);
 		free_char_array(envp);
 		exit_shell(ms, 1);
