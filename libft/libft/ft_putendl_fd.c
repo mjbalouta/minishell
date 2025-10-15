@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:22:41 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/04/17 11:30:50 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/15 12:43:53 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,11 @@ descriptor followed by a newline.
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
+	if (fd != -1)
 	{
-		write(fd, &s[i], 1);
-		i++;
+		write(fd, s, ft_strlen(s));
+		ft_putchar_fd('\n', fd);
 	}
-	write(fd, "\n", 1);
 }
 
 /*int main(void)
