@@ -99,8 +99,9 @@ void	ft_sort_array_of_char(char **array);
 //------------------------------EXPANDER----------------------------------------
 
 void	expander(t_shell *ms);
-char	*expand_word(char *word, t_shell *ms);
+char	*expand_word(t_token *token, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
+char	*expand_variables(t_token *token, char *str, t_shell *ms);
 
 //------------------------------EXECUTE-----------------------------------------
 

@@ -30,7 +30,7 @@ char	*expand_exit_status(char *result, int *i, t_shell *ms)
 	return (result);
 }
 
-char	*expand_variables(char *str, t_shell *ms)
+char	*expand_variables(t_token *token, char *str, t_shell *ms)
 {
 	int		i;
 	int		start;
@@ -52,11 +52,13 @@ char	*expand_variables(char *str, t_shell *ms)
 		{
 			in_single = !in_single;
 			i++;
+			token->quoted = true;
 		}
 		else if (str[i] == '"' && !in_single)
 		{
 			in_double = !in_double;
 			i++;
+			token->quoted = true;
 		}
 		else if (str[i] == '$' && !in_single)
 		{
@@ -86,25 +88,7 @@ char	*expand_variables(char *str, t_shell *ms)
 	return (result);
 }
 
-char	*expand_word(char *word, t_shell *ms)
-{
-	char	*result;
-	char	*tmp;
-
-	result = ft_strdup(word);
-	if (!result)
-		return (NULL);
-	if (result[0] == '~')
-		result = expand_tilde(result, ms->envp);
-	if (!result)
-		return (NULL);
-	tmp = expand_variables(result, ms);
-	free(result);
-	result = tmp;
-	return (result);
-}
-
-void delete_token(t_shell *ms, t_token *to_delete, t_token *previous)
+static void delete_token(t_shell *ms, t_token *to_delete, t_token *previous)
 {
 	if (to_delete == ms->token)
 	{
@@ -116,6 +100,25 @@ void delete_token(t_shell *ms, t_token *to_delete, t_token *previous)
 	}
 	free(to_delete->word);
 	free(to_delete);
+}
+
+char	*expand_word(t_token *token, t_shell *ms)
+{
+	char	*result;
+	char	*tmp;
+
+	result = ft_strdup(token->word);
+	if (!result)
+		return (NULL);
+	if (result[0] == '~')
+		if ((result[1] == '/') || (result[1] == '\0'))
+			result = expand_tilde(result, ms->envp);
+	if (!result)
+		return (NULL);
+	tmp = expand_variables(token, result, ms);
+	free(result);
+	result = tmp;
+	return (result);
 }
 
 void	expander(t_shell *ms)
@@ -131,12 +134,12 @@ void	expander(t_shell *ms)
 	{
 		if (current->type == T_WORD)
 		{
-			expanded_word = expand_word(current->word, ms);
+			expanded_word = expand_word(current, ms);
 			if (expanded_word == NULL)
 				print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 			free(current->word);
 			current->word = expanded_word;
-			if (current->word[0] == '\0')
+			if ((current->word[0] == '\0') && !current->quoted)
 			{
 				to_delete = current;
 				current = current->next;

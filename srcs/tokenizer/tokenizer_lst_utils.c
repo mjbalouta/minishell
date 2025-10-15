@@ -15,6 +15,7 @@ t_token	*ft_token_lstnew(char *word, t_token_type type)
 		return (NULL);
 	ptr->word = ft_strdup(word);
 	ptr->type = type;
+	ptr->quoted = false;
 	ptr->next = NULL;
 	return (ptr);
 }
