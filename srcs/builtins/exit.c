@@ -2,9 +2,9 @@
 
 static int	check_arg_is_longlong(char *nptr)
 {
-	long long	value;
-	int			signal;
-	int 		 digit;
+	unsigned long long	value;
+	int					signal;
+	int					digit;
 
 	value = 0;
 	signal = 1;
@@ -25,12 +25,12 @@ static int	check_arg_is_longlong(char *nptr)
 			digit = *nptr++ - '0';
 			if (signal == 1)
 			{
-				if (value > (LLONG_MAX - digit) / 10)
+				if (value > ((unsigned long long)LLONG_MAX - digit) / 10ULL)
 					return (EXIT_FAILURE);
 			}
 			else
 			{
-				if (value > (-(LLONG_MIN + digit)) / 10)
+				if (value > ((unsigned long long)LLONG_MAX + 1ULL - digit) / 10ULL)
 					return (EXIT_FAILURE);
 			}
 			value = value * 10 + digit;
