@@ -16,19 +16,43 @@ static void	handle_sigint(int sig)
 	g_exit_status = 130;
 }
 
+void	handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	close(STDIN_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	g_exit_status = 130;
+	rl_done = 1;
+}
+
 void	set_signals(t_shell *ms)
 {
 	struct sigaction	sa;
 
-	// Handle SIGINT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = handle_sigint;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
+}
 
-	// Ignore SIGQUIT
+void	set_signals_heredoc(t_shell *ms)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = handle_sigint_heredoc;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
@@ -41,15 +65,12 @@ void	reset_signals(t_shell *ms)
 {
 	struct sigaction	sa;
 
-	// Reset SIGINT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error resetting SIGINT", errno);
-
-	// Reset SIGQUIT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
 	sigemptyset(&sa.sa_mask);
@@ -62,15 +83,12 @@ void	ignore_signals(t_shell *ms)
 {
 	struct sigaction	sa;
 
-	// Ignore SIGINT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error ignoring SIGINT", errno);
-
-	// Ignore SIGQUIT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
@@ -81,7 +99,7 @@ void	ignore_signals(t_shell *ms)
 
 void	handle_child_signal(int status)
 {
-	int sig;
+	int	sig;
 
 	if (WIFSIGNALED(status))
 	{

@@ -36,19 +36,18 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 	line = NULL;
 	if (redir_list->type == T_HEREDOC)
 	{
-		while (1)
+		while (true)
 		{
 			line = readline("> ");
+			if (g_exit_status == 130)
+				return (free(line));
 			if (!line)
 			{
 				print_error("warning: here-document delimited by end-of-file");
 				return ;
 			}
-			if (ft_strcmp(line, redir_list->filename) == 0)
-			{
-				free(line);
-				return ;
-			}
+			if ((ft_strcmp(line, redir_list->filename) == 0) || g_exit_status == 130)
+				return (free(line));
 			if (redir_list == last_here)
 				write_inside_pipe(heredoc_fd, line);
 			free(line);
@@ -77,7 +76,11 @@ void	handle_heredoc_input(t_cmd *command, t_shell *ms)
 	while (redir_list)
 	{
 		if (redir_list->type == T_HEREDOC)
+		{
+			set_signals_heredoc(ms);
 			read_heredoc(redir_list, last_heredoc, heredoc_fd);
+			set_signals(ms);
+		}
 		redir_list = redir_list->next;
 	}
 	if (last_heredoc)

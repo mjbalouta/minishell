@@ -99,7 +99,11 @@ void	execute(t_shell *ms)
 		if (temp->is_builtin == 1)
 			fill_path(ms, temp);
 		if (temp->redir && temp->redir->type == T_HEREDOC)
+		{
 			handle_heredoc_input(temp, ms);
+			if (g_exit_status == 130)
+				return ;
+		}
 		temp = temp->next;
 	}
 	ms->nr_commands = count_commands(ms);
