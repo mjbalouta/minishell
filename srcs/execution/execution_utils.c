@@ -41,7 +41,9 @@ void wait_for_child(t_shell *ms, int cmd_count)
 {
     int status;
     int i;
+	
     i = 0;
+	status = 0;
     while (i < cmd_count)
     {
         waitpid(ms->pid[i], &status, 0);
