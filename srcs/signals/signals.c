@@ -9,14 +9,14 @@
 static void	handle_sigint(int sig)
 {
 	(void)sig;
-	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 	g_exit_status = 130;
 }
 
-void	init_signals(void)
+void	set_signals(t_shell *ms)
 {
 	struct sigaction	sa;
 
@@ -24,23 +24,17 @@ void	init_signals(void)
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = handle_sigint;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(errno);
-	}
+		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
 
 	// Ignore SIGQUIT
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(errno);
-	}
+		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
 }
 
 void	reset_signals(t_shell *ms)
@@ -51,7 +45,7 @@ void	reset_signals(t_shell *ms)
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error resetting SIGINT", errno);
 
@@ -59,9 +53,30 @@ void	reset_signals(t_shell *ms)
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error resetting SIGQUIT", errno);
+}
+
+void	ignore_signals(t_shell *ms)
+{
+	struct sigaction	sa;
+
+	// Ignore SIGINT
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error ignoring SIGINT", errno);
+
+	// Ignore SIGQUIT
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error ignoring SIGQUIT", errno);
 }
 
 void	handle_child_signal(int status)

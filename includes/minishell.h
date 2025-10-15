@@ -51,8 +51,9 @@ void	print_error(char *message);
 
 //------------------------------SIGNALS-----------------------------------------
 
-void	init_signals(void);
+void	set_signals(t_shell *ms);
 void	reset_signals(t_shell *ms);
+void	ignore_signals(t_shell *ms);
 void	handle_child_signal(int status);
 
 //------------------------------PARSING-----------------------------------------

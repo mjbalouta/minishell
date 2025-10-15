@@ -73,7 +73,9 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 		temp = temp->next;
 	}
 	close_one_fd(prev_fd);
+	ignore_signals(ms);
 	wait_for_child(ms, id);
+	set_signals(ms);
 }
 
 /**

@@ -23,7 +23,7 @@ void	init_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(ms));
 	disable_echoctl();
-	init_signals();
+	set_signals(ms);
 	ms->prompt = SHELL_NAME"$ ";
 	ms->input = NULL;
 	ms->token = NULL;
