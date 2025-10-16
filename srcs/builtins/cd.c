@@ -56,7 +56,7 @@ void	builtin_cd(t_shell *ms, t_cmd *cmd)
   	int		print_path;
 
 	(void)ms;
-	if (ft_strncmp(cmd->args[1], "-", 1) == 0)
+	if (cmd->args && cmd->args[1] && ft_strncmp(cmd->args[1], "-", 1) == 0)
 		if (cmd->args[1][1] != '\0')
 		{
 			print_error("cd: options aren't supported");
