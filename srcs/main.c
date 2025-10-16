@@ -31,9 +31,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	check_args(argc);
-	init_shell(&ms, envp);
 	while (true)
 	{
+		init_shell(&ms, envp);
 		ms.in_fd = dup(STDIN_FILENO);
 		ms.out_fd = dup(STDOUT_FILENO);
 		ms.input = readline(ms.prompt);
@@ -58,13 +58,13 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		create_cmd_list(&ms);
 		execute(&ms);
-		ft_cmd_lstclear(&ms.command);
-		ft_token_lstclear(&ms.token);
+		free_shell(&ms);
+		// ft_cmd_lstclear(&ms.command);
+		// ft_token_lstclear(&ms.token);
 		dup2(ms.in_fd, STDIN_FILENO);
 		dup2(ms.out_fd, STDOUT_FILENO);
 		close_both_fds(ms.in_fd, ms.out_fd);
 	}
-	ft_envp_lstclear(&ms.envp);
 	free_shell(&ms);
 	return(g_exit_status);
 }
