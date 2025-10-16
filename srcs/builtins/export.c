@@ -107,6 +107,17 @@ void	builtin_export(t_shell *ms, t_cmd *cmd)
 	char	**array;
 
 	g_exit_status = 0;
+	i = 1;
+	while (cmd->args && cmd->args[i])
+	{
+		if (ft_strncmp(cmd->args[i], "-", 1) == 0)
+		{
+			print_error("export: options aren't supported");
+			g_exit_status = 2;
+			return ;			
+		}
+		i++;
+	}
 	if (!cmd->args || !cmd->args[1])
 	{
 		array = ft_envp_lst_to_char_array(ms, true);

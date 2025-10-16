@@ -6,7 +6,7 @@ void	builtin_env(t_shell *ms, t_cmd *cmd)
 
 	if (cmd->args && cmd->args[1])
 	{
-		print_error("env: options or arguments not supported");
+		print_error("env: options or arguments aren't supported");
 		g_exit_status = 1;
 		return ;
 	}
