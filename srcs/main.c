@@ -6,14 +6,13 @@ int	process_tokens(t_shell *ms)
 {
 	int		result;
 
-	if (tokenizer(&ms) != 0 || ms->token == NULL)
+	if (tokenizer(ms) != 0 || ms->token == NULL)
     {
-            free(ms->input);
-            ft_token_lstclear(&ms->token);
-            ms->input = NULL;
+            free_shell(ms);
             close_both_fds(ms->in_fd, ms->out_fd);
             return (-1);
     }
+	expander(ms);
 	result = verify_tokens(ms);
 	if (result != 0)
 	{
@@ -60,7 +59,6 @@ int main(int argc, char **argv, char **envp)
         // }
         if (process_tokens(&ms) == -1)
             continue ;
-		expander(&ms);
         create_cmd_list(&ms);
         execute(&ms);
         ft_cmd_lstclear(&ms.command);
