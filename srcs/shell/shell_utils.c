@@ -29,6 +29,8 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->token = NULL;
 	ms->command = NULL;
 	ms->pid = NULL;
+	ms->i = 0;
+	ms->nr_commands = 0;
 	if (init_envp(ms, envp) != 0)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 	if (getcwd(ms->cwd, sizeof(ms->cwd)) == NULL)
@@ -37,6 +39,7 @@ void	init_shell(t_shell *ms, char **envp)
 
 void	free_shell(t_shell *ms)
 {
+	ft_envp_lstclear(&ms->envp);
 	free(ms->input);
 	ft_token_lstclear(&ms->token);
 	if (ms->command)
