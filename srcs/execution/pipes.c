@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /**
- * @brief main part of the execution of each command
+ * @brief Executes pipe commands
  * 
  * @param comm 
  * @param pipefd 
@@ -32,17 +32,22 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 			handle_execve_error(command, envp, ms);
 	}
 }
-
+/**
+ * @brief Executes single builtin commands
+ * 
+ * @param cmd 
+ * @param ms 
+ * @param prev_fd 
+ * @param pipefd 
+ */
 void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd)
 {
-	// if (cmd->redir && cmd->redir->type == T_HEREDOC)
-	// 	handle_heredoc_input(cmd, ms);
 	handle_redir(ms, pipefd, prev_fd, cmd);
 	execute_builtin(ms, cmd);
 }
 
 /**
- * @brief executes the commands either on the parent process or forks
+ * @brief Executes the commands either on the parent process or forks
  * childs to execute them
  * 
  * @param ms 
@@ -57,8 +62,6 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 	{
 		if (ms->i < ms->nr_commands - 1)
 			create_pipe(pipefd, ms);
-		// if (temp->redir && temp->redir->type == T_HEREDOC)
-		// 	handle_heredoc_input(temp, ms);
 		ms->pid[id] = fork();
 		if (ms->pid[id] < 0)
 			exit_shell(ms, 1);
@@ -77,41 +80,53 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 	wait_for_child(ms, id);
 	set_signals(ms);
 }
+/**
+ * @brief Processes commands before executing them: fill paths and
+ * handle all possible heredocs
+ * 
+ * @param ms 
+ */
+void	process_before_executing(t_shell *ms)
+{
+	t_cmd	*cmd;
+
+	cmd = ms->command;
+	while (cmd)
+	{
+		g_exit_status = 0;
+		verify_if_bultin(cmd);
+		if (cmd->is_builtin == 1)
+			fill_path(ms, cmd);
+		if (cmd->redir && cmd->redir->type == T_HEREDOC)
+		{
+			handle_heredoc_input(cmd, ms);
+			if (g_exit_status == 130)
+				return ;
+		}
+		cmd = cmd->next;
+	}
+}
 
 /**
- * @brief main execution function
+ * @brief Main execution function
  * 
  * @param ms 
  */
 void	execute(t_shell *ms)
 {
-	t_cmd	*temp;
+	t_cmd	*cmd;
 	int		pipefd[2];
 	int		prev_fd;
 	int		id;
 
-	temp = ms->command;
 	prev_fd = -1;
 	id = 0;
-	while (temp)
-	{
-		g_exit_status = 0;
-		verify_if_bultin(temp);
-		if (temp->is_builtin == 1)
-			fill_path(ms, temp);
-		if (temp->redir && temp->redir->type == T_HEREDOC)
-		{
-			handle_heredoc_input(temp, ms);
-			if (g_exit_status == 130)
-				return ;
-		}
-		temp = temp->next;
-	}
+	process_before_executing(ms);
 	ms->nr_commands = count_commands(ms);
 	init_pids_container(ms);
-	temp = ms->command;
-	if (ms->nr_commands == 1 && temp->is_builtin == 0)
-		exec_single_builtin(temp, ms, prev_fd, pipefd);
+	cmd = ms->command;
+	if (ms->nr_commands == 1 && cmd->is_builtin == 0)
+		exec_single_builtin(cmd, ms, prev_fd, pipefd);
 	else
 		handle_child_processes(ms, pipefd, prev_fd, id);
 	free_pid(ms);
