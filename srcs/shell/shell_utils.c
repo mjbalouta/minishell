@@ -37,7 +37,6 @@ void	init_shell(t_shell *ms, char **envp)
 
 void	free_shell(t_shell *ms)
 {
-	ft_envp_lstclear(&ms->envp);
 	free(ms->input);
 	ft_token_lstclear(&ms->token);
 	if (ms->command)

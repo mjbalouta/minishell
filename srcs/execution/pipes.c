@@ -95,6 +95,7 @@ void	execute(t_shell *ms)
 	id = 0;
 	while (temp)
 	{
+		g_exit_status = 0;
 		verify_if_bultin(temp);
 		if (temp->is_builtin == 1)
 			fill_path(ms, temp);

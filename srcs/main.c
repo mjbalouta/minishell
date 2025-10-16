@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 		dup2(ms.out_fd, STDOUT_FILENO);
 		close_both_fds(ms.in_fd, ms.out_fd);
 	}
+	ft_envp_lstclear(&ms.envp);
 	free_shell(&ms);
 	return(g_exit_status);
 }
