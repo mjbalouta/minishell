@@ -2,22 +2,28 @@
 
 volatile sig_atomic_t	g_exit_status = 0;
 
-int	check_tokens(t_shell *ms)
+int	process_tokens(t_shell *ms)
 {
 	int		result;
 
+	if (tokenizer(&ms) != 0 || ms->token == NULL)
+    {
+            free(ms->input);
+            ft_token_lstclear(&ms->token);
+            ms->input = NULL;
+            close_both_fds(ms->in_fd, ms->out_fd);
+            return (-1);
+    }
 	result = verify_tokens(ms);
-	if (result == -1)
+	if (result != 0)
 	{
-		ft_putstr_fd("syntax error\n", STDERR_FILENO);
-		g_exit_status = 2;
-		free_shell(ms);
-		close_both_fds(ms->in_fd, ms->out_fd);
-		return (-1);
-	}
-	if (result == 2)
-	{
-		g_exit_status = 0;
+		if (result == -1)
+		{
+			ft_putstr_fd("syntax error\n", STDERR_FILENO);
+			g_exit_status = 2;
+		}
+		else if (result == 2)
+			g_exit_status = 0;
 		free_shell(ms);
 		close_both_fds(ms->in_fd, ms->out_fd);
 		return (-1);
@@ -44,17 +50,17 @@ int main(int argc, char **argv, char **envp)
         }
         if (*ms.input)
             add_history(ms.input);
-        if (tokenizer(&ms) != 0 || ms.token == NULL)
-        {
-            free(ms.input);
-            ft_token_lstclear(&ms.token);
-            ms.input = NULL;
-            close_both_fds(ms.in_fd, ms.out_fd);
+        // if (tokenizer(&ms) != 0 || ms.token == NULL)
+        // {
+        //     free(ms.input);
+        //     ft_token_lstclear(&ms.token);
+        //     ms.input = NULL;
+        //     close_both_fds(ms.in_fd, ms.out_fd);
+        //     continue ;
+        // }
+        if (process_tokens(&ms) == -1)
             continue ;
-        }
-        expander(&ms);
-        if (check_tokens(&ms) == -1)
-            continue ;
+		expander(&ms);
         create_cmd_list(&ms);
         execute(&ms);
         ft_cmd_lstclear(&ms.command);
