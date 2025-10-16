@@ -22,7 +22,6 @@ void	handle_sigint_heredoc(int sig)
 	close(STDIN_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
 	g_exit_status = 130;
-	rl_done = 1;
 }
 
 void	set_signals(t_shell *ms)

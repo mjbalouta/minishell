@@ -41,6 +41,8 @@ extern volatile sig_atomic_t	g_exit_status;
 void	ft_envp_lstprint(t_envp *lst);
 // TODO
 
+void	enable_echoctl(void);
+void    disable_echoctl(void);
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
 void	free_shell(t_shell *ms);

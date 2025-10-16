@@ -5,9 +5,27 @@ void    disable_echoctl(void)
 	struct termios  term;
 
 	if (tcgetattr(STDIN_FILENO, &term) == -1)
-		return ;
+	{
+		perror("tcgetattr");
+		return;
+	}
 	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+		perror("tcsetattr");
+}
+
+void	enable_echoctl(void)
+{
+	struct termios	term;
+
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+	{
+		perror("tcgetattr");
+		return;
+	}
+	term.c_lflag |= ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+		perror("tcsetattr");
 }
 
 void	check_args(int argc)
@@ -22,7 +40,7 @@ void	check_args(int argc)
 void	init_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(ms));
-	disable_echoctl();
+	enable_echoctl();
 	set_signals(ms);
 	ms->prompt = SHELL_NAME"$ ";
 	ms->input = NULL;
