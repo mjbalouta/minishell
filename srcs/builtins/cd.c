@@ -54,28 +54,21 @@ void	builtin_cd(t_shell *ms, t_cmd *cmd)
 {
  	char	*path;
   	int		print_path;
-	int		i;
 
 	(void)ms;
-	i = 1;
-	while (cmd->args && cmd->args[i])
-	{
-		if (ft_strncmp(cmd->args[i], "-", 1) == 0)
-			if (cmd->args[i][1] != '\0')
-			{
-				print_error("cd: options aren't supported");
-				g_exit_status = 2;
-				return ;			
-			}
-		i++;
-	}
-	if (cmd->args && cmd->args[2])
+	if (ft_strncmp(cmd->args[1], "-", 1) == 0)
+		if (cmd->args[1][1] != '\0')
+		{
+			print_error("cd: options aren't supported");
+			g_exit_status = 2;
+			return ;			
+		}
+	if (cmd->args && cmd->args[1] && cmd->args[2])
 	{
 		print_error("cd: too many arguments");
 		g_exit_status = 1;
 		return ;
 	}
-
 	path = get_cd_target(ms, cmd->args, &print_path);
 	if (!path)
 	{
