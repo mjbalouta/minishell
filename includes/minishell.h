@@ -134,7 +134,7 @@ void	free_pid(t_shell *ms);
 void	define_last_redirection(t_cmd *cmd);
 void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms);
 void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd);
-
+void	process_before_executing(t_shell *ms);
 
 //------------------------------BUILTINS----------------------------------------
 
