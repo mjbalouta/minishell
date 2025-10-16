@@ -40,7 +40,6 @@ void	check_args(int argc)
 void	init_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(ms));
-	enable_echoctl();
 	set_signals(ms);
 	ms->prompt = SHELL_NAME"$ ";
 	ms->input = NULL;
