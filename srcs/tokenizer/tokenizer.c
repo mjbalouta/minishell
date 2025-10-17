@@ -20,25 +20,31 @@ int	process_token_redir_pipe(t_token **head, char **input)
 
 	ret = 0;
 	if (**input == '<')
+	{
 		if (*(*input + 1) == '<')
 		{
 			ret = add_token("<<", T_HEREDOC, head);
 			(*input)++;
 		}
+		else
+			ret = add_token("<", T_REDIRECT_INPUT, head);
+	}
 	else
-		ret = add_token("<", T_REDIRECT_INPUT, head);
-	else
+	{
 		if (**input == '>')
+		{
 			if (*(*input + 1) == '>')
 			{
 				ret = add_token(">>", T_REDIR_OUT_APPEND, head);
 				(*input)++;
 			}
-	else
-		ret = add_token(">", T_REDIRECT_OUTPUT, head);
-	else
-		if (**input == '|')
-			ret = add_token("|", T_PIPE, head);
+			else
+				ret = add_token(">", T_REDIRECT_OUTPUT, head);
+		}
+		else
+			if (**input == '|')
+				ret = add_token("|", T_PIPE, head);
+	}
 	(*input)++;
 	return (ret);
 }

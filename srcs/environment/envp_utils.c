@@ -125,6 +125,8 @@ int	ft_unsetenv(char *key, t_envp **lst)
 	if (temp != NULL && ft_strcmp(key, temp->key) == 0)
 	{
 		*lst = temp->next;
+		free(temp->key);
+		free(temp->value);
 		free(temp);
 		return (EXIT_SUCCESS);
 	}
@@ -136,6 +138,8 @@ int	ft_unsetenv(char *key, t_envp **lst)
 	if (temp == NULL)
 		return (EXIT_SUCCESS);
 	prev->next = temp->next;
+	free(temp->key);
+	free(temp->value);
 	free(temp);
 	return (EXIT_SUCCESS);
 }
