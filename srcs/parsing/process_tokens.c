@@ -9,8 +9,12 @@
 int	check_syntax(t_shell *ms)
 {
 	int		result;
+	int		is_command;
+	t_token	*temp;
 
-	result = verify_tokens(ms);
+	temp = ms->token;
+	is_command = 0;
+	result = verify_tokens(is_command, temp);
 	if (result != 0)
 	{
 		if (result == -1)

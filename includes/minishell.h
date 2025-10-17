@@ -66,7 +66,7 @@ void	set_signals_heredoc(t_shell *ms);
 int		is_redir(t_token *token);
 int		count_args(t_token *token);
 void	create_cmd_list(t_shell *ms);
-int		verify_tokens(t_shell *ms);
+int		verify_tokens(int is_command, t_token *temp);
 void	verify_if_bultin(t_cmd *cmd);
 void	ft_cmd_lstclear(t_cmd **lst);
 void	free_redirection_list(t_redir *redir);

@@ -58,14 +58,10 @@ int	verify_redirect(t_token *temp)
  * @param ms 
  * @return -1 for error or 0 if everything is correct
  */
-int	verify_tokens(t_shell *ms)
+int	verify_tokens(int is_command, t_token *temp)
 {
-	t_token	*temp;
-	int		is_command;
-
-	if (!ms->token)
+	if (!temp)
 		return (2);
-	temp = ms->token;
 	if (temp && temp->type == T_PIPE)
 		return (-1);
 	while (temp)
