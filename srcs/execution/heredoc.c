@@ -39,14 +39,15 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 		while (true)
 		{
 			line = readline("> ");
-			if (g_exit_status == 130)
-				return (free(line));
 			if (!line)
 			{
-				print_error("warning: here-document delimited by end-of-file");
+				if (g_exit_status != 130)
+					print_error("warning: here-document delimited by end-of-file");
 				return ;
 			}
-			if ((ft_strcmp(line, redir_list->filename) == 0) || g_exit_status == 130)
+			if (g_exit_status == 130)
+				return (free(line));
+			if (ft_strcmp(line, redir_list->filename) == 0)
 				return (free(line));
 			if (redir_list == last_here)
 				write_inside_pipe(heredoc_fd, line);

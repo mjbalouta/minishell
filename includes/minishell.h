@@ -55,11 +55,14 @@ void	reset_fds(t_shell *ms);
 
 //------------------------------SIGNALS-----------------------------------------
 
+void	handle_sigint(int sig);
+void	handle_sigint_heredoc(int sig);
+void	handle_sigpipe(int sig);
 void	set_signals(t_shell *ms);
+void	set_signals_heredoc(t_shell *ms);
 void	reset_signals(t_shell *ms);
 void	ignore_signals(t_shell *ms);
 void	handle_child_signal(int status);
-void	set_signals_heredoc(t_shell *ms);
 
 //------------------------------PARSING-----------------------------------------
 

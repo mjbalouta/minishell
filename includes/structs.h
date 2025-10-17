@@ -64,4 +64,11 @@ typedef struct s_shell
 	char		cwd[PATH_MAX];
 }	t_shell;
 
+typedef struct s_heredoc_ctx
+{
+    int stop;
+    int exit_status;
+    int heredoc_fd;
+} t_heredoc_ctx;
+
 #endif
