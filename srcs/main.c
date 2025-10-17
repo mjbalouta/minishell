@@ -34,6 +34,7 @@ void	shell_loop(t_shell *ms)
 
 int main(int argc, char **argv, char **envp)
 {
+	//ola
     t_shell ms;
     (void)argv;
     check_args(argc);
