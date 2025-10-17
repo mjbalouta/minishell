@@ -88,20 +88,6 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 	return (result);
 }
 
-static void delete_token(t_shell *ms, t_token *to_delete, t_token *previous)
-{
-	if (to_delete == ms->token)
-	{
-		ms->token = to_delete->next;
-	}
-	else if (previous)
-	{
-		previous->next = to_delete->next;
-	}
-	free(to_delete->word);
-	free(to_delete);
-}
-
 char	*expand_word(t_token *token, t_shell *ms)
 {
 	char	*result;
@@ -124,7 +110,7 @@ char	*expand_word(t_token *token, t_shell *ms)
 void	expander(t_shell *ms)
 {
 	t_token	*current;
-	t_token *previous;
+	t_token	*previous;
 	t_token	*to_delete;
 	char	*expanded_word;
 
@@ -132,7 +118,7 @@ void	expander(t_shell *ms)
 	previous = NULL;
 	while (current != NULL)
 	{
-		if (current->type == T_WORD)
+		if (current->type == T_WORD && !is_heredoc_token(previous))
 		{
 			expanded_word = expand_word(current, ms);
 			if (expanded_word == NULL)
@@ -143,7 +129,7 @@ void	expander(t_shell *ms)
 			{
 				to_delete = current;
 				current = current->next;
-				delete_token(ms, to_delete, previous);
+				delete_empty_token(ms, to_delete, previous);
 				continue ;
 			}
 		}

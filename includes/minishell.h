@@ -113,6 +113,8 @@ void	expander(t_shell *ms);
 char	*expand_word(t_token *token, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 char	*expand_variables(t_token *token, char *str, t_shell *ms);
+void	delete_empty_token(t_shell *ms, t_token *to_delete, t_token *previous);
+bool	is_heredoc_token(t_token *token);
 
 //------------------------------EXECUTE-----------------------------------------
 
