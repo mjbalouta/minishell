@@ -4,19 +4,19 @@
 # define _POSIX_C_SOURCE 200809L
 # define SHELL_NAME "minishell"
 
-#ifndef ECHOCTL
-# define ECHOCTL 0001000
-#endif
+# ifndef ECHOCTL
+#  define ECHOCTL 0001000
+# endif
 
-#if defined (READLINE_LIBRARY)
+# if defined (READLINE_LIBRARY)
 #  include "posixstat.h"
 #  include "readline.h"
 #  include "history.h"
-#else
+# else
 #  include <sys/stat.h>
 #  include <readline/readline.h>
 #  include <readline/history.h>
-#endif
+# endif
 
 # include <stdio.h>
 # include <stdbool.h>
@@ -43,7 +43,7 @@ void	ft_envp_lstprint(t_envp *lst);
 
 void	shell_loop(t_shell *ms);
 void	enable_echoctl(void);
-void    disable_echoctl(void);
+void	disable_echoctl(void);
 void	check_args(int argc);
 void	init_shell(t_shell *ms, char **envp);
 void	free_shell(t_shell *ms);
@@ -82,7 +82,7 @@ int		process_tokens(t_shell *ms);
 int		tokenizer(t_shell *ms);
 bool	ft_isquote(int c);
 bool	ft_isseparator(int c);
-bool	find_matching_quote(char quote,char *input, size_t *i);
+bool	find_matching_quote(char quote, char *input, size_t *i);
 t_token	*ft_token_lstnew(char *word, t_token_type type);
 void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
@@ -125,11 +125,11 @@ void	init_pids_container(t_shell *ms);
 void	wait_for_child(t_shell *ms, int cmd_count);
 void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_cmd *command);
 void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms);
-void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *command);
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *command);
+void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *cmd);
+void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *r, t_cmd *cmd);
 void	handle_heredoc_input(t_cmd *command, t_shell *ms);
 t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection);
-void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
+void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *hd_fd);
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command);
 void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id);
 int		execute(t_shell *ms);

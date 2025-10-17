@@ -22,9 +22,9 @@ typedef struct s_token
 //estrutura para guardar o tipo de redirect e o respetivo nome do ficheiro
 typedef struct s_redir
 {
-    t_token_type	type;   // <, >, >>, << 
-    char 			*filename;
-    struct s_redir	*next;
+	t_token_type	type;
+	char			*filename;
+	struct s_redir	*next;
 }	t_redir;
 
 //estrutura para guardar cada comando entre pipes
@@ -36,10 +36,10 @@ typedef struct s_cmd
 	int					prev_fd;
 	int					heredoc_fd;
 	int					is_builtin; //0 para sim, 1 para nao
-	char 				**args;
+	char				**args;
 	char				*comm_path;
-	t_redir 			*redir; //um comando pode ter mais do que um redirect
-	struct s_cmd 		*next;
+	t_redir				*redir; //um comando pode ter mais do que um redirect
+	struct s_cmd		*next;
 }	t_cmd;
 
 typedef struct s_envp
@@ -59,16 +59,9 @@ typedef struct s_shell
 	char		*prompt;
 	char		*input;
 	t_token		*token;
-	t_cmd 		*command;
+	t_cmd		*command;
 	pid_t		*pid;
 	char		cwd[PATH_MAX];
 }	t_shell;
-
-typedef struct s_heredoc_ctx
-{
-    int stop;
-    int exit_status;
-    int heredoc_fd;
-} t_heredoc_ctx;
 
 #endif

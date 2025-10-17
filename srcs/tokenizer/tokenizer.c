@@ -82,7 +82,6 @@ int	tokenizer(t_shell *ms)
 
 	head = NULL;
 	input = ms->input;
-	ft_token_lstclear(&ms->token);
 	while (*input)
 	{
 		while (ft_isspace(*input))

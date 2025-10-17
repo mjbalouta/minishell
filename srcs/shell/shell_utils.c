@@ -48,6 +48,7 @@ void	init_shell(t_shell *ms, char **envp)
 void	free_shell(t_shell *ms)
 {
 	free(ms->input);
+	ms->input = NULL;
 	ft_token_lstclear(&ms->token);
 	if (ms->command)
 		ft_cmd_lstclear(&ms->command);
