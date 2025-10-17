@@ -37,18 +37,18 @@ int	count_commands(t_shell *ms)
  * @param ms 
  * @param cmd_count 
  */
-void wait_for_child(t_shell *ms, int cmd_count)
+void	wait_for_child(t_shell *ms, int cmd_count)
 {
-    int status;
-    int i;
-	
-    i = 0;
+	int	status;
+	int	i;
+
+	i = 0;
 	status = 0;
-    while (i < cmd_count)
-    {
-        waitpid(ms->pid[i], &status, 0);
-        i++;
-    }
+	while (i < cmd_count)
+	{
+		waitpid(ms->pid[i], &status, 0);
+		i++;
+	}
 	handle_child_signal(status);
 }
 
@@ -60,7 +60,7 @@ void	write_inside_pipe(int *heredoc_fd, char *line)
 
 void	verify_comm_path(t_cmd *command, t_shell *ms)
 {
-	struct stat file_stat;
+	struct stat	file_stat;
 
 	if (command->is_builtin == 1 && !command->comm_path)
 	{

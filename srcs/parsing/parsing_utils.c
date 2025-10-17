@@ -42,6 +42,7 @@ int	is_redir(t_token *token)
 		return (1);
 	return (0);
 }
+
 /**
  * @brief Cleans command list
  * 
@@ -74,6 +75,7 @@ void	ft_cmd_lstclear(t_cmd **lst)
 	}
 	*lst = NULL;
 }
+
 /**
  * @brief Cleans redirection list
  * 

@@ -32,6 +32,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 			handle_execve_error(command, envp, ms);
 	}
 }
+
 /**
  * @brief Executes single builtin commands
  * 
@@ -80,6 +81,7 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 	wait_for_child(ms, id);
 	set_signals(ms);
 }
+
 /**
  * @brief Processes commands before executing them: fill paths and
  * handle all possible heredocs
@@ -135,6 +137,6 @@ int	execute(t_shell *ms)
 		handle_child_processes(ms, pipefd, prev_fd, id);
 	free_pid(ms);
 	ft_cmd_lstclear(&ms->command);
-    ft_token_lstclear(&ms->token);
+	ft_token_lstclear(&ms->token);
 	return (0);
 }

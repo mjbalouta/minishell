@@ -30,6 +30,7 @@ int	check_syntax(t_shell *ms)
 	}
 	return (0);
 }
+
 /**
  * @brief Checks syntax and calls function to create command list
  * 
@@ -39,7 +40,7 @@ int	check_syntax(t_shell *ms)
 int	process_tokens(t_shell *ms)
 {
 	if (check_syntax(ms) == -1)
-	 	return (-1);
+		return (-1);
 	create_cmd_list(ms);
 	return (0);
 }
