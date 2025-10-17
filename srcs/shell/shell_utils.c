@@ -28,15 +28,6 @@ void	enable_echoctl(void)
 		perror("tcsetattr");
 }
 
-void	check_args(int argc)
-{
-	if (argc != 1)
-	{
-		print_error("Not prepared to handle arguments");
-		exit(EXIT_FAILURE);
-	}
-}
-
 void	init_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(ms));
@@ -78,15 +69,3 @@ void	exit_shell(t_shell *ms, int exit_status)
 	exit(exit_status);
 }
 
-void	print_error_and_exit(t_shell *ms, char *message, int exit_status)
-{
-	print_error(message);
-	exit_shell(ms, exit_status);
-}
-
-void	print_error(char *message)
-{
-	ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
-	ft_putstr_fd(message, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}

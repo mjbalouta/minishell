@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /**
- * @brief fills a flag if the command is a built-in (flag 0 for yes,
+ * @brief Fills a flag if the command is a built-in (flag 0 for yes,
  * flag 1 for no)
  * 
  * @param ms 
