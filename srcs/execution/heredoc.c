@@ -32,15 +32,6 @@ t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection)
 void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 {
 	char	*line;
-    struct sigaction sa_new;
-    struct sigaction sa_old;
-
-	ft_bzero(&sa_new, sizeof(sa_new));
-	ft_bzero(&sa_old, sizeof(sa_old));
-	sa_new.sa_handler = handle_sigint_heredoc;
-    sigemptyset(&sa_new.sa_mask);
-    sa_new.sa_flags = 0;
-    sigaction(SIGINT, &sa_new, &sa_old);
 
 	line = NULL;
 	if (redir_list->type == T_HEREDOC)
@@ -48,30 +39,21 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 		while (true)
 		{
 			line = readline("> ");
-			if (g_exit_status == 130)
-			{
-				sigaction(SIGINT, &sa_old, NULL);
-				free(line);
-				return ;
-			}
 			if (!line)
 			{
-				print_error("warning: here-document delimited by end-of-file");
-				sigaction(SIGINT, &sa_old, NULL);
+				if (g_exit_status != 130)
+					print_error("warning: here-document delimited by end-of-file");
 				return ;
 			}
+			if (g_exit_status == 130)
+				return (free(line));
 			if (ft_strcmp(line, redir_list->filename) == 0)
-			{
-				sigaction(SIGINT, &sa_old, NULL);
-				free(line);
-				return ;
-			}
+				return (free(line));
 			if (redir_list == last_here)
 				write_inside_pipe(heredoc_fd, line);
 			free(line);
 		}
 	}
-	sigaction(SIGINT, &sa_old, NULL);
 }
 
 /**
@@ -95,7 +77,11 @@ void	handle_heredoc_input(t_cmd *command, t_shell *ms)
 	while (redir_list)
 	{
 		if (redir_list->type == T_HEREDOC)
+		{
+			set_signals_heredoc(ms);
 			read_heredoc(redir_list, last_heredoc, heredoc_fd);
+			set_signals(ms);
+		}
 		redir_list = redir_list->next;
 	}
 	if (last_heredoc)
