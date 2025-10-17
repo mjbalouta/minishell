@@ -25,6 +25,8 @@ SRCS			= $(addprefix srcs/, \
 				execution/handle_redirects.c \
 				execution/heredoc.c \
 				signals/signals.c \
+				signals/signals_heredoc.c \
+				signals/signals_child.c \
 				builtins/builtins_utils.c \
 				builtins/echo.c \
 				builtins/cd.c \
