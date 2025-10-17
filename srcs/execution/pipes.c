@@ -97,6 +97,7 @@ int	process_before_executing(t_shell *ms)
 	{
 		g_exit_status = 0;
 		verify_if_bultin(cmd);
+		cmd->heredoc_fd = -1;
 		if (cmd->is_builtin == 1)
 			fill_path(ms, cmd);
 		if (cmd->redir && cmd->redir->type == T_HEREDOC)

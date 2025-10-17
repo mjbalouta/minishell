@@ -60,7 +60,7 @@ void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *cmd)
 	}
 	if (redir == cmd->last_out_redir || redir == cmd->last_append_redir)
 	{
-		if (ms->i > 0)
+		if (ms->i > 0 && cmd->heredoc_fd == -1)
 			dup2(prev_fd, STDIN_FILENO);
 		dup2(out_fd, STDOUT_FILENO);
 	}
