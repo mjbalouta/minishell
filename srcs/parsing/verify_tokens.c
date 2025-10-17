@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+/**
+ * @brief Checks if token is word
+ * 
+ * @param temp 
+ * @return int 
+ */
 int	verify_if_word(t_token *temp)
 {
 	if (temp->type == T_WORD)
@@ -7,6 +13,13 @@ int	verify_if_word(t_token *temp)
 	return (0);
 }
 
+/**
+ * @brief Checks if token is pipe and if the next one is also
+ * a pipe
+ * 
+ * @param temp 
+ * @return int 
+ */
 int	verify_pipe(t_token *temp)
 {
 	if (temp->type == T_PIPE)
@@ -19,6 +32,13 @@ int	verify_pipe(t_token *temp)
 	return (0);
 }
 
+/**
+ * @brief Checks if a token is a redirect and if after there's a
+ * word (filename)
+ * 
+ * @param temp 
+ * @return int 
+ */
 int	verify_redirect(t_token *temp)
 {
 	if (is_redir(temp) == 1)
@@ -32,7 +52,7 @@ int	verify_redirect(t_token *temp)
 }
 
 /**
- * @brief verifies if there are empty commands, no commands or if
+ * @brief Verifies if there are empty commands, no commands or if
  * filenames are missing
  * 
  * @param ms 

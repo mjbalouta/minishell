@@ -41,6 +41,7 @@ extern volatile sig_atomic_t	g_exit_status;
 void	ft_envp_lstprint(t_envp *lst);
 // TODO
 
+void	shell_loop(t_shell *ms);
 void	enable_echoctl(void);
 void    disable_echoctl(void);
 void	check_args(int argc);
@@ -50,6 +51,7 @@ void	exit_shell(t_shell *ms, int exit_status);
 void	debug_init_shell(t_shell *ms, char **envp);
 void	print_error_and_exit(t_shell *ms, char *message, int exit_status);
 void	print_error(char *message);
+void	reset_fds(t_shell *ms);
 
 //------------------------------SIGNALS-----------------------------------------
 
@@ -72,6 +74,8 @@ void	verify_if_bultin(t_cmd *cmd);
 void	ft_cmd_lstclear(t_cmd **lst);
 void	free_redirection_list(t_redir *redir);
 void	fill_cmd(t_token **token_temp, t_cmd *cmd_temp);
+int		check_syntax(t_shell *ms);
+int		process_tokens(t_shell *ms);
 
 //------------------------------TOKENIZER---------------------------------------
 
@@ -118,7 +122,7 @@ void	fill_path(t_shell *ms, t_cmd *command);
 int		count_commands(t_shell *ms);
 void	create_pipe(int	*pipefd, t_shell *ms);
 void	init_pids_container(t_shell *ms);
-void wait_for_child(t_shell *ms, int cmd_count);
+void	wait_for_child(t_shell *ms, int cmd_count);
 void	handle_redir(t_shell *ms, int *pipefd, int prev_fd, t_cmd *command);
 void	handle_without_redir(int *pipefd, int prev_fd, t_shell *ms);
 void	handle_out_redir(int prev_fd, t_shell *ms, t_redir *redir, t_cmd *command);
@@ -128,7 +132,7 @@ t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *heredoc_fd);
 void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command);
 void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id);
-void	execute(t_shell *ms);
+int		execute(t_shell *ms);
 void	write_inside_pipe(int *heredoc_fd, char *line);
 void	ft_env(t_shell *ms, char **args);
 void	ft_exit(t_shell *ms, char **args);
@@ -139,7 +143,7 @@ void	free_pid(t_shell *ms);
 void	define_last_redirection(t_cmd *cmd);
 void	handle_execve_error(t_cmd *command, char **envp, t_shell *ms);
 void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd);
-void	process_before_executing(t_shell *ms);
+int		process_before_executing(t_shell *ms);
 
 //------------------------------BUILTINS----------------------------------------
 

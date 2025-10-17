@@ -6,6 +6,7 @@ CFLAGS      	= -Wall -Wextra -Werror -I$(LIBFT_DIR) $(INCLUDES) -g
 SRCS			= $(addprefix srcs/, \
 				main.c \
 				shell/shell_utils.c \
+				shell/shell_utils2.c \
 				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
 				tokenizer/tokenizer_utils.c \
 				environment/environment.c environment/envp_lst_utils.c \
@@ -15,6 +16,7 @@ SRCS			= $(addprefix srcs/, \
 				parsing/verify_tokens.c \
 				parsing/verify_commands.c \
 				parsing/parsing_utils.c \
+				parsing/process_tokens.c \
 				execution/build_comm_path.c \
 				execution/pipes.c \
 				execution/execution_utils.c \

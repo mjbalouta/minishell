@@ -86,7 +86,7 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
  * 
  * @param ms 
  */
-void	process_before_executing(t_shell *ms)
+int	process_before_executing(t_shell *ms)
 {
 	t_cmd	*cmd;
 
@@ -101,10 +101,11 @@ void	process_before_executing(t_shell *ms)
 		{
 			handle_heredoc_input(cmd, ms);
 			if (g_exit_status == 130)
-				return ;
+				return (-1);
 		}
 		cmd = cmd->next;
 	}
+	return (0);
 }
 
 /**
@@ -112,7 +113,7 @@ void	process_before_executing(t_shell *ms)
  * 
  * @param ms 
  */
-void	execute(t_shell *ms)
+int	execute(t_shell *ms)
 {
 	t_cmd	*cmd;
 	int		pipefd[2];
@@ -121,7 +122,10 @@ void	execute(t_shell *ms)
 
 	prev_fd = -1;
 	id = 0;
-	process_before_executing(ms);
+	if (process_tokens(ms) == -1)
+		return (-1);
+	if (process_before_executing(ms) == -1)
+		return (-1);
 	ms->nr_commands = count_commands(ms);
 	init_pids_container(ms);
 	cmd = ms->command;
@@ -130,4 +134,7 @@ void	execute(t_shell *ms)
 	else
 		handle_child_processes(ms, pipefd, prev_fd, id);
 	free_pid(ms);
+	ft_cmd_lstclear(&ms->command);
+    ft_token_lstclear(&ms->token);
+	return (0);
 }

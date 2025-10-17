@@ -1,37 +1,11 @@
 #include "minishell.h"
 
-// /*DELETE LATER*/
-// void	test_printing(t_shell *ms) //testing
-// {
-// 	int i = 0;
-// 	int z = 0;
-// 	t_cmd *tmp = ms->command;
-// 	while (tmp)
-// 	{
-// 		ft_printf("COMMAND %d:", i + 1);
-// 		z = 0;
-// 		while (tmp->args[z])
-// 		{
-// 			ft_printf("%s ", tmp->args[z]);
-// 			z++;
-// 		}
-// 		if (tmp->redir)
-// 		{
-// 			ft_printf("\nREDIR:\n");
-// 			while (tmp->redir)
-// 			{
-// 				ft_printf("redir type: %d | ", tmp->redir->type);
-// 				ft_printf("filename: %s ", tmp->redir->filename);
-// 				tmp->redir = tmp->redir->next;
-// 			}
-// 		}
-// 		i++;
-// 		ft_printf("\nis builtin? %d", tmp->is_builtin);
-// 		tmp = tmp->next;
-// 		ft_printf("\n");
-// 	}
-// }
-
+/**
+ * @brief Creates each redir node
+ * 
+ * @param token 
+ * @param command 
+ */
 void	create_redir_node(t_token **token, t_cmd *command)
 {
 	t_redir	*new_redir_node;
@@ -56,7 +30,7 @@ void	create_redir_node(t_token **token, t_cmd *command)
 }
 
 /**
- * @brief fills cmd params (args and redirects)
+ * @brief Fills cmd params (args and redirects)
  * 
  * @param token_temp 
  * @param cmd_temp 
@@ -80,7 +54,7 @@ void	fill_cmd(t_token **token_temp, t_cmd *cmd_temp)
 }
 
 /**
- * @brief creates cmd list
+ * @brief Creates cmd list
  * 
  * @param ms 
  */
@@ -110,5 +84,4 @@ void	create_cmd_list(t_shell *ms)
 		cmd_temp->next = new_cmd_node;
 		cmd_temp = cmd_temp->next;
 	}
-	// test_printing(ms); //function for testing
 }
