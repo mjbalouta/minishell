@@ -6,7 +6,7 @@
  * to 130.
  * This ensures the shell remains responsive and does not exit on Ctrl+C.
  */
-static void	handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("\n", STDOUT_FILENO);
@@ -19,9 +19,15 @@ static void	handle_sigint(int sig)
 void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
-	close(STDIN_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
+	close(STDIN_FILENO);
 	g_exit_status = 130;
+}
+
+void	handle_sigpipe(int sig)
+{
+	(void)sig;
+	g_exit_status = 141;
 }
 
 void	set_signals(t_shell *ms)
@@ -40,6 +46,12 @@ void	set_signals(t_shell *ms)
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = handle_sigpipe;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error setting SIGPIPE", errno);
 }
 
 void	set_signals_heredoc(t_shell *ms)
@@ -58,6 +70,12 @@ void	set_signals_heredoc(t_shell *ms)
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error setting SIGINT", errno);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error setting SIGPIPE", errno);
 }
 
 void	reset_signals(t_shell *ms)
@@ -76,6 +94,12 @@ void	reset_signals(t_shell *ms)
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error resetting SIGQUIT", errno);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error resetting SIGPIPE", errno);
 }
 
 void	ignore_signals(t_shell *ms)
@@ -94,6 +118,12 @@ void	ignore_signals(t_shell *ms)
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		print_error_and_exit(ms, "sigaction: error ignoring SIGQUIT", errno);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
+		print_error_and_exit(ms, "sigaction: error ignoring SIGPIPE", errno);
 }
 
 void	handle_child_signal(int status)
