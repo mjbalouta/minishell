@@ -36,6 +36,7 @@ SRCS			= $(addprefix srcs/, \
 				builtins/unset.c \
 				builtins/env.c \
 				builtins/exit.c \
+				builtins/exit_utils.c \
 				temp.c \
 				)
 OBJS       		= $(SRCS:.c=.o)

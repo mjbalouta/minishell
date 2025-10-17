@@ -6,7 +6,7 @@
 /*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 15:31:38 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/11 18:02:30 by josemigu         ###   ########.fr       */
+/*   Updated: 2025/10/17 22:36:27 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ char		*ft_strjoin_char(char *s, char c);
 
 char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 
-char		*ft_strjoin_five(const char *s1, const char *s2, const char *s3, 
-	const char *s4, const char *s5);
+char		*ft_strjoin_five(const char *s1, const char *s2, const char *s3,
+				const char *s4, const char *s5);
 
 char		*ft_strtrim(char const *s1, char const *set);
 
@@ -114,7 +114,7 @@ void		ft_putnbr_fd(int n, int fd);
 
 t_list		*ft_lstnew(void *content);
 
-void			ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_front(t_list **lst, t_list *new);
 
 int			ft_lstsize(t_list *lst);
 

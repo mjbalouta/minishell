@@ -1,39 +1,30 @@
 #include "minishell.h"
 
+void	skip_whitespaces(char **str);
+int		get_sign(char **str);
+
 static int	check_arg_is_longlong(char *nptr)
 {
-	unsigned long long	value;
-	int					signal;
-	int					digit;
+	unsigned long long	v;
+	int					s;
+	int					d;
 
-	value = 0;
-	signal = 1;
-	while (*nptr == ' ' || (*nptr >= '\t' && *nptr <= '\r'))
-		nptr++;
-	if (*nptr == '-' || *nptr == '+')
-	{
-		if (*nptr == '-')
-			signal = -1;
-		nptr++;
-		if (*nptr < '0' || *nptr > '9')
-			return (EXIT_FAILURE);
-	}
+	v = 0;
+	skip_whitespaces(&nptr);
+	s = get_sign(&nptr);
+	if (s == 0)
+		return (EXIT_FAILURE);
 	while (*nptr)
 	{
 		if (*nptr >= '0' && *nptr <= '9')
 		{
-			digit = *nptr++ - '0';
-			if (signal == 1)
-			{
-				if (value > ((unsigned long long)LLONG_MAX - digit) / 10ULL)
-					return (EXIT_FAILURE);
-			}
-			else
-			{
-				if (value > ((unsigned long long)LLONG_MAX + 1ULL - digit) / 10ULL)
-					return (EXIT_FAILURE);
-			}
-			value = value * 10 + digit;
+			d = *nptr++ - '0';
+			if ((s == 1) && (v > ((unsigned long long)LLONG_MAX - d) / 10ULL))
+				return (EXIT_FAILURE);
+			if ((s != 1) && (v > ((unsigned long long)LLONG_MAX + 1ULL - d)
+					/ 10ULL))
+				return (EXIT_FAILURE);
+			v = v * 10 + d;
 		}
 		else
 			return (EXIT_FAILURE);
@@ -60,23 +51,22 @@ static void	print_error_exit_arg(char *arg)
 
 void	builtin_exit(t_shell *ms, t_cmd *cmd)
 {
+	g_exit_status = 0;
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (cmd->args && cmd->args[1])
 	{
 		if (ft_strcmp(cmd->args[1], "--") == 0)
-		{
-			g_exit_status = 0;
-			exit_shell(ms, g_exit_status);
-		}
+			exit_shell(ms, 0);
 		else
-		if (check_arg_is_longlong(cmd->args[1]) != EXIT_SUCCESS)
 		{
-			print_error_exit_arg(cmd->args[1]);
-			g_exit_status = 2;
-			exit_shell(ms, g_exit_status);
+			if (check_arg_is_longlong(cmd->args[1]) != EXIT_SUCCESS)
+			{
+				print_error_exit_arg(cmd->args[1]);
+				exit_shell(ms, 2);
+			}
+			else
+				g_exit_status = (unsigned char)(ft_atoll(cmd->args[1]));
 		}
-		else
-			g_exit_status = (unsigned char)(ft_atoll(cmd->args[1]));
 		if (cmd->args && cmd->args[2])
 		{
 			print_error("exit: too many arguments");
