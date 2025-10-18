@@ -3,13 +3,18 @@
 char	*expand_tilde(char *str, t_envp *env)
 {
 	char	*home;
+	char	*result;
 
 	if (str[0] != '~')
-		return (ft_strdup(str));
+		return (str);
 	home = ft_getenv("HOME", env);
 	if (!home)
-		return (ft_strdup(str));
-	return (ft_strjoin(home, str + 1));
+		return (str);
+	result = ft_strjoin(home, str + 1);
+	free (str);
+	if (!result)
+		return (NULL);
+	return (result);
 }
 
 char	*expand_exit_status(char *result, int *i, t_shell *ms)
@@ -111,7 +116,6 @@ void	expander(t_shell *ms)
 {
 	t_token	*current;
 	t_token	*previous;
-	t_token	*to_delete;
 	char	*expanded_word;
 
 	current = ms->token;
@@ -127,9 +131,7 @@ void	expander(t_shell *ms)
 			current->word = expanded_word;
 			if ((current->word[0] == '\0') && !current->quoted)
 			{
-				to_delete = current;
-				current = current->next;
-				delete_empty_token(ms, to_delete, previous);
+				current = delete_empty_token(ms, current, previous);
 				continue ;
 			}
 		}
