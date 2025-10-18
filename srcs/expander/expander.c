@@ -34,6 +34,32 @@ char	*expand_exit_status(char *result, int *i, t_shell *ms)
 	(*i)++;
 	return (result);
 }
+static char	*expand_dollar(t_shell *ms, char *result, char *str, int *i)
+{
+	int		start;
+	char	*varname;
+	char	*value;
+
+	if (str[*i] == '?')
+		result = expand_exit_status(result, i, ms);
+	else if (str[*i] == '!')
+		(*i)++;
+	else if (str[*i] >= '0' && str[*i] <= '9')
+		(*i)++;
+	else if (ft_isalpha(str[*i]) || str[*i] == '_')
+	{
+		start = *i;
+		while (ft_isalnum(str[*i]) || str[*i] == '_')
+			(*i)++;
+		varname = ft_substr(str, start, *i - start);
+		value = ft_getenv2(varname, ms->envp);
+		result = ft_strjoin_free(result, value);
+		free(varname);
+	}
+	else
+		result = ft_strjoin_char(result, '$');
+	return (result);
+}
 
 char	*expand_variables(t_token *token, char *str, t_shell *ms)
 {
@@ -42,15 +68,11 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 	int		in_single;
 	int		in_double;
 	char	*result;
-	char	*value;
-	char	*varname;
 
 	i = 0;
 	in_single = 0;
 	in_double = 0;
 	result = ft_strdup("");
-	value = NULL;
-	varname = NULL;
 	while (str[i])
 	{
 		if (str[i] == '\'' && !in_double)
@@ -68,24 +90,7 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 		else if (str[i] == '$' && !in_single)
 		{
 			i++;
-			if (str[i] == '?')
-				result = expand_exit_status(result, &i, ms);
-			else if (str[i] == '!')
-				i++;
-			else if (str[i] >= '0' && str[i] <= '9')
-				i++;
-			else if (ft_isalpha(str[i]) || str[i] == '_')
-			{
-				start = i;
-				while (ft_isalnum(str[i]) || str[i] == '_')
-					i++;
-				varname = ft_substr(str, start, i - start);
-				value = ft_getenv2(varname, ms->envp);
-				result = ft_strjoin_free(result, value);
-				free(varname);
-			}
-			else
-				result = ft_strjoin_char(result, '$');
+			result = expand_dollar(ms, result, str, &i);
 		}
 		else
 			result = ft_strjoin_char(result, str[i++]);
