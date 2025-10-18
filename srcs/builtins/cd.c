@@ -31,7 +31,7 @@ static void	print_error_cd(char *arg)
 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 }
 
-static void	update_pwd_vars(t_shell *ms)
+static void	update_pwd_vars(t_shell *ms, int print_path)
 {
 	char	*oldpwd;
 	char	*pwd;
@@ -48,46 +48,34 @@ static void	update_pwd_vars(t_shell *ms)
 			free(pwd);
 		}
 	}
+	if (print_path)
+		ft_putendl_fd(ms->cwd, STDOUT_FILENO);
 }
 
 void	builtin_cd(t_shell *ms, t_cmd *cmd)
 {
- 	char	*path;
-  	int		print_path;
+	char	*path;
+	int		print_path;
 
 	(void)ms;
 	if (cmd->args && cmd->args[1] && ft_strncmp(cmd->args[1], "-", 1) == 0)
+	{
 		if (cmd->args[1][1] != '\0')
 		{
 			print_error("cd: options aren't supported");
 			g_exit_status = 2;
-			return ;			
+			return ;
 		}
-	if (cmd->args && cmd->args[1] && cmd->args[2])
-	{
-		print_error("cd: too many arguments");
-		g_exit_status = 1;
-		return ;
 	}
+	g_exit_status = 1;
+	if (cmd->args && cmd->args[1] && cmd->args[2])
+		return (print_error("cd: too many arguments"));
 	path = get_cd_target(ms, cmd->args, &print_path);
 	if (!path)
-	{
-		g_exit_status = 1;
 		return ;
-	}
 	if (chdir(path) != 0)
-	{
-		print_error_cd(cmd->args[1]);
-		g_exit_status = 1;
-		return ;
-	}
-	update_pwd_vars(ms);
-	if (print_path)
-	{
-		char cwd[PATH_MAX];
-		if (getcwd(cwd, sizeof(cwd)))
-			printf("%s\n", cwd);
-	}
+		return (print_error_cd(cmd->args[1]));
+	update_pwd_vars(ms, print_path);
 	g_exit_status = 0;
 	return ;
 }

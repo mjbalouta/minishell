@@ -33,6 +33,7 @@ SRCS			= $(addprefix srcs/, \
 				builtins/cd.c \
 				builtins/pwd.c \
 				builtins/export.c \
+				builtins/export_utils.c \
 				builtins/unset.c \
 				builtins/env.c \
 				builtins/exit.c \

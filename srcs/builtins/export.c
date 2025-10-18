@@ -1,13 +1,8 @@
 #include "minishell.h"
 
-static bool	is_valid_key_char(char c, int pos)
-{
-	if (ft_isalpha(c) || c == '_')
-		return (true);
-	if (pos > 0 && (c >= '0' && c <= '9'))
-		return (true);
-	return (false);
-}
+void	print_error_export_arg(char *arg);
+void	print_export_envp(t_shell *ms);
+bool	is_valid_key_char(char c, int pos);
 
 /**
  * @brief checks the key of a environment variable
@@ -44,67 +39,72 @@ static int	check_key(char *key)
 	return (is_concat);
 }
 
-static void	print_error_export_arg(char *arg)
-{
-	ft_putstr_fd(SHELL_NAME": export: `", STDERR_FILENO);
-	ft_putstr_fd(arg, STDERR_FILENO);
-	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-}
-
-static int	process_export_arg(t_shell *ms, char *arg)
+static int	process_export_arg_w_equal(t_shell *ms, char *arg, char *equal_ptr)
 {
 	t_envp	*env;
-	char	*equal_ptr;
 	char	*key;
 	char	*value;
 
 	env = ms->envp;
+	key = ft_substr(arg, 0, equal_ptr - arg);
+	if (check_key(key) == -1)
+	{
+		print_error_export_arg(key);
+		free(key);
+		g_exit_status = 1;
+		return (0);
+	}
+	value = ft_strdup(equal_ptr + 1);
+	if (!key || !value)
+		return (free(key), free(value), -1);
+	if (check_key(key) == 0)
+		if (ft_setenv(key, value, false, &env) != 0)
+			return (free(key), free(value), -1);
+	if (check_key(key) == 1)
+		if (ft_setenv(key, value, true, &env) != 0)
+			return (free(key), free(value), -1);
+	free(key);
+	free(value);
+	return (0);
+}
+
+static int	process_export_arg_no_equal(t_shell *ms, char *arg)
+{
+	t_envp	*env;
+	char	*key;
+
+	env = ms->envp;
+	key = ft_strdup(arg);
+	if (!key)
+		return (-1);
+	if (check_key(key) != 0)
+	{
+		print_error_export_arg(key);
+		free(key);
+		g_exit_status = 1;
+		return (0);
+	}
+	if (ft_setenv(key, NULL, false, &env) != 0)
+		return (free(key), -1);
+	free(key);
+	return (0);
+}
+
+static int	process_export_arg(t_shell *ms, char *arg)
+{
+	char	*equal_ptr;
+
 	equal_ptr = ft_strchr(arg, '=');
 	if (equal_ptr)
-	{
-		key = ft_substr(arg, 0, equal_ptr - arg);
-		if (check_key(key) == -1)
-		{
-			print_error_export_arg(key);
-			free(key);
-			g_exit_status = 1;
-			return (0);
-		}
-		value = ft_strdup(equal_ptr + 1);
-		if (!key || !value)
-			return (free(key), free(value), -1);
-		if (check_key(key) == 0)
-			if (ft_setenv(key, value, false, &env) != 0)
-				return (free(key), free(value), -1);
-		if (check_key(key) == 1)
-			if (ft_setenv(key, value, true, &env) != 0)
-				return (free(key), free(value), -1);			
-		free(key);
-		free(value);
-	}
+		return (process_export_arg_w_equal(ms, arg, equal_ptr));
 	else
-	{
-		key = ft_strdup(arg);
-		if (!key)
-			return (-1);
-		if (check_key(key) != 0)
-		{
-			print_error_export_arg(key);
-			free(key);
-			g_exit_status = 1;
-			return (0);
-		}
-		if (ft_setenv(key, NULL, false, &env) != 0)
-			return (free(key), -1);
-		free(key);
-	}
+		return (process_export_arg_no_equal(ms, arg));
 	return (0);
 }
 
 void	builtin_export(t_shell *ms, t_cmd *cmd)
 {
-	int	i;
-	char	**array;
+	int		i;
 
 	g_exit_status = 0;
 	i = 1;
@@ -114,24 +114,17 @@ void	builtin_export(t_shell *ms, t_cmd *cmd)
 		{
 			print_error("export: options aren't supported");
 			g_exit_status = 2;
-			return ;			
+			return ;
 		}
 		i++;
 	}
 	if (!cmd->args || !cmd->args[1])
-	{
-		array = ft_envp_lst_to_char_array(ms, true);
-		ft_sort_array_of_char(array);
-		print_array_of_char(array);
-		free_char_array(array);
-		g_exit_status = 0;
-		return ;
-	}
+		return (print_export_envp(ms));
 	i = 1;
 	while (cmd->args && cmd->args[i])
 	{
 		if (process_export_arg(ms, cmd->args[i]) != 0)
-			print_error_and_exit(ms, "export: memory allocation error", 
+			print_error_and_exit(ms, "export: memory allocation error",
 				EXIT_FAILURE);
 		i++;
 	}
