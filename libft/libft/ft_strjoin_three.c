@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin_three.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/18 23:58:48 by josemigu          #+#    #+#             */
+/*   Updated: 2025/10/18 23:58:49 by josemigu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-char *ft_strjoin_three(const char *s1, const char *s2, const char *s3)
+char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 {
 	char	*ptr1;
 	char	*ptr2;

@@ -2,16 +2,30 @@
 
 static char	*build_env_str(t_envp *lst, bool export_style)
 {
+	char	*result_part;
+	char	*result;
+
 	if (lst->value)
 	{
 		if (export_style)
-			return (ft_strjoin_five("declare -x ", lst->key, "=\"",
-					lst->value, "\""));
-		return (ft_strjoin_three(lst->key, "=", lst->value));
+		{
+			result_part = ft_strjoin_three("declare -x ", lst->key, "=\"");
+			if (!result_part)
+				return (NULL);
+			result = ft_strjoin_three(result_part, lst->value, "\"");
+			free(result_part);
+			return (result);
+		}
+		result = ft_strjoin_three(lst->key, "=", lst->value);
+		return (result);
 	}
 	if (export_style)
-		return (ft_strjoin("declare -x ", lst->key));
-	return (ft_strdup(lst->key));
+	{
+		result = ft_strjoin("declare -x ", lst->key);
+		return (result);
+	}
+	result = ft_strdup(lst->key);
+	return (result);
 }
 
 /**

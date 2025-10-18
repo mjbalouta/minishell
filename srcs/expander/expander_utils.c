@@ -22,3 +22,65 @@ bool	is_heredoc_token(t_token *token)
 {
 	return (token && token->type == T_HEREDOC);
 }
+
+char	*expand_tilde(char *str, t_envp *env)
+{
+	char	*home;
+	char	*result;
+
+	if (str[0] != '~')
+		return (str);
+	home = ft_getenv("HOME", env);
+	if (!home)
+		return (str);
+	result = ft_strjoin(home, str + 1);
+	free (str);
+	if (!result)
+		return (NULL);
+	return (result);
+}
+
+char	*expand_exit_status(char *result, int *i, t_shell *ms)
+{
+	char	*status_str;
+
+	status_str = ft_itoa(g_exit_status);
+	if (!status_str)
+	{
+		free(result);
+		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
+	}
+	result = ft_strjoin_free(result, status_str);
+	free(status_str);
+	if (!result)
+		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
+	(*i)++;
+	return (result);
+}
+
+char	*expand_dollar(t_shell *ms, char *result, char *str, int *i)
+{
+	int		start;
+	char	*varname;
+	char	*value;
+
+	if (str[*i] == '?')
+		result = expand_exit_status(result, i, ms);
+	else if (str[*i] == '!')
+		(*i)++;
+	else if (str[*i] >= '0' && str[*i] <= '9')
+		(*i)++;
+	else if (ft_isalpha(str[*i]) || str[*i] == '_')
+	{
+		start = *i;
+		while (ft_isalnum(str[*i]) || str[*i] == '_')
+			(*i)++;
+		varname = ft_substr(str, start, *i - start);
+		value = ft_getenv2(varname, ms->envp);
+		result = ft_strjoin_free(result, value);
+		free(varname);
+	}
+	else
+		result = ft_strjoin_char(result, '$');
+	return (result);
+}

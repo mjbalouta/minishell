@@ -42,7 +42,8 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 			if (!line)
 			{
 				if (g_exit_status != 130)
-					print_error("warning: here-document delimited by end-of-file");
+					print_error(
+						"warning: here-document delimited by end-of-file");
 				return ;
 			}
 			if (g_exit_status == 130)
