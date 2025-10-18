@@ -1,15 +1,15 @@
 #include "minishell.h"
 
+void	free_key_value(char *key, char *value);
+
 int	init_envp(t_shell *ms, char **envp)
 {
 	int		i;
-	t_envp	*head;
 	char	*equal_ptr;
 	char	*key;
 	char	*value;
 
 	i = 0;
-	head = NULL;
 	while (envp[i] != NULL)
 	{
 		equal_ptr = ft_strchr(envp[i], '=');
@@ -18,17 +18,15 @@ int	init_envp(t_shell *ms, char **envp)
 			key = ft_substr(envp[i], 0, equal_ptr - envp[i]);
 			value = ft_strdup(equal_ptr + 1);
 			if (!key || !value)
-				return (free(key), free(value), -1);
-			if (add_envp(key, value, &head) != 0)
-				return (free(key), free(value), -1);
-			free(key);
-			free(value);
+				return (free_key_value(key, value), -1);
+			if (add_envp(key, value, &ms->envp) != 0)
+				return (free_key_value(key, value), -1);
+			free_key_value(key, value);
 		}
 		i++;
 	}
-	if (set_minimal_env(&head) != 0)
+	if (set_minimal_env(&ms->envp) != EXIT_SUCCESS)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
-	ms->envp = head;
 	return (0);
 }
 
@@ -39,37 +37,46 @@ static void	print_warning_shlvl(char *arg)
 	ft_putstr_fd(") too high, resetting to 1\n", STDERR_FILENO);
 }
 
-int	set_minimal_env(t_envp **lst)
+static int	set_pwd_env(t_envp **lst)
 {
 	char	*path;
+	int		ret;
+
+	path = getcwd(NULL, 0);
+	if (!path)
+		return (EXIT_FAILURE);
+	ret = ft_setenv("PWD", path, false, lst);
+	free(path);
+	if (ret != 0)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	set_minimal_env(t_envp **lst)
+{
 	int		ret;
 	int		shlvl;
 	char	*shlvl_ascii;
 
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (-1);
-	ret = ft_setenv("PWD", path, false, lst);
-	free(path);
-	if (ret != 0)
+	if (set_pwd_env(lst) != 0)
 		return (-1);
 	shlvl = ft_atoi(ft_getenv2("SHLVL", *lst));
 	shlvl_ascii = ft_itoa(shlvl + 1);
 	if (!shlvl_ascii)
-		return (-1);
+		return (EXIT_FAILURE);
 	if (shlvl + 1 > 999)
 	{
 		print_warning_shlvl(shlvl_ascii);
 		free(shlvl_ascii);
 		shlvl_ascii = ft_itoa(1);
 		if (!shlvl_ascii)
-			return (-1);
+			return (EXIT_FAILURE);
 	}
 	ret = ft_setenv("SHLVL", shlvl_ascii, false, lst);
 	free(shlvl_ascii);
 	if (ret != 0)
-		return (-1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	add_envp(char *key, char *value, t_envp **lst)

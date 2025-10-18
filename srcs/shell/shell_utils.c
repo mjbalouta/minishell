@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-void    disable_echoctl(void)
+void	disable_echoctl(void)
 {
-	struct termios  term;
+	struct termios	term;
 
 	if (tcgetattr(STDIN_FILENO, &term) == -1)
 	{
 		perror("tcgetattr");
-		return;
+		return ;
 	}
 	term.c_lflag &= ~ECHOCTL;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
@@ -21,7 +21,7 @@ void	enable_echoctl(void)
 	if (tcgetattr(STDIN_FILENO, &term) == -1)
 	{
 		perror("tcgetattr");
-		return;
+		return ;
 	}
 	term.c_lflag |= ECHOCTL;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
@@ -39,6 +39,7 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->pid = NULL;
 	ms->i = 0;
 	ms->nr_commands = 0;
+	ms->envp = NULL;
 	if (init_envp(ms, envp) != 0)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
 	if (getcwd(ms->cwd, sizeof(ms->cwd)) == NULL)
@@ -69,4 +70,3 @@ void	exit_shell(t_shell *ms, int exit_status)
 	ft_envp_lstclear(&ms->envp);
 	exit(exit_status);
 }
-

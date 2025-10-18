@@ -9,8 +9,11 @@ SRCS			= $(addprefix srcs/, \
 				shell/shell_utils2.c \
 				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
 				tokenizer/tokenizer_utils.c \
-				environment/environment.c environment/envp_lst_utils.c \
+				environment/environment.c \
+				environment/envp_lst_utils.c \
+				environment/envp_lst_utils2.c \
 				environment/envp_utils.c \
+				environment/envp_utils2.c \
 				expander/expander.c \
 				expander/expander_utils.c \
 				parsing/command_list.c \
@@ -38,7 +41,6 @@ SRCS			= $(addprefix srcs/, \
 				builtins/env.c \
 				builtins/exit.c \
 				builtins/exit_utils.c \
-				temp.c \
 				)
 OBJS       		= $(SRCS:.c=.o)
 LIBFT_DIR   	= ./libft

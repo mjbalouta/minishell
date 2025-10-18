@@ -90,7 +90,7 @@ void	ft_token_lstprint(t_token *lst);
 
 //------------------------------ENVIRONMENT-------------------------------------
 
-int		init_envp(t_shell *ms, char **envp);
+int		init_envp(t_shell *ms, char **envp); ;
 int		set_minimal_env(t_envp **lst);
 int		add_envp(char *key, char *value, t_envp **lst);
 t_envp	*ft_envp_lstnew(char *key, char *value);
