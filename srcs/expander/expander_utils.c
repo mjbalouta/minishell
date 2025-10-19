@@ -76,8 +76,9 @@ char	*expand_dollar(t_shell *ms, char *result, char *str, int *i)
 		while (ft_isalnum(str[*i]) || str[*i] == '_')
 			(*i)++;
 		varname = ft_substr(str, start, *i - start);
-		value = ft_getenv2(varname, ms->envp);
-		result = ft_strjoin_free(result, value);
+		value = ft_getenv(varname, ms->envp);
+		if (value)
+			result = ft_strjoin_free(result, value);
 		free(varname);
 	}
 	else

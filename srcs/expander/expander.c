@@ -45,33 +45,39 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 		else
 			result = ft_strjoin_char(result, str[i++]);
 	}
+	free(str);
 	return (result);
 }
 
-char	*expand_word(t_token *token, t_shell *ms)
+void	expand_word(t_token *current, t_shell *ms)
 {
 	char	*result;
 	char	*tmp;
 
-	result = ft_strdup(token->word);
+	result = ft_strdup(current->word);
 	if (!result)
-		return (NULL);
+		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 	if (result[0] == '~')
 		if ((result[1] == '/') || (result[1] == '\0'))
 			result = expand_tilde(result, ms->envp);
 	if (!result)
-		return (NULL);
-	tmp = expand_variables(token, result, ms);
-	free(result);
-	result = tmp;
-	return (result);
+		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
+	tmp = expand_variables(current, result, ms);
+	if (!tmp)
+		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
+	if (!current->quoted && ((ft_strchr(tmp, ' ')) || (ft_strchr(tmp, '\t'))))
+		insert_expanded_tokens(ms, current, tmp);
+	else
+	{
+		free(current->word);
+		current->word = tmp;
+	}
 }
 
 void	expander(t_shell *ms)
 {
 	t_token	*current;
 	t_token	*previous;
-	char	*expanded_word;
 
 	current = ms->token;
 	previous = NULL;
@@ -79,11 +85,7 @@ void	expander(t_shell *ms)
 	{
 		if (current->type == T_WORD && !is_heredoc_token(previous))
 		{
-			expanded_word = expand_word(current, ms);
-			if (expanded_word == NULL)
-				print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
-			free(current->word);
-			current->word = expanded_word;
+			expand_word(current, ms);
 			if ((current->word[0] == '\0') && !current->quoted)
 			{
 				current = delete_empty_token(ms, current, previous);

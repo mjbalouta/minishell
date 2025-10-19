@@ -7,7 +7,9 @@ SRCS			= $(addprefix srcs/, \
 				main.c \
 				shell/shell_utils.c \
 				shell/shell_utils2.c \
-				tokenizer/tokenizer.c tokenizer/tokenizer_lst_utils.c \
+				tokenizer/tokenizer.c \
+				tokenizer/tokenizer2.c \
+				tokenizer/tokenizer_lst_utils.c \
 				tokenizer/tokenizer_utils.c \
 				environment/environment.c \
 				environment/envp_lst_utils.c \
