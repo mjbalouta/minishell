@@ -28,15 +28,3 @@ void	reset_fds(t_shell *ms)
 	dup2(ms->out_fd, STDOUT_FILENO);
 	close_both_fds(ms->in_fd, ms->out_fd);
 }
-
-void	ft_envp_lstprint(t_envp *lst)
-{
-	while (lst)
-	{
-		if (lst->value)
-			printf("DEBUG: %s=%s\n", lst->key, lst->value);
-		else
-			printf("DEBUG: %s\n", lst->key);
-		lst = lst->next;
-	}
-}

@@ -37,9 +37,7 @@
 // Global variable
 extern volatile sig_atomic_t	g_exit_status;
 
-// TODO: remove this prototype
-void	ft_envp_lstprint(t_envp *lst);
-// TODO
+//------------------------------SHELL-------------------------------------------
 
 void	shell_loop(t_shell *ms);
 void	enable_echoctl(void);
