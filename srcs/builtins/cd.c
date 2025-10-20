@@ -28,7 +28,12 @@ static void	print_error_cd(char *arg)
 {
 	ft_putstr_fd(SHELL_NAME": cd: ", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
-	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	if (errno == ENOENT)
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	else if (errno == EACCES)
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+	else if (errno == ENOTDIR)
+		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
 }
 
 static void	update_pwd_vars(t_shell *ms, int print_path)

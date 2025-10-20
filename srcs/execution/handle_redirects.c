@@ -18,7 +18,8 @@ void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
 	{
 		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
-		close_both_fds(pipefd[0], pipefd[1]);
+		if (ms->nr_commands > 1)
+			close_both_fds(pipefd[0], pipefd[1]);
 		exit_shell(ms, 1);
 	}
 	if (redir == cmd->last_in_redir)
@@ -57,7 +58,8 @@ void	handle_out_redir(t_shell *ms, t_redir *redir, t_cmd *cmd, int *pipefd)
 	{
 		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
-		close_both_fds(pipefd[0], pipefd[1]);
+		if (ms->nr_commands > 1)
+			close_both_fds(pipefd[0], pipefd[1]);
 		exit_shell(ms, 1);
 	}
 	if (redir == cmd->last_out_redir || redir == cmd->last_append_redir)

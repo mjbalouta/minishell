@@ -38,7 +38,8 @@ void	read_heredoc(t_redir *redir_list, t_redir *last_here, int *heredoc_fd)
 	{
 		while (true)
 		{
-			line = readline("> ");
+			if (g_exit_status != 130)
+				line = readline("> ");
 			if (!line)
 			{
 				if (g_exit_status != 130)
