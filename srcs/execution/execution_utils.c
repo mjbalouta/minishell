@@ -58,12 +58,10 @@ void	wait_for_child(t_shell *ms, int cmd_count)
 	status = 0;
 	while (i < cmd_count)
 	{
-		waitpid(ms->pid[i], &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-            write(1, "\n", 1);
+		if (waitpid(ms->pid[i], &status, 0) > 0)
+			handle_child_signal(status);
 		i++;
 	}
-	handle_child_signal(status);
 }
 
 void	write_inside_pipe(int *heredoc_fd, char *line)
