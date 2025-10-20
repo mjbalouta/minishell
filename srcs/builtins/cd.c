@@ -36,7 +36,7 @@ static void	update_pwd_vars(t_shell *ms, int print_path)
 	char	*oldpwd;
 	char	*pwd;
 
-	oldpwd = ft_getenv("PWD", ms->envp);
+	oldpwd = ft_getenv2("PWD", ms->envp);
 	if (oldpwd)
 		ft_setenv("OLDPWD", oldpwd, false, &ms->envp);
 	if (getcwd(ms->cwd, sizeof(ms->cwd)))
