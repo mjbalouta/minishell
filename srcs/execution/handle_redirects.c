@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:09:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:14:27 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:07:18 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
 	{
 		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
-		if (ms->nr_commands > 1)
+		if (ms->i < ms->nr_commands - 1)
 			close_both_fds(pipefd[0], pipefd[1]);
 		exit_shell(ms, 1);
 	}
@@ -68,7 +68,7 @@ void	handle_out_redir(t_shell *ms, t_redir *redir, t_cmd *cmd, int *pipefd)
 	{
 		ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
 		perror(redir->filename);
-		if (ms->nr_commands > 1)
+		if (ms->i < ms->nr_commands - 1)
 			close_both_fds(pipefd[0], pipefd[1]);
 		exit_shell(ms, 1);
 	}

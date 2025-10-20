@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:10:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:10:06 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:06:17 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	free_shell(t_shell *ms)
 		free(ms->pid);
 		ms->pid = NULL;
 	}
+	if (ms->prev_fd != -1)
+		close(ms->prev_fd);
 	if (ms->in_fd > 2)
 		close(ms->in_fd);
 	if (ms->out_fd > 2)
