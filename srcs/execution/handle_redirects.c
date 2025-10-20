@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_redirects.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 16:09:35 by mjoao-fr          #+#    #+#             */
+/*   Updated: 2025/10/20 16:14:27 by mjoao-fr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
  * @brief defines fds for dup2 when input redirection is found
  * 
- * @param prev_fd 
  * @param ms 
  * @param pipefd 
  * @param i 
@@ -40,7 +51,6 @@ void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
  * @brief defines fds for dup2 when output redirection is found
  * (output or append)
  * 
- * @param prev_fd 
  * @param ms 
  * @param out_fd 
  * @param i 
@@ -77,7 +87,6 @@ void	handle_out_redir(t_shell *ms, t_redir *redir, t_cmd *cmd, int *pipefd)
  * 
  * @param i 
  * @param pipefd 
- * @param prev_fd 
  * @param ms 
  */
 void	handle_without_redir(int *pipefd, t_shell *ms)

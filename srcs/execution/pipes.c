@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 16:09:40 by mjoao-fr          #+#    #+#             */
+/*   Updated: 2025/10/20 16:14:33 by mjoao-fr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -8,12 +20,12 @@
  * @param i 
  * @param ms 
  */
-void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
+void	execute_pipe_cmd(int *pipefd, t_shell *ms, t_cmd *command)
 {
 	char		**envp;
 
 	handle_redir(ms, pipefd, command);
-	close_one_fd(prev_fd);
+	close_one_fd(ms->prev_fd);
 	if (ms->i < ms->nr_commands - 1)
 		close_both_fds(pipefd[0], pipefd[1]);
 	if (!command->args[0])
@@ -38,7 +50,6 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
  * 
  * @param cmd 
  * @param ms 
- * @param prev_fd 
  * @param pipefd 
  */
 void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int *pipefd)
@@ -67,7 +78,7 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int id)
 		if (ms->pid[id] < 0)
 			exit_shell(ms, 1);
 		if (ms->pid[id++] == 0)
-			execute_pipe_cmd(pipefd, ms, ms->prev_fd, temp);
+			execute_pipe_cmd(pipefd, ms, temp);
 		close_one_fd(ms->prev_fd);
 		if (ms->i < ms->nr_commands - 1)
 		{

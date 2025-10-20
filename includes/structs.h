@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 16:07:41 by mjoao-fr          #+#    #+#             */
+/*   Updated: 2025/10/20 16:12:26 by mjoao-fr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
@@ -20,7 +32,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-//estrutura para guardar o tipo de redirect e o respetivo nome do ficheiro
 typedef struct s_redir
 {
 	t_token_type	type;
@@ -28,7 +39,6 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-//estrutura para guardar cada comando entre pipes
 typedef struct s_cmd
 {
 	t_redir				*last_out_redir;

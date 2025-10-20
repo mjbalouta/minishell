@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 16:07:31 by mjoao-fr          #+#    #+#             */
+/*   Updated: 2025/10/20 16:13:50 by mjoao-fr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -132,7 +144,7 @@ void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd);
 void	handle_heredoc_input(t_cmd *command, t_shell *ms);
 t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *hd_fd);
-void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command);
+void	execute_pipe_cmd(int *pipefd, t_shell *ms, t_cmd *command);
 void	handle_child_processes(t_shell *ms, int *pipefd, int id);
 int		execute(t_shell *ms);
 void	write_inside_pipe(int *heredoc_fd, char *line);
