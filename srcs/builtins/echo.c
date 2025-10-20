@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static bool	valid_n_option(char *arg, int *i)
+static bool	valid_n_option(char *arg, int *i, bool *new_line)
 {
 	int	j;
 
@@ -12,6 +12,7 @@ static bool	valid_n_option(char *arg, int *i)
 		j++;
 	}
 	(*i)++;
+	*new_line = false;
 	return (true);
 }
 
@@ -28,11 +29,10 @@ void	builtin_echo(t_shell *ms, t_cmd *cmd)
 	while (cmd->args && cmd->args[i])
 	{
 		if ((ft_strncmp(cmd->args[i], "-n", 2) == 0) && !print_started)
-			if (valid_n_option(cmd->args[i], &i))
-			{
-				new_line = false;
+		{
+			if (valid_n_option(cmd->args[i], &i, &new_line))
 				continue ;
-			}
+		}
 		print_started = true;
 		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
 		if (cmd->args[i + 1] && cmd->args[i][0] && cmd->args[i + 1][0])

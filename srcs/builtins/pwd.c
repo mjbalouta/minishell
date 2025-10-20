@@ -3,7 +3,6 @@
 void	builtin_pwd(t_shell *ms, t_cmd *cmd)
 {
 	int		i;
-	// char	*path;
 
 	i = 1;
 	while (cmd->args && cmd->args[i])
@@ -12,14 +11,10 @@ void	builtin_pwd(t_shell *ms, t_cmd *cmd)
 		{
 			print_error("pwd: options aren't supported");
 			g_exit_status = 2;
-			return ;			
+			return ;
 		}
 		i++;
 	}
-	// path = getcwd(NULL, 0);
-	// if (!path)
-	// 	print_error_and_exit(ms, "getcwd failed", errno);
 	ft_putendl_fd(ms->cwd, STDOUT_FILENO);
-	// free(path);
 	g_exit_status = 0;
 }

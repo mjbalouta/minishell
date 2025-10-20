@@ -40,25 +40,31 @@ char	*ft_getenv2(const char *key, t_envp *lst)
 		return (result);
 }
 
-/**
- * @brief check an environment variable
- * 
- * returns a pointer to the t_envp struct if the variable exists and 
- * NULL if it does not
- * 
- * @param key key to search
- * @param lst environment list
- * @return t_envp*
- */
-t_envp	*ft_checkenv(char *key, t_envp *lst)
+static int	ft_setenv_helper(t_envp *env_node, bool concat, char *value)
 {
-	while (lst)
+	char	*new_value;
+	char	*temp;
+
+	if (value)
 	{
-		if (ft_strcmp(key, lst->key) == 0)
-			return (lst);
-		lst = lst->next;
+		if (env_node->value && concat)
+		{
+			temp = ft_strjoin(env_node->value, value);
+			if (!temp)
+				return (-1);
+			free(env_node->value);
+			env_node->value = temp;
+		}
+		else
+		{
+			new_value = ft_strdup(value);
+			if (!new_value)
+				return (-1);
+			free(env_node->value);
+			env_node->value = new_value;
+		}
 	}
-	return (NULL);
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -74,8 +80,6 @@ t_envp	*ft_checkenv(char *key, t_envp *lst)
 int	ft_setenv(char *key, char *value, bool concat, t_envp **lst)
 {
 	t_envp	*env_node;
-	char	*new_value;
-	char	*temp;
 
 	if (concat)
 		key[ft_strlen(key) - 1] = '\0';
@@ -83,28 +87,7 @@ int	ft_setenv(char *key, char *value, bool concat, t_envp **lst)
 	if (!env_node)
 		return (add_envp(key, value, lst));
 	else
-	{
-		if (value)
-		{
-			if (env_node->value && concat)
-			{
-				temp = ft_strjoin(env_node->value, value);
-				if (!temp)
-					return (-1);
-				free(env_node->value);
-				env_node->value = temp;
-			}
-			else
-			{
-				new_value = ft_strdup(value);
-				if (!new_value)
-					return (-1);
-				free(env_node->value);
-				env_node->value = new_value;
-			}
-		}
-	}
-	return (EXIT_SUCCESS);
+		return (ft_setenv_helper(env_node, concat, value));
 }
 
 /**
@@ -142,55 +125,4 @@ int	ft_unsetenv(char *key, t_envp **lst)
 	free(temp->value);
 	free(temp);
 	return (EXIT_SUCCESS);
-}
-
-void	free_char_array(char **array)
-{
-	size_t	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-void	print_array_of_char(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i] != NULL)
-	{
-		ft_putendl_fd(array[i], STDOUT_FILENO);
-		i++;
-	}
-}
-
-void	ft_sort_array_of_char(char **array)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 0;
-	while (array[i] != NULL)
-	{
-		j = i + 1;
-		while (array[j] != NULL)
-		{
-			if (ft_strcmp(array[i], array[j]) > 0)
-			{
-				temp = array[i];
-				array[i] = array[j];
-				array[j] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
 }

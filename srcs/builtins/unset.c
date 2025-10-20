@@ -11,11 +11,10 @@ void	builtin_unset(t_shell *ms, t_cmd *cmd)
 		{
 			print_error("unset: options aren't supported");
 			g_exit_status = 2;
-			return ;			
+			return ;
 		}
 		i++;
 	}
-
 	i = 1;
 	while (cmd->args && cmd->args[i])
 	{

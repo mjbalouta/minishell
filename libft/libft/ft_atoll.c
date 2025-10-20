@@ -6,7 +6,7 @@
 /*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 15:28:01 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/11 17:58:03 by josemigu         ###   ########.fr       */
+/*   Updated: 2025/10/17 22:37:55 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 long long	ft_atoll(const char *nptr)
 {
-	int		i;
-	int		negative;
+	int			i;
+	int			negative;
 	long long	num;
 
 	i = 0;

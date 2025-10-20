@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin_free.c                                  :+:      :+:    :+:   */
+/*   ft_strwhitespace.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/18 23:58:24 by josemigu          #+#    #+#             */
-/*   Updated: 2025/10/19 21:59:39 by josemigu         ###   ########.fr       */
+/*   Created: 2025/04/07 15:30:20 by mjoao-fr          #+#    #+#             */
+/*   Updated: 2025/10/20 07:53:04 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/**
+ * @file ft_strwhitespace.c
+ * @brief returns a pointer to the first occurrence of a whitespace
+ */
+
 #include "libft.h"
 
-char	*ft_strjoin_free(char *s1, char *s2)
+char	*ft_strwhitespace(const char *s)
 {
-	char	*new_str;
+	int		i;
+	char	*str;
 
-	new_str = ft_strjoin(s1, s2);
-	free(s1);
-	if (!new_str)
-		return (NULL);
-	return (new_str);
+	str = (char *) s;
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			return (&str[i]);
+		i++;
+	}
+	return (NULL);
 }

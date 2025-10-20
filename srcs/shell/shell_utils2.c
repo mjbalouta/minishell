@@ -25,6 +25,6 @@ void	print_error(char *message)
 void	reset_fds(t_shell *ms)
 {
 	dup2(ms->in_fd, STDIN_FILENO);
-    dup2(ms->out_fd, STDOUT_FILENO);
-    close_both_fds(ms->in_fd, ms->out_fd);
+	dup2(ms->out_fd, STDOUT_FILENO);
+	close_both_fds(ms->in_fd, ms->out_fd);
 }

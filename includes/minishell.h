@@ -37,9 +37,7 @@
 // Global variable
 extern volatile sig_atomic_t	g_exit_status;
 
-// TODO: remove this prototype
-void	ft_envp_lstprint(t_envp *lst);
-// TODO
+//------------------------------SHELL-------------------------------------------
 
 void	shell_loop(t_shell *ms);
 void	enable_echoctl(void);
@@ -87,10 +85,12 @@ t_token	*ft_token_lstnew(char *word, t_token_type type);
 void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
+void	insert_expanded_tokens(t_shell *ms, t_token *current);
+char	**ft_split_whitespaces(char const *s);
 
 //------------------------------ENVIRONMENT-------------------------------------
 
-int		init_envp(t_shell *ms, char **envp);
+int		init_envp(t_shell *ms, char **envp); ;
 int		set_minimal_env(t_envp **lst);
 int		add_envp(char *key, char *value, t_envp **lst);
 t_envp	*ft_envp_lstnew(char *key, char *value);
@@ -110,10 +110,10 @@ void	ft_sort_array_of_char(char **array);
 //------------------------------EXPANDER----------------------------------------
 
 void	expander(t_shell *ms);
-char	*expand_word(t_token *token, t_shell *ms);
+void	expand_word(t_token *token, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
 char	*expand_variables(t_token *token, char *str, t_shell *ms);
-void	delete_empty_token(t_shell *ms, t_token *to_delete, t_token *previous);
+t_token	*delete_empty_token(t_shell *ms, t_token *to_delete, t_token *previous);
 bool	is_heredoc_token(t_token *token);
 
 //------------------------------EXECUTE-----------------------------------------
