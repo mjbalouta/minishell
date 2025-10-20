@@ -65,13 +65,10 @@ void	expand_word(t_token *current, t_shell *ms)
 	tmp = expand_variables(current, result, ms);
 	if (!tmp)
 		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
-	if (!current->quoted && ((ft_strchr(tmp, ' ')) || (ft_strchr(tmp, '\t'))))
-		insert_expanded_tokens(ms, current, tmp);
-	else
-	{
-		free(current->word);
-		current->word = tmp;
-	}
+	free(current->word);
+	current->word = tmp;
+	if (!current->quoted && ft_strwhitespace(current->word))
+		insert_expanded_tokens(ms, current);
 }
 
 void	expander(t_shell *ms)

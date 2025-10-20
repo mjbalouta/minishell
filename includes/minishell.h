@@ -85,7 +85,8 @@ t_token	*ft_token_lstnew(char *word, t_token_type type);
 void	ft_token_lstadd_back(t_token **lst, t_token *new);
 void	ft_token_lstclear(t_token **token);
 void	ft_token_lstprint(t_token *lst);
-void	insert_expanded_tokens(t_shell *ms, t_token *current, char *tmp);
+void	insert_expanded_tokens(t_shell *ms, t_token *current);
+char	**ft_split_whitespaces(char const *s);
 
 //------------------------------ENVIRONMENT-------------------------------------
 

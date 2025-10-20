@@ -6,7 +6,7 @@
 /*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 15:31:38 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/19 00:10:11 by josemigu         ###   ########.fr       */
+/*   Updated: 2025/10/20 07:54:20 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int			ft_toupper(int c);
 int			ft_tolower(int c);
 
 char		*ft_strchr(const char *s, int c);
+
+char		*ft_strwhitespace(const char *s);
 
 char		*ft_strrchr(const char *s, int c);
 
