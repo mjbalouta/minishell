@@ -76,7 +76,6 @@ void	insert_expanded_tokens(t_shell *ms, t_token *current)
 	t_token	*new_lst;
 	t_token	*last_token;
 
-	(void)ms;
 	new_lst = NULL;
 	words = ft_split_whitespaces(current->word);
 	if (!words)

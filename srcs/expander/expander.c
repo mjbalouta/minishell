@@ -80,8 +80,8 @@ void	expander(t_shell *ms)
 	previous = NULL;
 	while (current != NULL)
 	{
-		if (current->type == T_WORD && !is_heredoc_token(previous) &&
-			!current->ignore_expansion)
+		if (current->type == T_WORD && !is_heredoc_token(previous)
+			&& !current->ignore_expansion)
 		{
 			expand_word(current, ms);
 			if ((current->word[0] == '\0') && !current->quoted)
