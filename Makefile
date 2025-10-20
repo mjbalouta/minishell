@@ -6,7 +6,7 @@
 #    By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/20 16:10:57 by mjoao-fr          #+#    #+#              #
-#    Updated: 2025/10/20 16:10:58 by mjoao-fr         ###   ########.fr        #
+#    Updated: 2025/10/20 17:05:19 by mjoao-fr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ $(LIBFT):
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT) $(OBJS)
-	@echo "Compiling..."
+	@echo "Minishell compiled."
 	@$(CC) $(CFLAGS) $(OBJS) $(RLFLAG) $(LIBFT) -o $(NAME)
 
 valgrind: 
