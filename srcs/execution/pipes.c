@@ -12,7 +12,7 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
 {
 	char		**envp;
 
-	handle_redir(ms, pipefd, prev_fd, command);
+	handle_redir(ms, pipefd, command);
 	close_one_fd(prev_fd);
 	if (ms->i < ms->nr_commands - 1)
 		close_both_fds(pipefd[0], pipefd[1]);
@@ -41,9 +41,9 @@ void	execute_pipe_cmd(int *pipefd, t_shell *ms, int prev_fd, t_cmd *command)
  * @param prev_fd 
  * @param pipefd 
  */
-void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd)
+void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int *pipefd)
 {
-	handle_redir(ms, pipefd, prev_fd, cmd);
+	handle_redir(ms, pipefd, cmd);
 	execute_builtin(ms, cmd);
 }
 
@@ -53,7 +53,7 @@ void	exec_single_builtin(t_cmd *cmd, t_shell *ms, int prev_fd, int *pipefd)
  * 
  * @param ms 
  */
-void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
+void	handle_child_processes(t_shell *ms, int *pipefd, int id)
 {
 	t_cmd	*temp;
 
@@ -67,16 +67,16 @@ void	handle_child_processes(t_shell *ms, int *pipefd, int prev_fd, int id)
 		if (ms->pid[id] < 0)
 			exit_shell(ms, 1);
 		if (ms->pid[id++] == 0)
-			execute_pipe_cmd(pipefd, ms, prev_fd, temp);
-		close_one_fd(prev_fd);
+			execute_pipe_cmd(pipefd, ms, ms->prev_fd, temp);
+		close_one_fd(ms->prev_fd);
 		if (ms->i < ms->nr_commands - 1)
 		{
 			close_one_fd(pipefd[1]);
-			prev_fd = pipefd[0];
+			ms->prev_fd = pipefd[0];
 		}
 		temp = temp->next;
 	}
-	close_one_fd(prev_fd);
+	close_one_fd(ms->prev_fd);
 	ignore_signals(ms);
 	wait_for_child(ms, id);
 	set_signals(ms);
@@ -120,10 +120,9 @@ int	execute(t_shell *ms)
 {
 	t_cmd	*cmd;
 	int		pipefd[2];
-	int		prev_fd;
 	int		id;
 
-	prev_fd = -1;
+	ms->prev_fd = -1;
 	id = 0;
 	if (process_tokens(ms) == -1)
 		return (-1);
@@ -133,9 +132,9 @@ int	execute(t_shell *ms)
 	init_pids_container(ms);
 	cmd = ms->command;
 	if (ms->nr_commands == 1 && cmd->is_builtin == 0)
-		exec_single_builtin(cmd, ms, prev_fd, pipefd);
+		exec_single_builtin(cmd, ms, pipefd);
 	else
-		handle_child_processes(ms, pipefd, prev_fd, id);
+		handle_child_processes(ms, pipefd, id);
 	free_pid(ms);
 	ft_cmd_lstclear(&ms->command);
 	ft_token_lstclear(&ms->token);

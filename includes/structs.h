@@ -35,10 +35,10 @@ typedef struct s_cmd
 	t_redir				*last_in_redir;
 	int					prev_fd;
 	int					heredoc_fd;
-	int					is_builtin; //0 para sim, 1 para nao
+	int					is_builtin;
 	char				**args;
 	char				*comm_path;
-	t_redir				*redir; //um comando pode ter mais do que um redirect
+	t_redir				*redir;
 	struct s_cmd		*next;
 }	t_cmd;
 
@@ -51,9 +51,10 @@ typedef struct s_envp
 
 typedef struct s_shell
 {
+	int			prev_fd;
 	int			in_fd;
 	int			out_fd;
-	int			i; //contador para os comandos
+	int			i;
 	int			nr_commands;
 	t_envp		*envp;
 	char		*prompt;
