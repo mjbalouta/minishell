@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:09:26 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:09:27 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/20 17:16:39 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ void	wait_for_child(t_shell *ms, int cmd_count)
 {
 	int	status;
 	int	i;
+	int	interrupted;
 
 	i = 0;
 	status = 0;
-	while (i < cmd_count)
+	interrupted = 0;
+	while (i < cmd_count && interrupted == 0)
 	{
 		waitpid(ms->pid[i], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+            interrupted = 1;
 		i++;
 	}
 	handle_child_signal(status);
