@@ -8,7 +8,7 @@
  * @param pipefd 
  * @param i 
  */
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
+void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd)
 {
 	int	in_fd;
 
@@ -134,7 +134,7 @@ void	handle_redir(t_shell *ms, int *pipefd, t_cmd *command)
 	while (temp_redir)
 	{
 		if (temp_redir->type == T_REDIRECT_INPUT)
-			handle_input_redir(ms, pipefd, temp_redir, command);
+			handle_in_redir(ms, pipefd, temp_redir, command);
 		else if (temp_redir->type == T_REDIRECT_OUTPUT
 			|| temp_redir->type == T_REDIR_OUT_APPEND)
 			handle_out_redir(ms, temp_redir, command, pipefd);

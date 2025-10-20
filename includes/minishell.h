@@ -128,7 +128,7 @@ void	wait_for_child(t_shell *ms, int cmd_count);
 void	handle_redir(t_shell *ms, int *pipefd, t_cmd *command);
 void	handle_without_redir(int *pipefd, t_shell *ms);
 void	handle_out_redir(t_shell *ms, t_redir *redir, t_cmd *cmd, int *pipefd);
-void	handle_input_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd);
+void	handle_in_redir(t_shell *ms, int *pipefd, t_redir *redir, t_cmd *cmd);
 void	handle_heredoc_input(t_cmd *command, t_shell *ms);
 t_redir	*find_last_redir(t_redir *redir_list, t_token_type redirection);
 void	read_heredoc(t_redir *redir_list, t_redir *last_heredoc, int *hd_fd);
