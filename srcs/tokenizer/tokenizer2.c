@@ -88,6 +88,7 @@ void	insert_expanded_tokens(t_shell *ms, t_token *current)
 		if (!new_token)
 			return (free_char_array(words), print_error_and_exit(ms,
 					"Expansion error", EXIT_FAILURE));
+		new_token->ignore_expansion = true;
 		ft_token_lstadd_back(&new_lst, new_token);
 		last_token = new_token;
 	}
