@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:07:31 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:13:50 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/20 22:45:30 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,10 @@ void	ft_sort_array_of_char(char **array);
 //------------------------------EXPANDER----------------------------------------
 
 void	expander(t_shell *ms);
-void	expand_word(t_token *token, t_shell *ms);
+void	expand_word(t_token *token, t_token *previous, t_shell *ms);
 char	*expand_tilde(char *str, t_envp *env);
-char	*expand_variables(t_token *token, char *str, t_shell *ms);
+char	*expand_variables(t_token *token, t_token *previous, char *str,
+			t_shell *ms);
 t_token	*delete_empty_token(t_shell *ms, t_token *to_delete, t_token *previous);
 bool	is_heredoc_token(t_token *token);
 
