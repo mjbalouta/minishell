@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: josemigu <josemigu@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:09:46 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:09:48 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/20 22:46:53 by josemigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	handle_quotes(t_token *token, int *in_single, int *in_double,
 	return (0);
 }
 
-char	*expand_variables(t_token *token, char *str, t_shell *ms)
+char	*expand_variables(t_token *token, t_token *previous, char *str,
+			t_shell *ms)
 {
 	int		i;
 	int		in_single;
@@ -49,7 +50,7 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 	{
 		if (handle_quotes(token, &in_single, &in_double, str[i]))
 			i++;
-		else if (str[i] == '$' && !in_single)
+		else if (str[i] == '$' && !in_single && !is_heredoc_token(previous))
 		{
 			i++;
 			result = expand_dollar(ms, result, str, &i);
@@ -61,7 +62,7 @@ char	*expand_variables(t_token *token, char *str, t_shell *ms)
 	return (result);
 }
 
-void	expand_word(t_token *current, t_shell *ms)
+void	expand_word(t_token *current, t_token *previous, t_shell *ms)
 {
 	char	*result;
 	char	*tmp;
@@ -70,11 +71,12 @@ void	expand_word(t_token *current, t_shell *ms)
 	if (!result)
 		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 	if (result[0] == '~')
-		if ((result[1] == '/') || (result[1] == '\0'))
+		if (((result[1] == '/') || (result[1] == '\0'))
+			&& !is_heredoc_token(previous))
 			result = expand_tilde(result, ms->envp);
 	if (!result)
 		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
-	tmp = expand_variables(current, result, ms);
+	tmp = expand_variables(current, previous, result, ms);
 	if (!tmp)
 		print_error_and_exit(ms, "Expansion error", EXIT_FAILURE);
 	free(current->word);
@@ -92,10 +94,9 @@ void	expander(t_shell *ms)
 	previous = NULL;
 	while (current != NULL)
 	{
-		if (current->type == T_WORD && !is_heredoc_token(previous)
-			&& !current->ignore_expansion)
+		if (current->type == T_WORD && !current->ignore_expansion)
 		{
-			expand_word(current, ms);
+			expand_word(current, previous, ms);
 			if ((current->word[0] == '\0') && !current->quoted)
 			{
 				current = delete_empty_token(ms, current, previous);
