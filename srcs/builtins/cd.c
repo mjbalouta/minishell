@@ -54,14 +54,15 @@ static void	update_pwd_vars(t_shell *ms, int print_path)
 	char	*pwd;
 
 	oldpwd = ft_getenv2("PWD", ms->envp);
-	if (oldpwd)
+	if (oldpwd && !ms->ignore_oldpwd)
 		ft_setenv("OLDPWD", oldpwd, false, &ms->envp);
 	if (getcwd(ms->cwd, sizeof(ms->cwd)))
 	{
 		pwd = ft_strdup(ms->cwd);
 		if (pwd)
 		{
-			ft_setenv("PWD", pwd, false, &ms->envp);
+			if (ft_checkenv("PWD", ms->envp))
+				ft_setenv("PWD", pwd, false, &ms->envp);
 			free(pwd);
 		}
 	}

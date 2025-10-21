@@ -74,6 +74,7 @@ typedef struct s_shell
 	t_cmd		*command;
 	pid_t		*pid;
 	char		cwd[PATH_MAX];
+	bool		ignore_oldpwd;
 }	t_shell;
 
 #endif

@@ -75,6 +75,8 @@ static int	process_export_arg_w_equal(t_shell *ms, char *arg, char *equal_ptr)
 			return (free(key), free(value), -1);
 	free(key);
 	free(value);
+	if (ft_checkenv("OLDPWD", ms->envp))
+		ms->ignore_oldpwd = false;
 	return (0);
 }
 
@@ -95,6 +97,8 @@ static int	process_export_arg_no_equal(t_shell *ms, char *arg)
 	if (ft_setenv(key, NULL, false, &ms->envp) != 0)
 		return (free(key), -1);
 	free(key);
+	if (ft_checkenv("OLDPWD", ms->envp))
+		ms->ignore_oldpwd = false;
 	return (0);
 }
 

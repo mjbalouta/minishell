@@ -31,6 +31,8 @@ void	builtin_unset(t_shell *ms, t_cmd *cmd)
 	while (cmd->args && cmd->args[i])
 	{
 		ft_unsetenv(cmd->args[i], &ms->envp);
+		if (ft_strcmp(cmd->args[i], "OLDPWD") == 0)
+			ms->ignore_oldpwd = true;
 		i++;
 	}
 	g_exit_status = 0;

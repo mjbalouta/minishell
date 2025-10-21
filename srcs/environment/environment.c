@@ -60,7 +60,7 @@ static int	set_pwd_env(t_envp **lst)
 	ret = ft_setenv("PWD", path, false, lst);
 	free(path);
 	if (ret != 0)
-		return (EXIT_FAILURE);
+		return (free(path), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
