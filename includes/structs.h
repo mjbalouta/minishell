@@ -73,7 +73,8 @@ typedef struct s_shell
 	t_token		*token;
 	t_cmd		*command;
 	pid_t		*pid;
-	char		cwd[PATH_MAX];
+	char		pwd[PATH_MAX];
+	char		oldpwd[PATH_MAX];
 	bool		ignore_oldpwd;
 }	t_shell;
 

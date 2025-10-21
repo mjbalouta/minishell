@@ -55,7 +55,7 @@ void	init_shell(t_shell *ms, char **envp)
 	ms->ignore_oldpwd = false;
 	if (init_envp(ms, envp) != 0)
 		print_error_and_exit(ms, "Memory allocation error", EXIT_FAILURE);
-	if (getcwd(ms->cwd, sizeof(ms->cwd)) == NULL)
+	if (getcwd(ms->pwd, sizeof(ms->pwd)) == NULL)
 		print_error_and_exit(ms, "getcwd failed", EXIT_FAILURE);
 }
 

@@ -50,15 +50,14 @@ static void	print_error_cd(char *arg)
 
 static void	update_pwd_vars(t_shell *ms, int print_path)
 {
-	char	*oldpwd;
 	char	*pwd;
 
-	oldpwd = ft_getenv2("PWD", ms->envp);
-	if (oldpwd && !ms->ignore_oldpwd)
-		ft_setenv("OLDPWD", oldpwd, false, &ms->envp);
-	if (getcwd(ms->cwd, sizeof(ms->cwd)))
+	ft_strlcpy(ms->oldpwd, ms->pwd, sizeof(ms->oldpwd));
+	if (!ms->ignore_oldpwd)
+		ft_setenv("OLDPWD", ms->oldpwd, false, &ms->envp);
+	if (getcwd(ms->pwd, sizeof(ms->pwd)))
 	{
-		pwd = ft_strdup(ms->cwd);
+		pwd = ft_strdup(ms->pwd);
 		if (pwd)
 		{
 			if (ft_checkenv("PWD", ms->envp))
@@ -67,7 +66,7 @@ static void	update_pwd_vars(t_shell *ms, int print_path)
 		}
 	}
 	if (print_path)
-		ft_putendl_fd(ms->cwd, STDOUT_FILENO);
+		ft_putendl_fd(ms->pwd, STDOUT_FILENO);
 }
 
 void	builtin_cd(t_shell *ms, t_cmd *cmd)

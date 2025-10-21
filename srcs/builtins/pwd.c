@@ -27,6 +27,6 @@ void	builtin_pwd(t_shell *ms, t_cmd *cmd)
 		}
 		i++;
 	}
-	ft_putendl_fd(ms->cwd, STDOUT_FILENO);
+	ft_putendl_fd(ms->pwd, STDOUT_FILENO);
 	g_exit_status = 0;
 }
