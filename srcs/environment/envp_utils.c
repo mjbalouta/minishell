@@ -105,24 +105,25 @@ int	ft_setenv(char *key, char *value, bool concat, t_envp **lst)
 /**
  * @brief deletes an environment variable
  * 
- * return 0 on success, or -1 on error
+ * Returns 0 on success, or -1 on error.
+ * If the key does not exist, the function does nothing and returns 0.
  * 
  * @param key key to delete
  * @param lst environment list
  * @return int
  */
-int	ft_unsetenv(char *key, t_envp **lst)
+int	ft_unsetenv(char *key, t_envp **head)
 {
 	t_envp	*temp;
 	t_envp	*prev;
 
-	temp = *lst;
+	temp = *head;
 	if (temp != NULL && ft_strcmp(key, temp->key) == 0)
 	{
-		*lst = temp->next;
-		free(temp->key);
-		free(temp->value);
+		*head = temp->next;
+		free_key_value(temp->key, temp->value);
 		free(temp);
+		temp = NULL;
 		return (EXIT_SUCCESS);
 	}
 	while (temp != NULL && ft_strcmp(key, temp->key) != 0)
@@ -133,8 +134,8 @@ int	ft_unsetenv(char *key, t_envp **lst)
 	if (temp == NULL)
 		return (EXIT_SUCCESS);
 	prev->next = temp->next;
-	free(temp->key);
-	free(temp->value);
+	free_key_value(temp->key, temp->value);
 	free(temp);
+	temp = NULL;
 	return (EXIT_SUCCESS);
 }

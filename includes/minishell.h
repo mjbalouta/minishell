@@ -118,6 +118,7 @@ int		ft_unsetenv(char *key, t_envp **lst);
 void	free_char_array(char **array);
 void	print_array_of_char(char **array);
 void	ft_sort_array_of_char(char **array);
+void	free_key_value(char *key, char *value);
 
 //------------------------------EXPANDER----------------------------------------
 

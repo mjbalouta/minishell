@@ -53,11 +53,9 @@ static int	check_key(char *key)
 
 static int	process_export_arg_w_equal(t_shell *ms, char *arg, char *equal_ptr)
 {
-	t_envp	*env;
 	char	*key;
 	char	*value;
 
-	env = ms->envp;
 	key = ft_substr(arg, 0, equal_ptr - arg);
 	if (check_key(key) == -1)
 	{
@@ -70,10 +68,10 @@ static int	process_export_arg_w_equal(t_shell *ms, char *arg, char *equal_ptr)
 	if (!key || !value)
 		return (free(key), free(value), -1);
 	if (check_key(key) == 0)
-		if (ft_setenv(key, value, false, &env) != 0)
+		if (ft_setenv(key, value, false, &ms->envp) != 0)
 			return (free(key), free(value), -1);
 	if (check_key(key) == 1)
-		if (ft_setenv(key, value, true, &env) != 0)
+		if (ft_setenv(key, value, true, &ms->envp) != 0)
 			return (free(key), free(value), -1);
 	free(key);
 	free(value);
@@ -82,10 +80,8 @@ static int	process_export_arg_w_equal(t_shell *ms, char *arg, char *equal_ptr)
 
 static int	process_export_arg_no_equal(t_shell *ms, char *arg)
 {
-	t_envp	*env;
 	char	*key;
 
-	env = ms->envp;
 	key = ft_strdup(arg);
 	if (!key)
 		return (-1);
@@ -96,7 +92,7 @@ static int	process_export_arg_no_equal(t_shell *ms, char *arg)
 		g_exit_status = 1;
 		return (0);
 	}
-	if (ft_setenv(key, NULL, false, &env) != 0)
+	if (ft_setenv(key, NULL, false, &ms->envp) != 0)
 		return (free(key), -1);
 	free(key);
 	return (0);
