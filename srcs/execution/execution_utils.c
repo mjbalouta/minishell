@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:09:26 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 17:37:48 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/22 11:24:07 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	verify_comm_path(t_cmd *command, t_shell *ms)
 		if (S_ISDIR(file_stat.st_mode))
 		{
 			ft_putstr_fd(SHELL_NAME": ", STDERR_FILENO);
+			ft_putstr_fd(command->args[0], STDERR_FILENO);
 			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 			exit_shell(ms, 126);
 		}
