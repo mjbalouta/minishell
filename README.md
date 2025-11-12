@@ -1,6 +1,6 @@
 # Minishell
 ## Creating a simple shell  
-**(Team project with @jmiguelmonteiro)**
+**Team project with [@jmiguelmonteiro](https://github.com/jmiguelmonteiro)**
 
 This project's purpose is to gain extensive knowledge about processes and file descriptors. 
 
