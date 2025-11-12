@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:09:03 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/20 16:09:04 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/11/12 16:29:57 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	set_pwd_env(t_envp **lst)
 	ret = ft_setenv("PWD", path, false, lst);
 	free(path);
 	if (ret != 0)
-		return (free(path), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
